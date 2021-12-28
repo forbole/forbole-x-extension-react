@@ -1,0 +1,27 @@
+{
+  "name": "Forbole X",
+  "version": "1.2.0",
+  "manifest_version": 3,
+  "description": "A comprehensive multi-crypto management tool in your browser",
+  "icons": {
+    "512": "logo512.png"
+  },
+  "action": {
+    "default_icon": "logo512.png",
+    "default_popup": "index.html"
+  },
+  "externally_connectable": {
+    "matches": ["*://localhost/*", "*://*.forbole.com/*"]
+  },
+  "permissions": ["storage", "hid"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["/static/css/content.chunk.css"],
+      "js": ["/static/js/content.chunk.js"]
+    }
+  ]
+}
