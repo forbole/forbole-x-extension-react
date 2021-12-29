@@ -193,7 +193,7 @@ interface Proposal {
   depositDetails?: DepositDetail[]
   voteDetails?: VoteDetail[]
   totalDeposits?: TokenAmount
-  minDeposit: TokenAmount
+  minDeposit: TokenAmount|null
   quorum: number
   bondedTokens: number
   content?: any
