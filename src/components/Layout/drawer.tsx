@@ -26,7 +26,7 @@ const Drawer = ({open, setOpen, children}: Props) => {
             <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
 
-          <div className='fixed inset-y-0 left-0 pr-10 max-w-full flex'>
+          <div className='fixed inset-y-0 left-0 pr-0 max-w-full flex'>
               <Transition.Child
                 as={Fragment}
                 enter='transform transition ease-in-out duration-500 sm:duration-700'
@@ -53,7 +53,7 @@ const Drawer = ({open, setOpen, children}: Props) => {
                       </div>
                     </div>
                   </div> */}
-                  <div className="mt-1 relative flex-1 px-4 sm:px-6">
+                  <div className="mt-1 relative flex-1 px-4">
                     {children}
                   </div>
                 </div>

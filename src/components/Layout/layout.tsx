@@ -5,7 +5,7 @@ import { ReactComponent as WalletIcon } from "../../assets/images/icons/icon_wal
 import Drawer from "./drawer";
 import { useState } from "react";
 import DrawerMenu from "./drawerMenu";
-
+import Dropdown from "../Element/dropdown";
 interface Props {
   children: JSX.Element;
   title?: string;
@@ -24,16 +24,23 @@ const Layout = ({ children, title }: Props) => {
               setOpen(!open);
             }}
           />
-          <h4
+          <h4>{title}</h4>
+          <Dropdown
+            items={[
+              { title: "Add Wallet" },
+              { title: "Change Wallet Moniker" },
+              { title: "Change Wallet Security Password" },
+              { title: "View Secret Recovery Phrase" },
+              { title: "Delete Wallet" },
+            ]}
           >
-            {title}
-          </h4>
-          <WalletIcon className="w-5 fill-dark dark:fill-white" />
+            <WalletIcon className="w-5 fill-dark dark:fill-white" />
+          </Dropdown>
         </div>
         {children}
       </div>
       <Drawer open={open} setOpen={setOpen}>
-       <DrawerMenu />
+        <DrawerMenu />
       </Drawer>
     </>
   );
