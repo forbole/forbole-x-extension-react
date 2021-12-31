@@ -6,7 +6,7 @@ const Wallet = () => {
   const [alwaysRequirePassword, setAlwaysRequirePassword] =
     useAlwaysRequirePassword();
   return (
-    <Layout>
+    <Layout title="Wallet">
       <>
         <div className="space-y-3">
           <div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import AddressBook from "../pages/address-book";
 import Setting from "../pages/setting";
 import Wallet from "../pages/wallet";
 
@@ -8,6 +9,7 @@ interface Props {}
 const routes = [
   { path: "/", key: "ROOT", exact: true, component: <Wallet /> },
   { path: "/setting", key: "SETTING", exact: true, component: <Setting /> },
+  { path: "/address-book", key: "ADDRESS-BOOK", exact: true, component: <AddressBook /> },
   //   {
   //     path: "/app",
   //     key: "APP",

@@ -6,19 +6,20 @@ import { Dialog, Transition } from '@headlessui/react'
 interface Props {
   open: boolean;
   setOpen: (status: boolean) => void;
+  children: JSX.Element;
 }
 
-const Drawer = ({open, setOpen}: Props) => {
+const Drawer = ({open, setOpen, children}: Props) => {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed inset-0 overflow-hidden" onClose={setOpen}>
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden text-gray-900">
           <Transition.Child
             as={Fragment}
-            enter="ease-in-out duration-500"
+            enter="ease-in-out duration-200"
             enterFrom="opacity-0"
             enterTo="opacity-100"
-            leave="ease-in-out duration-500"
+            leave="ease-in-out duration-200"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
@@ -35,11 +36,11 @@ const Drawer = ({open, setOpen}: Props) => {
                 leaveFrom='translate-x-0'
                 leaveTo='-translate-x-full z-index-0'
               >
-              <div className="w-screen max-w-xs">
+              <div className="w-screen max-w-[280px]">
                 <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-auto">
-                  <div className="px-4 sm:px-6">
+                  {/* <div className="px-4 sm:px-6">
                     <div className="flex items-start justify-between">
-                      <Dialog.Title className="text-lg font-medium text-gray-900">Panel title</Dialog.Title>
+                      <Dialog.Title className="text-lg font-medium">Panel title</Dialog.Title>
                       <div className="ml-3 h-7 flex items-center">
                         <button
                           type="button"
@@ -51,13 +52,9 @@ const Drawer = ({open, setOpen}: Props) => {
                         </button>
                       </div>
                     </div>
-                  </div>
-                  <div className="mt-6 relative flex-1 px-4 sm:px-6">
-                    {/* Replace with your content */}
-                    <div className="absolute inset-0 px-4 sm:px-6">
-                      <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true" />
-                    </div>
-                    {/* /End replace */}
+                  </div> */}
+                  <div className="mt-1 relative flex-1 px-4 sm:px-6">
+                    {children}
                   </div>
                 </div>
               </div>
