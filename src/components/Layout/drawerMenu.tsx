@@ -14,20 +14,20 @@ interface Props {}
 const DrawerMenu = (props: Props) => {
   const iconProps = useIconProps();
 
-  const [menuList, setMenuList] = useState([
+  const [menuList] = useState([
     {
       title: "Wallet",
-      icon: <WalletIcon className="w-6 fill-icon-light dark:fill-icon-dark" />,
+      icon: <WalletIcon className="w-5 fill-icon-light dark:fill-icon-dark" />,
       path: "/",
     },
     {
       title: "Address Book",
-      icon: <AddressBookIcon className="w-6 fill-icon-light dark:fill-icon-dark" />,
+      icon: <AddressBookIcon className="w-5 fill-icon-light dark:fill-icon-dark" />,
       path: "/address-book",
     },
     {
       title: "Setting",
-      icon: <SettingsIcon className="w-6 fill-icon-light dark:fill-icon-dark" />,
+      icon: <SettingsIcon className="w-5 fill-icon-light dark:fill-icon-dark" />,
       path: "/setting",
     },
   ]);
@@ -37,13 +37,13 @@ const DrawerMenu = (props: Props) => {
       <div className="flex justify-end">
        <ThemeModeButton />
       </div>
-      <div className="space-y-4 mt-4">
+      <div className="space-y-3 mt-4">
         {menuList.map((item) => (
           <div>
-            <Link to={item.path} className="no-underline text-font-2 dark:text-font-2 mb-4">
-              <button className="flex items-center space-x-3 hover:bg-gray-100 p-3 rounded-lg w-full">
+            <Link to={item.path} className="no-underline text-font-2 dark:text-font-2">
+              <button className="flex items-center space-x-5 hover:bg-gray-100 p-3 rounded-lg w-full">
                 {item.icon}
-                <p className="text-lg">{item.title}</p>
+                <h5>{item.title}</h5>
               </button>
             </Link>
           </div>
