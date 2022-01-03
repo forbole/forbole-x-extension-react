@@ -1,27 +1,19 @@
-import React from "react";
-import Layout from "../components/Layout/layout";
-import { useAlwaysRequirePassword } from "../recoil/general/generalState";
+import React from 'react';
+import Layout from '../components/Layout/layout';
+import AccountStatCard from '../components/Wallet/AccountStatCard';
+import { useAlwaysRequirePassword } from '../recoil/general/generalState';
 
 const Wallet = () => {
   const [alwaysRequirePassword, setAlwaysRequirePassword] =
     useAlwaysRequirePassword();
   return (
-    <Layout title="Wallet">
-      <>
-        <div className="space-y-3">
-          <div>
-            Always Require Password: {JSON.stringify(alwaysRequirePassword)}
-          </div>
-          <button
-            className="bg-white p-3"
-            onClick={() => {
-              setAlwaysRequirePassword();
-            }}
-          >
-            Set State
-          </button>
+    <Layout title='Wallet'>
+      <div className='px-5'>
+        <div className='space-y-3'>
+          <h3>Accounts</h3>
+          <AccountStatCard />
         </div>
-      </>
+      </div>
     </Layout>
   );
 };

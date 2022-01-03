@@ -40,7 +40,7 @@ const DrawerMenu = (props: Props) => {
       <div className="space-y-3 mt-4">
         {menuList.map((item) => (
           <div>
-            <Link to={item.path} className="no-underline text-font-2 dark:text-font-2">
+            <Link to={item.path} className="no-underline text-font-200">
               <button className="flex items-center space-x-5 hover:bg-gray-100 p-3 rounded-lg w-full">
                 {item.icon}
                 <h5>{item.title}</h5>
