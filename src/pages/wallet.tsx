@@ -1,19 +1,28 @@
 import React from 'react';
+import GetStarted from '../components/Layout/GetStarted/GetStarted';
 import Layout from '../components/Layout/layout';
-import AccountStatCard from '../components/Wallet/AccountStatCard';
-import { useAlwaysRequirePassword } from '../recoil/general/generalState';
+import { useAlwaysRequirePassword, useFirstTime } from '../recoil/general/generalState';
+import { useState } from 'react';
+import WalletAccounts from '../components/Layout/Accounts';
 
 const Wallet = () => {
   const [alwaysRequirePassword, setAlwaysRequirePassword] =
     useAlwaysRequirePassword();
+  
+
+  const [firstTime, setFirstTime] = useFirstTime();
   return (
     <Layout title='Wallet'>
-      <div className='px-5'>
-        <div className='space-y-3'>
-          <h3>Accounts</h3>
-          <AccountStatCard />
-        </div>
-      </div>
+      <>
+        {firstTime ? (
+          <div
+          >
+            <GetStarted />
+          </div>
+        ) : (
+          <WalletAccounts />
+        )}
+      </>
     </Layout>
   );
 };
