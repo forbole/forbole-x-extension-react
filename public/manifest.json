@@ -13,6 +13,18 @@
   "externally_connectable": {
     "matches": ["*://localhost/*", "*://*.forbole.com/*"]
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["scriptToInject.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "permissions": ["storage", "hid"],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"

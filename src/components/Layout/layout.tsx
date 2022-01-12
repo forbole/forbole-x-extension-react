@@ -6,6 +6,8 @@ import Drawer from "./drawer";
 import { useState } from "react";
 import DrawerMenu from "./drawerMenu";
 import Dropdown from "../Element/dropdown";
+import usePersistedState from '../../misc/usePersistedState';
+import sendMsgToChromeExt from '../../misc/sendMsgToChromeExt';
 interface Props {
   children: JSX.Element;
   title?: string;
@@ -13,6 +15,24 @@ interface Props {
 
 const Layout = ({ children, title }: Props) => {
   const [open, setOpen] = useState(false);
+  const [isFirstTimeUser, setIsFirstTimeUser] = usePersistedState('isFirstTimeUser', false)
+
+  const checkIsFirstTimeUser = React.useCallback(async () => {
+    try {
+      const response = await sendMsgToChromeExt({
+        event: 'ping',
+      })
+      setIsFirstTimeUser(response.isFirstTimeUser);
+      console.log('123');
+      console.log(response);
+    } catch (err) {
+      console.log(err)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    checkIsFirstTimeUser()
+  }, [])
 
   return (
     <>
