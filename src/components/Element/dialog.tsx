@@ -15,7 +15,7 @@ const Dialog = ({ open, onClose, title, children }: Props) => {
   return (
     <div>
       {open && (
-        <div className='absolute top-0 w-full bg-backgroundColor-100 min-h-screen'>
+        <div className='absolute top-0 w-full bg-backgroundColor-100 h-full pt-5'>
           <div
             className='flex justify-end mr-5'
             onClick={() => {
@@ -24,7 +24,7 @@ const Dialog = ({ open, onClose, title, children }: Props) => {
           >
             <CloseIcon className={`${iconProps} cursor-pointer`} />
           </div>
-          {/* <h2 className='text-center'>{title}</h2> */}
+          <h2 className='text-center'>{title}</h2>
           {children}
         </div>
       )}

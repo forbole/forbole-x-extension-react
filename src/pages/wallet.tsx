@@ -1,5 +1,5 @@
 import React from 'react';
-import GetStarted from '../components/Layout/GetStarted/GetStarted';
+import GetStarted from '../components/Layout/GetStarted';
 import Layout from '../components/Layout/layout';
 import { useAlwaysRequirePassword, useFirstTime } from '../recoil/general/generalState';
 import { useState } from 'react';
