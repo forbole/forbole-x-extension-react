@@ -1,9 +1,9 @@
 import React from 'react';
-import useIconProps from '../../../misc/useIconProps';
-import Button from '../../Element/button';
-import Dialog from '../../Element/dialog';
+import useIconProps from '../../../../misc/useIconProps';
+import Button from '../../../Element/button';
+import Dialog from '../../../Element/dialog';
 import { useForm } from 'react-hook-form';
-import { useFirstTime } from '../../../recoil/general/generalState';
+import { useFirstTime } from '../../../../recoil/general/generalState';
 
 interface Props {
   open: boolean;
@@ -41,7 +41,6 @@ const OnboardingDialog = ({ open, onClose, onSubmit }: Props) => {
   } = useForm<Inputs>();
 
   const onFormSubmit = (data) => {
-    console.log(data, isConfirmingPassword);
     if (!isConfirmingPassword) {
       if (watch('password').length < 6) {
         setError('invalid password');
