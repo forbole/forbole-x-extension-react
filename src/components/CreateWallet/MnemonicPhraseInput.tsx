@@ -30,10 +30,10 @@ const MnemonicPhraseInput: React.FC<MnemonicPhraseInputProps> = ({
   return (
     <div className='grid grid-cols-4'>
       {times(mnemonicAmount || 24).map((i) => (
-        <div key={`mnemonic-${i}`} className='h-10'>
+        <div key={`mnemonic-${i}`} className='h-12'>
           <div className='relative'>
             {disabled ? (
-              <p className="pl-8 pt-1">{mnemonicArr[i]}</p>
+                      <p className="ml-6 pl-2 mr-7 border rounded-sm py-1 bg-gray-50">{mnemonicArr[i]}{" "}</p>
             ) : (
               <input
                 className='pl-8'
@@ -63,7 +63,7 @@ const MnemonicPhraseInput: React.FC<MnemonicPhraseInputProps> = ({
                 }}
               />
             )}
-            <p color='textSecondary' className='absolute top-0 text-xs left-0'>
+            <p color='textSecondary' className='absolute top-0 text-xs left-0 select-none'>
               {i + 1}
             </p>
           </div>
