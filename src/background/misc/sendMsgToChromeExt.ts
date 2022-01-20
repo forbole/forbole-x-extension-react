@@ -11,3 +11,4 @@ const sendMsgToChromeExt = (msg: ChromeMessage) =>
   })
 
 export default sendMsgToChromeExt
+    
