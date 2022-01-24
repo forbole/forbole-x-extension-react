@@ -2,7 +2,7 @@ import times from 'lodash/times';
 import React from 'react';
 
 interface MnemonicPhraseInputProps {
-  mnemonic: string;
+  mnemonic?: string;
   onChange?(mnemonic: string): void;
   disabled?: boolean;
   mnemonicAmount?: number;
@@ -33,10 +33,12 @@ const MnemonicPhraseInput: React.FC<MnemonicPhraseInputProps> = ({
         <div key={`mnemonic-${i}`} className='h-12'>
           <div className='relative'>
             {disabled ? (
-                      <p className="ml-6 pl-2 mr-7 border rounded-sm py-1 bg-gray-50">{mnemonicArr[i]}{" "}</p>
+              <p className='ml-6 pl-2 mr-7 w-16 border rounded-sm py-1 bg-gray-50'>
+                {mnemonicArr[i]}{' '}
+              </p>
             ) : (
               <input
-                className='pl-8'
+                className='ml-6 pl-2 mr-7 w-16 border rounded-sm py-1 bg-gray-50'
                 id={`mnemonic-${i}`}
                 value={mnemonicArr[i]}
                 autoComplete='off'
@@ -63,7 +65,10 @@ const MnemonicPhraseInput: React.FC<MnemonicPhraseInputProps> = ({
                 }}
               />
             )}
-            <p color='textSecondary' className='absolute top-0 text-xs left-0 select-none'>
+            <p
+              color='textSecondary'
+              className='absolute top-0 text-xs left-0 select-none'
+            >
               {i + 1}
             </p>
           </div>
