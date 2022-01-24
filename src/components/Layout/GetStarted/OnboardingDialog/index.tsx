@@ -45,6 +45,7 @@ const OnboardingDialog = ({ open, onClose, onSubmit }: Props) => {
       if (watch('password').length < 6) {
         setError('invalid password');
       } else {
+        setError('');
         setIsConfirmingPassword(true);
       }
     } else if (watch('password') !== watch('confirmPassword')) {
