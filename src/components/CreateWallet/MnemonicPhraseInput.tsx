@@ -33,12 +33,12 @@ const MnemonicPhraseInput: React.FC<MnemonicPhraseInputProps> = ({
         <div key={`mnemonic-${i}`} className='h-12'>
           <div className='relative'>
             {disabled ? (
-              <p className='ml-6 pl-2 mr-7 w-16 border rounded-sm py-1 bg-gray-50'>
+              <p className='ml-6 pl-2 mr-7 w-16 border rounded-sm py-1 bg-popup-100 border-gray-300'>
                 {mnemonicArr[i]}{' '}
               </p>
             ) : (
               <input
-                className='ml-6 pl-2 mr-7 w-16 border rounded-sm py-1 bg-gray-50'
+                className='ml-6 pl-2 mr-7 w-16 border rounded-sm py-1 bg-popup-100 border-gray-300'
                 id={`mnemonic-${i}`}
                 value={mnemonicArr[i]}
                 autoComplete='off'
