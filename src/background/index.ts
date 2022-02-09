@@ -1,7 +1,11 @@
-import handleExternalMessages from './handleExternalMessages'
-import handleMessages from './handleMessages'
+import openChromeExtension from "./misc/openChromeExtension";
 
-// Only accessible on Forbole X web app
-chrome.runtime.onMessageExternal.addListener(handleExternalMessages)
-// Accessible on centent scripts, ie all urls
-chrome.runtime.onMessage.addListener(handleMessages)
+chrome.runtime.onMessage.addListener(
+  async (
+    request: any,
+    sender: any,
+    sendResponse: (response?: any) => void
+  ): Promise<void> => {
+    openChromeExtension(request.data);
+  }
+);
