@@ -3209,6 +3209,11 @@ char-regex@^2.0.0:
   resolved "https://registry.yarnpkg.com/char-regex/-/char-regex-2.0.0.tgz#16f98f3f874edceddd300fda5d58df380a7641a6"
   integrity sha512-oGu2QekBMXgyQNWPDRQ001bjvDnZe4/zBTz37TMbiKz1NbNiyiH5hRkobe7npRN6GfbGbxMYFck/vQ1r9c1VMA==
 
+check-password-strength@^2.0.4:
+  version "2.0.4"
+  resolved "https://r.cnpmjs.org/check-password-strength/-/check-password-strength-2.0.4.tgz#40afb0d17989f71be36b6a24e10d3aa9263959cf"
+  integrity sha512-LcK1Ox8Jq3/3jI9kGtQ8b/FQqNsJjzLGfzlC9dHzMAP+l/RF9xcq21Uh3JpqX09lhQ7TZM++SsQrQ+sNHwaQqg==
+
 check-types@^11.1.1:
   version "11.1.2"
   resolved "https://registry.yarnpkg.com/check-types/-/check-types-11.1.2.tgz#86a7c12bf5539f6324eb0e70ca8896c0e38f3e2f"
