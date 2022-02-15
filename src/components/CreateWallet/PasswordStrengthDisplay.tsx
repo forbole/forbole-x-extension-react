@@ -18,17 +18,17 @@ const PasswordStrengthDisplay = ({ passwordSecurityLevel }: Props) => {
         className={`nightwind-prevent bg-${indicator[passwordSecurityLevel].color}  w-full h-1`}
       />
       <div
-        className={`nightwind-prevent bg-${
+        className={`nightwind-prevent ${
           passwordSecurityLevel > 0
-            ? indicator[passwordSecurityLevel].color
-            : 'gray-800'
+            ? `bg-${indicator[passwordSecurityLevel].color}`
+            : 'bg-gray-200 dark:bg-gray-800'
         }  w-full h-1`}
       />
       <div
-        className={`nightwind-prevent bg-${
+        className={`nightwind-prevent ${
           passwordSecurityLevel > 1
-            ? indicator[passwordSecurityLevel].color
-            : 'gray-800'
+          ? `bg-${indicator[passwordSecurityLevel].color}`
+          : 'bg-gray-200 dark:bg-gray-800'
         }  w-full h-1`}
       />
       <p
