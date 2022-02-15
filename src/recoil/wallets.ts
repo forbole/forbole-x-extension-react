@@ -21,7 +21,7 @@ export const accountsState = atom<Account[]>({
   default: [],
 });
 
-export const useWallets = () => {
+export const useUnlockWallets = () => {
   const [password, setPassword] = useRecoilState(passwordState);
   const [wallets, setWallets] = useRecoilState(walletsState);
   const [accounts, setAccounts] = useRecoilState(accountsState);
@@ -43,5 +43,5 @@ export const useWallets = () => {
     [setWallets, setAccounts, setPassword]
   );
 
-  return { wallets, accounts, unlockWallets };
+  return unlockWallets;
 };
