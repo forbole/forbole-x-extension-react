@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Dialog from '../../../Element/dialog';
 import useStateHistory from '../../../../background/misc/useStateHistory';
 import StartStage from './CommonStage/StartStage';
@@ -7,6 +7,8 @@ import SelectStage from './ImportStage/SelectStage';
 import ConfirmMnemonicStage from './CommonStage/ConfirmMnemonicStage';
 import ImportMnemonicPhraseStage from './ImportStage/ImportMnemonicPhraseStage';
 import SecretRecoveryPhraseStage from './ImportStage/SecretRecoveryPhraseStage';
+import SetSecurityPasswordStage from './CommonStage/SetSecurityPasswordStage';
+import ImportWalletStage from './CommonStage/ImportWalletStage';
 
 interface Props {
   open: boolean;
@@ -41,6 +43,8 @@ export type Stage = CommonStage | ImportStage;
 const CreateWalletDialog = ({ open, onClose }: Props) => {
   const [stage, setStage, toPrevStage, isPrevStageAvailable] =
     useStateHistory<Stage>(CommonStage.StartStage);
+  
+  const [mnemonic] = useState("test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 test11 test12 test13 test14 test15 test16 test17 test18 test19 test20 test21 test22 test23 test24")
 
   const content: Content = React.useMemo(() => {
     switch (stage) {
@@ -55,7 +59,7 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
           content: (
             <WhatIsMnemonicStage
               mnemonic={
-                'test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 test11 test12 test13 test14 test15 test16 test17 test18 test19 test20 test21 test22 test23 test24'
+                mnemonic
               }
               setStage={() => {
                 setStage(CommonStage.ConfirmMnemonicStage);
@@ -69,14 +73,36 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
           content: (
             <ConfirmMnemonicStage
               mnemonic={
-                'test test test test test test test test test test test test test test test test test test test test test test test test '
+                mnemonic
               }
               setStage={() => {
-                setStage(CommonStage.ConfirmMnemonicStage);
+                setStage(CommonStage.SetSecurityPasswordStage);
               }}
             />
           ),
         };
+        case CommonStage.SetSecurityPasswordStage:
+          return {
+            title: 'Set Security Password',
+            content: (
+              <SetSecurityPasswordStage
+                setStage={() => {
+                  setStage(CommonStage.ImportWalletStage);
+                }}
+              />
+            ),
+          };
+          case CommonStage.ImportWalletStage:
+            return {
+              title: 'Import Wallet',
+              content: (
+                <ImportWalletStage
+                    setStage={() => {
+                    setStage(CommonStage.ImportWalletStage);
+                  }}
+                />
+              ),
+            };
       case ImportStage.ImportMnemonicPhraseStage:
         return {
           title: 'Import Mnemonic Phrase',
