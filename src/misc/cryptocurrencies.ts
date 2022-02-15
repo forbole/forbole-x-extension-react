@@ -6,7 +6,7 @@ const cryptocurrencies: { [key: string]: Cryptocurrency } = {
     ecosystem: 'cosmos',
     chainId: 'desmos-mainnet-1',
     chainName: 'Desmos Mainnet',
-    image: '/static/images/cryptocurrencies/dsm.svg',
+    image: '/images/cryptocurrencies/dsm.svg',
     coinType: 852,
     graphqlHttpUrl: 'https://gql.mainnet.desmos.network/v1/graphql',
     graphqlWsUrl: 'wss://gql-ws.mainnet.desmos.network/v1/graphql',
@@ -16,7 +16,7 @@ const cryptocurrencies: { [key: string]: Cryptocurrency } = {
     ibcChains: [
       {
         name: 'Desmos Mainnet',
-        image: '/static/images/cryptocurrencies/dsm.svg',
+        image: '/images/cryptocurrencies/dsm.svg',
         channel: 'channel 1',
         chainId: 'desmos-mainnet-1',
         addressPrefix: 'desmos',
