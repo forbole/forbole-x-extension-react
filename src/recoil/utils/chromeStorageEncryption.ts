@@ -1,36 +1,47 @@
 import CryptoJS from "crypto-js";
 
-export const encryptAndSaveToChromeStorage = (
+export const getStorage = async (key: string) => {
+  if (chrome.storage) {
+    return await require("@extend-chrome/storage").local.get(key)[key];
+  } else {
+    return Promise.resolve(localStorage.getItem(key));
+  }
+};
+
+export const setStorage = async (items: { [key: string]: string }) => {
+  if (chrome.storage) {
+    await require("@extend-chrome/storage").local.set(items);
+    return;
+  } else {
+    Object.keys(items).forEach((key) => {
+      localStorage.setItem(key, items[key]);
+    });
+    return Promise.resolve();
+  }
+};
+
+export const encryptAndSaveToChromeStorage = async (
   key: string,
   value: any,
   password: string
-) =>
-  new Promise((resolve, reject) => {
-    chrome.storage.local.set(
-      {
-        [key]: CryptoJS.AES.encrypt(JSON.stringify(value), password).toString(),
-      },
-      () => {
-        resolve({ success: true });
-      }
-    );
+) => {
+  await setStorage({
+    [key]: CryptoJS.AES.encrypt(JSON.stringify(value), password).toString(),
   });
+  return { success: true };
+};
 
-export const decryptChromeStorage = <T>(
+export const decryptChromeStorage = async <T>(
   key: string,
   password: string
-): Promise<T> =>
-  new Promise((resolve, reject) => {
-    chrome.storage.local.get([key], (result) => {
-      try {
-        const decrypted: T = JSON.parse(
-          CryptoJS.AES.decrypt(result[key], password).toString(
-            CryptoJS.enc.Utf8
-          )
-        );
-        resolve(decrypted);
-      } catch (err) {
-        reject(new Error("incorrect password"));
-      }
-    });
-  });
+): Promise<T> => {
+  const result = await getStorage(key);
+  try {
+    const decrypted: T = JSON.parse(
+      CryptoJS.AES.decrypt(result, password).toString(CryptoJS.enc.Utf8)
+    );
+    return decrypted;
+  } catch (err) {
+    throw new Error("incorrect password");
+  }
+};

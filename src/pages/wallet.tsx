@@ -1,22 +1,26 @@
-import React from 'react';
-import GetStarted from '../components/Layout/GetStarted';
-import Layout from '../components/Layout/layout';
-import { useAlwaysRequirePassword, useFirstTime } from '../recoil/general/generalState';
-import { useState } from 'react';
-import WalletAccounts from '../components/Layout/Accounts';
+import React from "react";
+import GetStarted from "../components/Layout/GetStarted";
+import Layout from "../components/Layout/layout";
+import {
+  useAlwaysRequirePassword,
+  useFirstTime,
+} from "../recoil/general/generalState";
+import { useState } from "react";
+import WalletAccounts from "../components/Layout/Accounts";
+import { isFirstTimeUser } from "../recoil/wallets";
 
 const Wallet = () => {
-  const [alwaysRequirePassword, setAlwaysRequirePassword] =
-    useAlwaysRequirePassword();
-  
+  const [firstTime, setFirstTime] = React.useState(true);
 
-  const [firstTime, setFirstTime] = useFirstTime();
+  React.useEffect(() => {
+    isFirstTimeUser().then(setFirstTime);
+  }, []);
+
   return (
-    <Layout title='Wallet'>
+    <Layout title="Wallet">
       <>
         {firstTime ? (
-          <div
-          >
+          <div>
             <GetStarted />
           </div>
         ) : (

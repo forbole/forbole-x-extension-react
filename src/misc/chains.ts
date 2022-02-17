@@ -1,6 +1,6 @@
 const chains: { [key: string]: Chain } = {
   "desmos-mainnet-1": {
-    name: "DSM",
+    symbol: "DSM",
     prefix: "desmos",
     ledgerAppName: "Desmos",
     ecosystem: "cosmos",

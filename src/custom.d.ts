@@ -45,6 +45,8 @@ interface Wallet {
   name: string;
   id: string;
   createdAt: number;
+  mnemonic?: string;
+  privateKey?: string;
 }
 
 interface IBCChain {
@@ -57,7 +59,7 @@ interface IBCChain {
 }
 
 interface Chain {
-  name: string;
+  symbol: string;
   prefix?: string;
   ecosystem: "cosmos";
   chainId: string;
@@ -96,11 +98,13 @@ interface VestingPeriod {
 interface CreateWalletParams {
   type: WalletType;
   name: string;
-  chains: string[];
   mnemonic?: string;
   privateKey?: string;
-  addresses: string[];
-  securityPassword: string;
+  securityPassword?: string;
+  accounts: {
+    chain: string;
+    address: string;
+  }[];
 }
 
 interface UpdateWalletParams {
