@@ -1,11 +1,12 @@
-import React from 'react';
-import usePersistedState from '../../../misc/usePersistedState';
-import OnboardingDialog from './OnboardingDialog';
+import React from "react";
+import usePersistedState from "../../../misc/usePersistedState";
+import OnboardingDialog from "./OnboardingDialog";
 
-import WelcomeStep from './WelcomeStep';
-import CreateWalletDialog from './CreateWalletDialog';
-import { useState } from 'react';
-import Button from '../../Element/button';
+import WelcomeStep from "./WelcomeStep";
+import CreateWalletDialog from "./CreateWalletDialog";
+import { useState } from "react";
+import Button from "../../Element/button";
+import { useCreatePassword } from "../../../recoil/wallets";
 
 interface Props {}
 
@@ -14,14 +15,20 @@ const GetStarted = (props: Props) => {
   const [isCreateWalletDialogOpen, setIsCreateWalletDialogOpen] =
     useState(false);
 
+  const createPassword = useCreatePassword();
+
   return (
-    <div className=''>
+    <div className="">
       <WelcomeStep />
-      <div className='flex justify-center'>
-        <div className='pt-10 max-w-sm w-full'>
-          <Button text='Get Started' bgColor='indigo' onClick={() => {
+      <div className="flex justify-center">
+        <div className="pt-10 max-w-sm w-full">
+          <Button
+            text="Get Started"
+            bgColor="indigo"
+            onClick={() => {
               setIsOnboardingDialogOpen(true);
-            }} />
+            }}
+          />
         </div>
       </div>
 
@@ -31,6 +38,7 @@ const GetStarted = (props: Props) => {
         onSubmit={(password) => {
           setIsOnboardingDialogOpen(false);
           setIsCreateWalletDialogOpen(true);
+          createPassword(password);
         }}
       />
       <CreateWalletDialog
