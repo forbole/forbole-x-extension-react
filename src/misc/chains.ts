@@ -6,7 +6,7 @@ const chains: { [key: string]: Chain } = {
     ecosystem: "cosmos",
     chainId: "desmos-mainnet-1",
     chainName: "Desmos Mainnet",
-    image: "/static/images/cryptocurrencies/dsm.svg",
+    image: "/images/cryptocurrencies/dsm.svg",
     coinType: 852,
     blockExplorerBaseUrl: "https://explorer.desmos.network",
     rpcApiUrl: "https://rpc.mainnet.desmos.network",
