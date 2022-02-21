@@ -25,6 +25,9 @@ module.exports = {
         divider: {
           100: '#2B2F35',
         },
+        button: {
+          100: '#4e46e5'
+        }
       },
     },
 
