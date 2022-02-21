@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Dialog from "../../../Element/dialog";
 import useStateHistory from "../../../../misc/useStateHistory";
 import StartStage from "./CommonStage/StartStage";
@@ -10,10 +10,11 @@ import SecretRecoveryPhraseStage from "./ImportStage/SecretRecoveryPhraseStage";
 import SetSecurityPasswordStage from "./CommonStage/SetSecurityPasswordStage";
 import ImportWalletStage from "./CommonStage/ImportWalletStage";
 import { useCreateWallet } from "../../../../recoil/wallets";
+import getWalletAddress from "../../../../misc/getWalletAddress";
 
 interface Props {
   open: boolean;
-  onClose: (open: boolean) => void;
+  onClose: () => void;
 }
 
 export enum ImportStage {
@@ -48,6 +49,36 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
   const [mnemonic, setMnemonic] = useState("");
   const [securityPassword, setSecurityPassword] = useState("");
   const createWallet = useCreateWallet();
+
+  const onCreateWithMnemionicOrPrivKey = useCallback(
+    async (name: string, chains: Chain[]) => {
+      const addresses = await Promise.all(
+        chains.map((c) =>
+          getWalletAddress({
+            prefix: c.prefix,
+            mnemonic,
+            // privateKey: ,
+            hdPath: {
+              coinType: c.coinType,
+            },
+          })
+        )
+      );
+      await createWallet({
+        type: "mnemonic",
+        name,
+        mnemonic,
+        privateKey: "",
+        securityPassword,
+        accounts: chains.map((c, i) => ({
+          chain: c.chainId,
+          address: addresses[i],
+        })),
+      });
+      onClose();
+    },
+    [mnemonic, securityPassword, createWallet, onClose]
+  );
 
   const content: Content = React.useMemo(() => {
     switch (stage) {
@@ -96,21 +127,7 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
         return {
           title: "Import Wallet",
           content: (
-            <ImportWalletStage
-              onSubmit={(name, chains) => {
-                createWallet({
-                  type: "mnemonic",
-                  name,
-                  mnemonic,
-                  privateKey: "",
-                  securityPassword,
-                  accounts: chains.map((chain) => ({
-                    chain: chain.chainId,
-                    address: "",
-                  })),
-                });
-              }}
-            />
+            <ImportWalletStage onSubmit={onCreateWithMnemionicOrPrivKey} />
           ),
         };
       case ImportStage.ImportMnemonicPhraseStage:
@@ -136,14 +153,14 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
           content: <SecretRecoveryPhraseStage />,
         };
     }
-  }, [stage]);
+  }, [stage, onCreateWithMnemionicOrPrivKey, mnemonic, setStage]);
 
   return (
     <Dialog
       title={content.title}
       open={open}
       onClose={() => {
-        onClose(false);
+        onClose();
         setStage(CommonStage.StartStage);
       }}
       toPrevStage={isPrevStageAvailable ? toPrevStage : null}
