@@ -32,6 +32,8 @@ const ImportWalletStage = ({ onSubmit }: Props) => {
           const isSelected = selectedCryptos.includes(c.chainId);
           return (
             <ButtonArea
+              type="select"
+              selected={selectedCryptos.includes(c.chainId)}
               key={c.chainId}
               onClick={() =>
                 setSelectedCryptos((chains) =>
