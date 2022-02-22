@@ -11,6 +11,7 @@ import SetSecurityPasswordStage from "./CommonStage/SetSecurityPasswordStage";
 import ImportWalletStage from "./CommonStage/ImportWalletStage";
 import { useCreateWallet } from "../../../../recoil/wallets";
 import getWalletAddress from "../../../../misc/getWalletAddress";
+import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 
 interface Props {
   open: boolean;
@@ -85,7 +86,16 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
       case CommonStage.StartStage:
         return {
           title: "Getting Started",
-          content: <StartStage setStage={setStage} />,
+          content: (
+            <StartStage
+              onImportWalet={() => setStage(ImportStage.SelectStage)}
+              onCreateWallet={async () => {
+                const newWallet = await DirectSecp256k1HdWallet.generate(24);
+                setMnemonic(newWallet.mnemonic);
+                setStage(ImportStage.ImportMnemonicPhraseStage);
+              }}
+            />
+          ),
         };
       case CommonStage.WhatIsMnemonicStage:
         return {
@@ -135,6 +145,7 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
           title: "Import Mnemonic Phrase",
           content: (
             <ImportMnemonicPhraseStage
+              mnemonic={mnemonic}
               onSubmit={(m) => {
                 setMnemonic(m);
                 setStage(CommonStage.SetSecurityPasswordStage);
