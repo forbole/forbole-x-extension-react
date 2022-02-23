@@ -1,6 +1,6 @@
 import { atom, useRecoilState } from "recoil";
 import CryptoJS from "crypto-js";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   decryptChromeStorage,
   encryptAndSaveToChromeStorage,
@@ -23,25 +23,22 @@ export const accountsState = atom<Account[]>({
   default: [],
 });
 
-export const isFirstTimeUser = async () => {
-  const walletString = await getStorage("wallets");
-  return !walletString;
-};
+export const isFirstTimeUserState = atom<boolean>({
+  key: "firsTimeUser",
+  default: (async () => {
+    const walletString = await getStorage("wallets");
+    return !walletString;
+  })(),
+});
 
 export const useCreatePassword = () => {
   const [password, setPassword] = useRecoilState(passwordState);
-  const [wallets, setWallets] = useRecoilState(walletsState);
-  const [accounts, setAccounts] = useRecoilState(accountsState);
 
   const createPassword = useCallback(
     (pw: string) => {
       setPassword(pw);
-      setWallets([]);
-      setAccounts([]);
-      encryptAndSaveToChromeStorage("wallets", [], pw);
-      encryptAndSaveToChromeStorage("accounts", [], pw);
     },
-    [setPassword, setWallets, setAccounts]
+    [setPassword]
   );
 
   return createPassword;
@@ -76,17 +73,20 @@ export const useCreateWallet = () => {
   const [password, setPassword] = useRecoilState(passwordState);
   const [wallets, setWallets] = useRecoilState(walletsState);
   const [accounts, setAccounts] = useRecoilState(accountsState);
+  const [firstTime, setFirstTime] = useRecoilState(isFirstTimeUserState);
 
   const createWallet = useCallback(
     async (params: CreateWalletParams) => {
       const createdAt = Date.now();
       const decryptedWallets = await decryptChromeStorage<Wallet[]>(
         "wallets",
-        password
+        password,
+        []
       );
       const decryptedAccounts = await decryptChromeStorage<Account[]>(
         "accounts",
-        password
+        password,
+        []
       );
       const id = String(Math.random());
 
@@ -131,10 +131,11 @@ export const useCreateWallet = () => {
       ];
       setWallets(newWallets);
       setAccounts(newAccounts);
+      setFirstTime(false);
       encryptAndSaveToChromeStorage("wallets", newWallets, password);
       encryptAndSaveToChromeStorage("accounts", newAccounts, password);
     },
-    [setWallets, setAccounts, password]
+    [setWallets, setAccounts, password, setFirstTime]
   );
 
   return createWallet;

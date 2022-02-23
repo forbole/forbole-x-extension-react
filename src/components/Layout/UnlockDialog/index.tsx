@@ -2,20 +2,19 @@ import React from "react";
 import Button from "../../Element/button";
 import Dialog from "../../Element/dialog";
 import { useForm } from "react-hook-form";
+import { useUnlockWallets } from "../../../recoil/wallets";
 
 interface Props {
   open: boolean;
-  onClose: (open: boolean) => void;
-  onSubmit: (password: string) => void;
 }
 
 type Inputs = {
   password: string;
-  confirmPassword: string;
 };
 
-const UnlockDialog = ({ open, onClose, onSubmit }: Props) => {
+const UnlockDialog = ({ open }: Props) => {
   const [error, setError] = React.useState("");
+  const unlockWallets = useUnlockWallets();
 
   const {
     register,
@@ -25,22 +24,18 @@ const UnlockDialog = ({ open, onClose, onSubmit }: Props) => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onFormSubmit = (data) => {
-    onSubmit(watch("password"));
-    setError("");
-    reset({ password: "" });
+  const onFormSubmit = async (data) => {
+    try {
+      setError("");
+      await unlockWallets(watch("password"));
+      reset({ password: "" });
+    } catch (err) {
+      setError("Incorrect Password");
+    }
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={() => {
-        onClose(false);
-        setError("");
-        reset({ password: "" });
-      }}
-      title="Unlock Password"
-    >
+    <Dialog open={open} title="Unlock Password">
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <div className="flex flex-col items-center mt-5">
           <p className="max-w-sm text-center">
