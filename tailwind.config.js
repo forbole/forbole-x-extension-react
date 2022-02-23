@@ -2,7 +2,7 @@ const plugin = require('tailwindcss/plugin');
 const colors = require('tailwindcss/colors');
 
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: ['./public/**/*.html', './src/**/*.{js,jsx,ts,tsx}'],
   darkMode: 'class',
   theme: {
     // define custom color
@@ -26,9 +26,12 @@ module.exports = {
           100: '#2B2F35',
         },
         button: {
-          100: '#4e46e5'
-        }
+          100: '#4e46e5',
+        },
       },
+      fontSize: {
+        'xxs': '0.65rem'
+      }
     },
 
     // define color mapping

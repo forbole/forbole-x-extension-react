@@ -28,17 +28,17 @@ const MnemonicPhraseInput: React.FC<MnemonicPhraseInputProps> = ({
     }
   }, []);
   return (
-    <div className='grid grid-cols-4'>
+    <div className='grid grid-cols-4 gap-x-4 w-full'>
       {times(mnemonicAmount || 24).map((i) => (
         <div key={`mnemonic-${i}`} className='h-12'>
           <div className='relative'>
             {disabled ? (
               <p className='ml-6 pl-2 mr-7 w-16 border rounded-sm py-1 bg-popup-100 border-gray-300'>
-                {mnemonicArr[i]}{' '}
+                {mnemonicArr[i]}
               </p>
             ) : (
               <input
-                className='ml-6 pl-2 mr-7 w-16 border rounded-sm py-1 bg-popup-100 border-gray-300'
+                className='pl-7 w-full h-8 text-xs border rounded-sm py-1 bg-popup-100 border-gray-300 relative'
                 id={`mnemonic-${i}`}
                 value={mnemonicArr[i]}
                 autoComplete='off'
@@ -67,7 +67,7 @@ const MnemonicPhraseInput: React.FC<MnemonicPhraseInputProps> = ({
             )}
             <p
               color='textSecondary'
-              className='absolute top-0 text-xs left-0 select-none'
+              className='absolute top-1/2 -translate-y-1/2 text-xxs text-gray-500 left-2 select-none'
             >
               {i + 1}
             </p>
