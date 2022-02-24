@@ -1,11 +1,11 @@
-import React from 'react';
-import { ReactComponent as CloseIcon } from '../../assets/images/icons/icon_cross.svg';
-import { ReactComponent as ArrowLeftIcon } from '../../assets/images/icons/arrow_left.svg';
-import useIconProps from '../../misc/useIconProps';
+import React from "react";
+import { ReactComponent as CloseIcon } from "../../assets/images/icons/icon_cross.svg";
+import { ReactComponent as ArrowLeftIcon } from "../../assets/images/icons/arrow_left.svg";
+import useIconProps from "../../misc/useIconProps";
 
 interface Props {
   open: boolean;
-  onClose: (open: boolean) => void;
+  onClose?: (open: boolean) => void;
   toPrevStage?: () => void;
 
   title?: string;
@@ -18,24 +18,30 @@ const Dialog = ({ open, onClose, title, children, toPrevStage }: Props) => {
   return (
     <div>
       {open && (
-        <div className='absolute top-0 w-full bg-backgroundColor-100 h-full pt-5'>
-          <div className={`flex ${toPrevStage?"justify-between":"justify-end"} mx-5`}>
+        <div className="absolute top-0 w-full bg-backgroundColor-100 h-full pt-5">
+          <div
+            className={`flex ${
+              toPrevStage ? "justify-between" : "justify-end"
+            } mx-5`}
+          >
             {toPrevStage && (
               <ArrowLeftIcon
-              className={`${iconProps} w-6 h-4 mt-1 cursor-pointer`}
+                className={`${iconProps} w-6 h-4 mt-1 cursor-pointer`}
                 onClick={() => {
                   toPrevStage();
                 }}
               />
             )}
-            <CloseIcon
-              className={`${iconProps} cursor-pointer`}
-              onClick={() => {
-                onClose(false);
-              }}
-            />
+            {onClose && (
+              <CloseIcon
+                className={`${iconProps} cursor-pointer`}
+                onClick={() => {
+                  onClose(false);
+                }}
+              />
+            )}
           </div>
-          <h2 className='text-center'>{title}</h2>
+          <h2 className="text-center">{title}</h2>
           {children}
         </div>
       )}

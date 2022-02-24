@@ -1,34 +1,33 @@
-import React from "react";
+import React, { Suspense } from "react";
 import GetStarted from "../components/Layout/GetStarted";
 import Layout from "../components/Layout/layout";
-import {
-  useAlwaysRequirePassword,
-  useFirstTime,
-} from "../recoil/general/generalState";
-import { useState } from "react";
 import WalletAccounts from "../components/Layout/Accounts";
-import { isFirstTimeUser } from "../recoil/wallets";
+import { isFirstTimeUserState, passwordState } from "../recoil/wallets";
+import { useRecoilState } from "recoil";
+import UnlockDialog from "../components/Layout/UnlockDialog";
 
 const Wallet = () => {
-  const [firstTime, setFirstTime] = React.useState(true);
-
-  React.useEffect(() => {
-    isFirstTimeUser().then(setFirstTime);
-  }, []);
+  const [firstTime] = useRecoilState(isFirstTimeUserState);
+  const [password] = useRecoilState(passwordState);
 
   return (
     <Layout title="Wallet">
-      <>
-        {firstTime ? (
-          <div>
-            <GetStarted />
-          </div>
-        ) : (
+      {firstTime ? (
+        <GetStarted />
+      ) : (
+        <>
           <WalletAccounts />
-        )}
-      </>
+          <UnlockDialog open={!password} />
+        </>
+      )}
     </Layout>
   );
 };
 
-export default Wallet;
+const WalletWrapper = () => (
+  <Suspense fallback={GetStarted}>
+    <Wallet />
+  </Suspense>
+);
+
+export default WalletWrapper;

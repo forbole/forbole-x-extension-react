@@ -29,17 +29,19 @@ const ImportWalletStage = ({ onSubmit }: Props) => {
       </p>
       <div className="flex">
         {Object.values(chains).map((c) => {
-          const isSelected = selectedCryptos.includes(c.chainId);
+          const isSelected = !!selectedCryptos.find(
+            (cc) => c.chainId === cc.chainId
+          );
           return (
             <ButtonArea
               type="select"
-              selected={selectedCryptos.includes(c.chainId)}
+              selected={isSelected}
               key={c.chainId}
               onClick={() =>
                 setSelectedCryptos((chains) =>
                   chains.includes(c.chainId)
                     ? chains.filter((chain) => chain !== c.chainId)
-                    : [...chains, c.chainId]
+                    : [...chains, c]
                 )
               }
             >

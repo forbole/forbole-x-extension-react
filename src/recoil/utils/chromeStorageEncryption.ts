@@ -33,7 +33,8 @@ export const encryptAndSaveToChromeStorage = async (
 
 export const decryptChromeStorage = async <T>(
   key: string,
-  password: string
+  password: string,
+  defaultValue?: T
 ): Promise<T> => {
   const result = await getStorage(key);
   try {
@@ -42,6 +43,10 @@ export const decryptChromeStorage = async <T>(
     );
     return decrypted;
   } catch (err) {
-    throw new Error("incorrect password");
+    if (defaultValue) {
+      return defaultValue;
+    } else {
+      throw new Error("incorrect password");
+    }
   }
 };
