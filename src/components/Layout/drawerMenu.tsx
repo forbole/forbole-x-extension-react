@@ -22,12 +22,16 @@ const DrawerMenu = (props: Props) => {
     },
     {
       title: "Address Book",
-      icon: <AddressBookIcon className="w-5 fill-icon-light dark:fill-icon-dark" />,
+      icon: (
+        <AddressBookIcon className="w-5 fill-icon-light dark:fill-icon-dark" />
+      ),
       path: "/address-book",
     },
     {
       title: "Setting",
-      icon: <SettingsIcon className="w-5 fill-icon-light dark:fill-icon-dark" />,
+      icon: (
+        <SettingsIcon className="w-5 fill-icon-light dark:fill-icon-dark" />
+      ),
       path: "/setting",
     },
   ]);
@@ -35,11 +39,11 @@ const DrawerMenu = (props: Props) => {
   return (
     <div className="text-font-2">
       <div className="flex justify-end">
-       <ThemeModeButton />
+        <ThemeModeButton />
       </div>
       <div className="space-y-3 mt-4">
         {menuList.map((item) => (
-          <div>
+          <div key={item.path}>
             <Link to={item.path} className="no-underline text-font-200">
               <button className="flex items-center space-x-5 hover:bg-gray-100 p-3 rounded-lg w-full">
                 {item.icon}

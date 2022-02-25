@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../../Element/button";
 import Dialog from "../../Element/dialog";
 import { useForm } from "react-hook-form";
-import { useUnlockWallets } from "../../../recoil/wallets";
+import { useUnlockWallets } from "../../../recoil/general";
 
 interface Props {
   open: boolean;
