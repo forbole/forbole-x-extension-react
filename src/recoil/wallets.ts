@@ -1,97 +1,65 @@
-import { atom, useRecoilState } from "recoil";
+import { atom, selector, useRecoilState, useSetRecoilState } from "recoil";
 import CryptoJS from "crypto-js";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import {
-  decryptChromeStorage,
   encryptAndSaveToChromeStorage,
   getStorage,
+  setStorage,
 } from "./utils/chromeStorageEncryption";
 import chains from "../misc/chains";
+import { isFirstTimeUserState, passwordState } from "./general";
+import { accountsState } from "./accounts";
 
-export const passwordState = atom<string>({
-  key: "password",
-  default: "",
+export const currentWalletIdState = atom<string>({
+  key: "currentWalletId",
+  default: getStorage("currentWalletId"),
+  effects: [
+    ({ onSet }) => {
+      onSet((currentWalletId) => setStorage({ currentWalletId }));
+    },
+  ],
 });
 
 export const walletsState = atom<Wallet[]>({
   key: "wallets",
   default: [],
-});
-
-export const accountsState = atom<Account[]>({
-  key: "accounts",
-  default: [],
-});
-
-export const isFirstTimeUserState = atom<boolean>({
-  key: "firsTimeUser",
-  default: (async () => {
-    const walletString = await getStorage("wallets");
-    return !walletString;
-  })(),
-});
-
-export const useCreatePassword = () => {
-  const [password, setPassword] = useRecoilState(passwordState);
-
-  const createPassword = useCallback(
-    (pw: string) => {
-      setPassword(pw);
+  effects: [
+    ({ onSet, getPromise }) => {
+      onSet(async (newWallets) => {
+        const password = await getPromise(passwordState);
+        password &&
+          (await encryptAndSaveToChromeStorage(
+            "wallets",
+            newWallets,
+            password
+          ));
+      });
     },
-    [setPassword]
-  );
+  ],
+});
 
-  return createPassword;
-};
-
-export const useUnlockWallets = () => {
-  const [password, setPassword] = useRecoilState(passwordState);
-  const [wallets, setWallets] = useRecoilState(walletsState);
-  const [accounts, setAccounts] = useRecoilState(accountsState);
-
-  const unlockWallets = useCallback(
-    async (pw: string) => {
-      const decryptedWallets = await decryptChromeStorage<Wallet[]>(
-        "wallets",
-        pw
-      );
-      const decryptedAccounts = await decryptChromeStorage<Account[]>(
-        "accounts",
-        pw
-      );
-      setWallets(decryptedWallets);
-      setAccounts(decryptedAccounts);
-      setPassword(pw);
-    },
-    [setWallets, setAccounts, setPassword]
-  );
-
-  return unlockWallets;
-};
+export const currentWalletState = selector<Wallet | undefined>({
+  key: "currentWallet",
+  get: ({ get }) => {
+    const currentWalletId = get(currentWalletIdState);
+    const wallets = get(walletsState);
+    return wallets.find((w) => w.id === currentWalletId);
+  },
+});
 
 export const useCreateWallet = () => {
-  const [password, setPassword] = useRecoilState(passwordState);
   const [wallets, setWallets] = useRecoilState(walletsState);
   const [accounts, setAccounts] = useRecoilState(accountsState);
-  const [firstTime, setFirstTime] = useRecoilState(isFirstTimeUserState);
+  const setFirstTime = useSetRecoilState(isFirstTimeUserState);
+  const setCurrentWalletId = useSetRecoilState(currentWalletIdState);
 
   const createWallet = useCallback(
     async (params: CreateWalletParams) => {
       const createdAt = Date.now();
-      const decryptedWallets = await decryptChromeStorage<Wallet[]>(
-        "wallets",
-        password,
-        []
-      );
-      const decryptedAccounts = await decryptChromeStorage<Account[]>(
-        "accounts",
-        password,
-        []
-      );
       const id = String(Math.random());
 
       const newWallets = [
-        ...decryptedWallets,
+        ...wallets,
         {
           type: params.type,
           name: params.name,
@@ -114,7 +82,7 @@ export const useCreateWallet = () => {
         },
       ];
       const newAccounts = [
-        ...decryptedAccounts,
+        ...accounts,
         ...params.accounts.map((account) => ({
           walletId: id,
           address: account.address,
@@ -132,10 +100,16 @@ export const useCreateWallet = () => {
       setWallets(newWallets);
       setAccounts(newAccounts);
       setFirstTime(false);
-      encryptAndSaveToChromeStorage("wallets", newWallets, password);
-      encryptAndSaveToChromeStorage("accounts", newAccounts, password);
+      setCurrentWalletId(id);
     },
-    [setWallets, setAccounts, password, setFirstTime]
+    [
+      setWallets,
+      setAccounts,
+      setFirstTime,
+      accounts,
+      wallets,
+      setCurrentWalletId,
+    ]
   );
 
   return createWallet;

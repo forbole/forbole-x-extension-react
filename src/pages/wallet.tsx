@@ -1,22 +1,40 @@
-import React, { Suspense } from "react";
 import GetStarted from "../components/Layout/GetStarted";
 import Layout from "../components/Layout/layout";
 import WalletAccounts from "../components/Layout/Accounts";
-import { isFirstTimeUserState, passwordState } from "../recoil/wallets";
-import { useRecoilState } from "recoil";
+import { currentWalletState } from "../recoil/wallets";
+import { useRecoilValue, useRecoilValueLoadable } from "recoil";
 import UnlockDialog from "../components/Layout/UnlockDialog";
+import { isFirstTimeUserState, passwordState } from "../recoil/general";
+import Dropdown from "../components/Element/dropdown";
+import { ReactComponent as WalletIcon } from "../assets/images/icons/icon_wallet_manage.svg";
 
 const Wallet = () => {
-  const [firstTime] = useRecoilState(isFirstTimeUserState);
-  const [password] = useRecoilState(passwordState);
+  const firstTime = useRecoilValueLoadable(isFirstTimeUserState);
+  const password = useRecoilValue(passwordState);
+  const wallet = useRecoilValueLoadable(currentWalletState);
 
   return (
-    <Layout title="Wallet">
-      {firstTime ? (
+    <Layout
+      title={wallet.contents?.name}
+      rightElement={
+        <Dropdown
+          items={[
+            { title: "Add Wallet" },
+            { title: "Change Wallet Moniker" },
+            { title: "Change Wallet Security Password" },
+            { title: "View Secret Recovery Phrase" },
+            { title: "Delete Wallet" },
+          ]}
+        >
+          <WalletIcon className="w-5 fill-dark dark:fill-white" />
+        </Dropdown>
+      }
+    >
+      {firstTime.state !== "hasValue" || firstTime.contents ? (
         <GetStarted />
       ) : (
         <>
-          <WalletAccounts />
+          {wallet.contents && <WalletAccounts walletId={wallet.contents.id} />}
           <UnlockDialog open={!password} />
         </>
       )}
@@ -24,10 +42,4 @@ const Wallet = () => {
   );
 };
 
-const WalletWrapper = () => (
-  <Suspense fallback={GetStarted}>
-    <Wallet />
-  </Suspense>
-);
-
-export default WalletWrapper;
+export default Wallet;

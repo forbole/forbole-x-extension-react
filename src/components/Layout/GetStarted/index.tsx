@@ -1,12 +1,9 @@
-import React from "react";
-import usePersistedState from "../../../misc/usePersistedState";
 import OnboardingDialog from "./OnboardingDialog";
-
 import WelcomeStep from "./WelcomeStep";
 import CreateWalletDialog from "./CreateWalletDialog";
 import { useState } from "react";
 import Button from "../../Element/button";
-import { useCreatePassword } from "../../../recoil/wallets";
+import { useCreatePassword } from "../../../recoil/general";
 
 interface Props {}
 
