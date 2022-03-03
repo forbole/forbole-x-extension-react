@@ -1,17 +1,17 @@
-import React from "react";
-import { ReactComponent as MenuIcon } from "../../assets/images/icons/icon_menu.svg";
-import Drawer from "./drawer";
-import { useState } from "react";
-import DrawerMenu from "./drawerMenu";
+import React from 'react'
+import { ReactComponent as MenuIcon } from '../../assets/images/icons/icon_menu.svg'
+import Drawer from './drawer'
+import { useState } from 'react'
+import DrawerMenu from './drawerMenu'
 
 interface Props {
-  children: JSX.Element;
-  title?: React.ReactNode;
-  rightElement?: React.ReactNode;
+  children: JSX.Element
+  title?: React.ReactNode
+  rightElement?: React.ReactNode
 }
 
 const Layout = ({ children, title, rightElement }: Props) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   return (
     <>
@@ -20,10 +20,10 @@ const Layout = ({ children, title, rightElement }: Props) => {
           <MenuIcon
             className="w-6 fill-dark dark:fill-white cursor-pointer"
             onClick={() => {
-              setOpen(!open);
+              setOpen(!open)
             }}
           />
-          {typeof title === "string" ? <h4>{title}</h4> : title}
+          {typeof title === 'string' ? <h4>{title}</h4> : title}
           {rightElement || <div />}
         </div>
         <div className="h-full grow">{children}</div>
@@ -32,7 +32,7 @@ const Layout = ({ children, title, rightElement }: Props) => {
         <DrawerMenu />
       </Drawer>
     </>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

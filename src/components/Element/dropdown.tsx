@@ -1,16 +1,16 @@
-import React from "react";
-import { Fragment } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import classNames from "classnames";
+import React from 'react'
+import { Fragment } from 'react'
+import { Menu, Transition } from '@headlessui/react'
+import classNames from 'classnames'
 
 export type MenuItem = {
-  title: string;
-  onClick?: React.MouseEventHandler<HTMLParagraphElement>;
-};
+  title: string
+  onClick?: React.MouseEventHandler<HTMLParagraphElement>
+}
 
 interface Props {
-  children?: JSX.Element;
-  items?: MenuItem[];
+  children?: JSX.Element
+  items?: MenuItem[]
 }
 
 const Dropdown = ({ children, items }: Props) => {
@@ -33,8 +33,8 @@ const Dropdown = ({ children, items }: Props) => {
                 {({ active }) => (
                   <p
                     className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block px-4 py-3 text-sm cursor-pointer"
+                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                      'block px-4 py-3 text-sm cursor-pointer'
                     )}
                     onClick={item.onClick ? item.onClick : () => {}}
                   >
@@ -47,7 +47,7 @@ const Dropdown = ({ children, items }: Props) => {
         </Menu.Items>
       </Transition>
     </Menu>
-  );
-};
+  )
+}
 
-export default Dropdown;
+export default Dropdown

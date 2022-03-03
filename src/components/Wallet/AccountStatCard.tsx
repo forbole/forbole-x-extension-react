@@ -1,18 +1,18 @@
-import React from "react";
-import { useRecoilValue } from "recoil";
-import { ReactComponent as DsmAvatar } from "../../assets/images/cryptocurrencies/dsm.svg";
-import { accountState } from "../../recoil/accounts";
+import React from 'react'
+import { useRecoilValue } from 'recoil'
+import { ReactComponent as DsmAvatar } from '../../assets/images/cryptocurrencies/dsm.svg'
+import { accountState } from '../../recoil/accounts'
 
 interface Props {
-  walletId: string;
-  address: string;
+  walletId: string
+  address: string
 }
 
 const AccountStatCard = ({ walletId, address }: Props) => {
-  const account = useRecoilValue(accountState({ walletId, address }));
+  const account = useRecoilValue(accountState({ walletId, address }))
 
   if (!account) {
-    return null;
+    return null
   }
 
   return (
@@ -41,7 +41,7 @@ const AccountStatCard = ({ walletId, address }: Props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AccountStatCard;
+export default AccountStatCard

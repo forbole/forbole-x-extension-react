@@ -1,15 +1,15 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import AddressBook from "../pages/address-book";
-import Setting from "../pages/setting";
-import Wallet from "../pages/wallet";
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
+import AddressBook from '../pages/address-book'
+import Setting from '../pages/setting'
+import Wallet from '../pages/wallet'
 
 interface Props {}
 
 const routes = [
-  { path: "/", key: "ROOT", exact: true, component: <Wallet /> },
-  { path: "/setting", key: "SETTING", exact: true, component: <Setting /> },
-  { path: "/address-book", key: "ADDRESS-BOOK", exact: true, component: <AddressBook /> },
+  { path: '/', key: 'ROOT', exact: true, component: <Wallet /> },
+  { path: '/setting', key: 'SETTING', exact: true, component: <Setting /> },
+  { path: '/address-book', key: 'ADDRESS-BOOK', exact: true, component: <AddressBook /> },
   //   {
   //     path: "/app",
   //     key: "APP",
@@ -29,7 +29,7 @@ const routes = [
   //       },
   //     ],
   //   },
-];
+]
 
 const AppRoutes = (props: Props) => {
   return (
@@ -38,7 +38,7 @@ const AppRoutes = (props: Props) => {
         <Route key={route.key} element={route.component} path={route.path} />
       ))}
     </Routes>
-  );
-};
+  )
+}
 
-export default AppRoutes;
+export default AppRoutes

@@ -1,18 +1,17 @@
-import OnboardingDialog from "./OnboardingDialog";
-import WelcomeStep from "./WelcomeStep";
-import CreateWalletDialog from "./CreateWalletDialog";
-import { useState } from "react";
-import Button from "../../Element/button";
-import { useCreatePassword } from "../../../recoil/general";
+import OnboardingDialog from './OnboardingDialog'
+import WelcomeStep from './WelcomeStep'
+import CreateWalletDialog from './CreateWalletDialog'
+import { useState } from 'react'
+import Button from '../../Element/button'
+import { useCreatePassword } from '../../../recoil/general'
 
 interface Props {}
 
 const GetStarted = (props: Props) => {
-  const [isOnboardingDialogOpen, setIsOnboardingDialogOpen] = useState(false);
-  const [isCreateWalletDialogOpen, setIsCreateWalletDialogOpen] =
-    useState(false);
+  const [isOnboardingDialogOpen, setIsOnboardingDialogOpen] = useState(false)
+  const [isCreateWalletDialogOpen, setIsCreateWalletDialogOpen] = useState(false)
 
-  const createPassword = useCreatePassword();
+  const createPassword = useCreatePassword()
 
   return (
     <div className="">
@@ -23,7 +22,7 @@ const GetStarted = (props: Props) => {
             text="Get Started"
             bgColor="indigo"
             onClick={() => {
-              setIsOnboardingDialogOpen(true);
+              setIsOnboardingDialogOpen(true)
             }}
           />
         </div>
@@ -33,9 +32,9 @@ const GetStarted = (props: Props) => {
         open={isOnboardingDialogOpen}
         onClose={() => setIsOnboardingDialogOpen(false)}
         onSubmit={(password) => {
-          setIsOnboardingDialogOpen(false);
-          setIsCreateWalletDialogOpen(true);
-          createPassword(password);
+          setIsOnboardingDialogOpen(false)
+          setIsCreateWalletDialogOpen(true)
+          createPassword(password)
         }}
       />
       <CreateWalletDialog
@@ -43,7 +42,7 @@ const GetStarted = (props: Props) => {
         onClose={() => setIsCreateWalletDialogOpen(false)}
       />
     </div>
-  );
-};
+  )
+}
 
-export default GetStarted;
+export default GetStarted

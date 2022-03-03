@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -20,16 +16,6 @@
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "*.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "setupTests.js",
-    "jest.config.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "cypress",
-    "tests"
-  ]
+  "include": ["*.d.ts", "**/*.ts", "**/*.tsx", "setupTests.js", "jest.config.js"],
+  "exclude": ["node_modules", "cypress", "tests"]
 }

@@ -1,11 +1,11 @@
-import React from 'react';
-import classNames from 'classnames';
+import React from 'react'
+import classNames from 'classnames'
 
 interface Props {
-  text?: string;
-  onClick?: (x: any) => void;
-  type?: any;
-  bgColor?: string;
+  text?: string
+  onClick?: (x: any) => void
+  type?: any
+  bgColor?: string
 }
 
 const Button = ({ text, onClick, type, bgColor }: Props) => {
@@ -20,7 +20,7 @@ const Button = ({ text, onClick, type, bgColor }: Props) => {
     >
       {text}
     </button>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button

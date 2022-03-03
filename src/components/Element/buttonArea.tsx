@@ -1,11 +1,11 @@
-import React from 'react';
-import classNames from 'classnames';
+import React from 'react'
+import classNames from 'classnames'
 
 interface Props {
-  children: JSX.Element;
-  onClick?: React.MouseEventHandler;
-  type?: 'select';
-  selected?: boolean;
+  children: JSX.Element
+  onClick?: React.MouseEventHandler
+  type?: 'select'
+  selected?: boolean
 }
 
 const ButtonArea = ({ children, onClick, selected, type }: Props) => {
@@ -19,7 +19,7 @@ const ButtonArea = ({ children, onClick, selected, type }: Props) => {
     >
       {children}
     </div>
-  );
-};
+  )
+}
 
-export default ButtonArea;
+export default ButtonArea

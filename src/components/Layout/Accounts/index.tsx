@@ -1,14 +1,14 @@
-import React from "react";
-import { useRecoilValue } from "recoil";
-import AccountStatCard from "../../../components/Wallet/AccountStatCard";
-import { walletAccountsState } from "../../../recoil/accounts";
+import React from 'react'
+import { useRecoilValue } from 'recoil'
+import AccountStatCard from '../../../components/Wallet/AccountStatCard'
+import { walletAccountsState } from '../../../recoil/accounts'
 
 interface Props {
-  walletId: string;
+  walletId: string
 }
 
 const WalletAccounts = ({ walletId }: Props) => {
-  const accounts = useRecoilValue(walletAccountsState(walletId));
+  const accounts = useRecoilValue(walletAccountsState(walletId))
 
   return (
     <div>
@@ -16,16 +16,12 @@ const WalletAccounts = ({ walletId }: Props) => {
         <div className="space-y-3">
           <h3>Accounts</h3>
           {accounts.map((a) => (
-            <AccountStatCard
-              key={a.address}
-              walletId={walletId}
-              address={a.address}
-            />
+            <AccountStatCard key={a.address} walletId={walletId} address={a.address} />
           ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default WalletAccounts;
+export default WalletAccounts

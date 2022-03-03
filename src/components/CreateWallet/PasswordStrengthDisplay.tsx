@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
 type Props = {
-  passwordSecurityLevel: number;
-};
+  passwordSecurityLevel: number
+}
 
 const PasswordStrengthDisplay = ({ passwordSecurityLevel }: Props) => {
   const indicator = [
@@ -10,11 +10,11 @@ const PasswordStrengthDisplay = ({ passwordSecurityLevel }: Props) => {
     { color: 'yellow-700', message: 'Medium' },
     { color: 'green-700', message: 'Strong' },
     { color: 'green-700', message: 'Strong' },
-  ];
+  ]
 
   return (
-    <div className='flex w-full h-1 items-center'>
-      <div className='bg-red-500 bg-yellow-700 bg-green-700 text-red-500 text-yellow-700 text-green-700' />
+    <div className="flex w-full h-1 items-center">
+      <div className="bg-red-500 bg-yellow-700 bg-green-700 text-red-500 text-yellow-700 text-green-700" />
       <div
         className={`nightwind-prevent bg-${indicator[passwordSecurityLevel].color}  w-full h-1`}
       />
@@ -28,8 +28,8 @@ const PasswordStrengthDisplay = ({ passwordSecurityLevel }: Props) => {
       <div
         className={`nightwind-prevent ${
           passwordSecurityLevel > 1
-          ? `bg-${indicator[passwordSecurityLevel].color}`
-          : 'bg-gray-200 dark:bg-gray-800'
+            ? `bg-${indicator[passwordSecurityLevel].color}`
+            : 'bg-gray-200 dark:bg-gray-800'
         }  w-full h-1`}
       />
       <p
@@ -38,7 +38,7 @@ const PasswordStrengthDisplay = ({ passwordSecurityLevel }: Props) => {
         {indicator[passwordSecurityLevel].message}
       </p>
     </div>
-  );
-};
+  )
+}
 
-export default PasswordStrengthDisplay;
+export default PasswordStrengthDisplay

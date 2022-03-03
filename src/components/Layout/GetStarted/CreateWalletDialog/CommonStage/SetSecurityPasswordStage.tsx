@@ -1,16 +1,16 @@
-import React from "react";
-import PasswordStrengthDisplay from "../../../../CreateWallet/PasswordStrengthDisplay";
-import { passwordStrength } from "check-password-strength";
-import { useForm } from "react-hook-form";
-import Button from "../../../../Element/button";
+import React from 'react'
+import PasswordStrengthDisplay from '../../../../CreateWallet/PasswordStrengthDisplay'
+import { passwordStrength } from 'check-password-strength'
+import { useForm } from 'react-hook-form'
+import Button from '../../../../Element/button'
 
 type Props = {
-  onSubmit: (password: string) => void;
-};
+  onSubmit: (password: string) => void
+}
 
 type Input = {
-  password: string;
-};
+  password: string
+}
 
 const SetSecurityPasswordStage = ({ onSubmit }: Props) => {
   const {
@@ -19,17 +19,17 @@ const SetSecurityPasswordStage = ({ onSubmit }: Props) => {
     watch,
     reset,
     formState: { errors },
-  } = useForm<Input>();
+  } = useForm<Input>()
 
   const passwordSecurityLevel = React.useMemo(() => {
-    return watch("password") ? passwordStrength(watch("password")).id : 0;
-  }, [watch("password")]);
+    return watch('password') ? passwordStrength(watch('password')).id : 0
+  }, [watch('password')])
 
   const onFormSubmit = (data) => {
     if (passwordSecurityLevel > 0) {
-      onSubmit(watch("password"));
+      onSubmit(watch('password'))
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)}>
@@ -39,12 +39,10 @@ const SetSecurityPasswordStage = ({ onSubmit }: Props) => {
           key="password"
           type="password"
           placeholder="Password"
-          {...register("password", { required: true })}
+          {...register('password', { required: true })}
           className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-sm border-gray-300 rounded-sm px-3 py-2 bg-popup-100"
         />
-        <PasswordStrengthDisplay
-          passwordSecurityLevel={passwordSecurityLevel}
-        />
+        <PasswordStrengthDisplay passwordSecurityLevel={passwordSecurityLevel} />
 
         <p className="w-full text-sm">* at least 6 characters in length</p>
 
@@ -53,7 +51,7 @@ const SetSecurityPasswordStage = ({ onSubmit }: Props) => {
         </div>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default SetSecurityPasswordStage;
+export default SetSecurityPasswordStage

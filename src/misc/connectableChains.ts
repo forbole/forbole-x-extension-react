@@ -1,4 +1,4 @@
-const connectableChains:Record<string, any> = {
+const connectableChains: Record<string, any> = {
   desmos: {
     name: 'Desmos',
     image: '/static/images/cryptocurrencies/dsm.svg',

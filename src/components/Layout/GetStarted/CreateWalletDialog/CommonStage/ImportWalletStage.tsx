@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import chains from "../../../../../misc/chains";
-import Button from "../../../../Element/button";
-import ButtonArea from "../../../../Element/buttonArea";
+import React, { useState } from 'react'
+import chains from '../../../../../misc/chains'
+import Button from '../../../../Element/button'
+import ButtonArea from '../../../../Element/buttonArea'
 
 type Props = {
-  onSubmit: (name: string, chains: Chain[]) => void;
-};
+  onSubmit: (name: string, chains: Chain[]) => void
+}
 
 const ImportWalletStage = ({ onSubmit }: Props) => {
-  const [name, setName] = useState("");
-  const [selectedCryptos, setSelectedCryptos] = useState([]);
+  const [name, setName] = useState('')
+  const [selectedCryptos, setSelectedCryptos] = useState([])
 
   return (
     <div className="p-5 space-y-5">
@@ -24,14 +24,10 @@ const ImportWalletStage = ({ onSubmit }: Props) => {
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <p className="text-sm pb-2">
-        Select the currencies you would like to import
-      </p>
+      <p className="text-sm pb-2">Select the currencies you would like to import</p>
       <div className="flex">
         {Object.values(chains).map((c) => {
-          const isSelected = !!selectedCryptos.find(
-            (cc) => c.chainId === cc.chainId
-          );
+          const isSelected = !!selectedCryptos.find((cc) => c.chainId === cc.chainId)
           return (
             <ButtonArea
               type="select"
@@ -50,19 +46,19 @@ const ImportWalletStage = ({ onSubmit }: Props) => {
                 <p>{c.chainName}</p>
               </div>
             </ButtonArea>
-          );
+          )
         })}
       </div>
       <div className="w-full pt-20">
         <Button
           text="Import"
           onClick={() => {
-            onSubmit(name, selectedCryptos);
+            onSubmit(name, selectedCryptos)
           }}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ImportWalletStage;
+export default ImportWalletStage
