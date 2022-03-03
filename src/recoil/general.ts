@@ -11,7 +11,8 @@ import nightwind from 'nightwind/helper';
 export const themeState = atom<string>({
   key: 'theme',
   default: (async () => {
-    return await getStorage('nightwind-mode');
+    const theme = await getStorage('nightwind-mode');
+    return theme ?? "light";
   })(),
 });
 

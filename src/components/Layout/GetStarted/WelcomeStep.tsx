@@ -1,17 +1,18 @@
 import React from 'react';
 import { ReactComponent as GetStartedLightImage } from '../../../assets/images/get_started_light.svg';
 import { ReactComponent as GetStartedDarkImage } from '../../../assets/images/get_started_dark.svg';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { themeState } from '../../../recoil/general';
 
 interface Props {}
 
 const WelcomeStep = (props: Props) => {
-  const theme = useRecoilValue(themeState);
+  const themeLoadable = useRecoilValueLoadable(themeState);
 
   return (
     <div className='flex flex-col items-center mb-5'>
-      {theme === 'dark' ? (
+      {themeLoadable.state === 'hasValue' &&
+      themeLoadable.contents === 'dark' ? (
         <GetStartedDarkImage className='w-full max-w-xs' />
       ) : (
         <GetStartedLightImage className='w-full max-w-xs' />
