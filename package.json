@@ -38,6 +38,7 @@
     "@extend-chrome/storage": "^1.5.0",
     "@headlessui/react": "^1.4.2",
     "@tailwindcss/forms": "^0.4.0",
+    "big.js": "^6.1.1",
     "buffer": "^6.0.3",
     "check-password-strength": "^2.0.4",
     "classnames": "^2.3.1",

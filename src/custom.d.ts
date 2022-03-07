@@ -7,6 +7,18 @@ declare module '@ledgerhq/hw-transport-webusb'
 
 type AppUnlockState = 'locked' | 'unlocking' | 'unlocked'
 
+interface Token {
+  denom: string
+  symbol: string
+  digit: number
+  coingeckoId: string
+}
+
+interface Coin {
+  amount: string
+  denom: string
+}
+
 interface Account {
   walletId: string
   address: string
@@ -19,6 +31,17 @@ interface Account {
   name: string
   fav: boolean
   createdAt: number
+}
+
+interface AccountDetail extends Account {
+  balances: {
+    available: Coin[]
+    delegated: Coin[]
+    rewards: Coin[]
+    unbonding: Coin[]
+    total: Coin[]
+  }
+  prices: { price: number; token: Token }[]
 }
 
 interface CreateAccountParams {
@@ -60,14 +83,17 @@ interface IBCChain {
 
 interface Chain {
   symbol: string
-  prefix?: string
+  prefix: string
   ecosystem: 'cosmos'
   chainId: string
   chainName: string
+  stakingDenom: string
+  tokens: Token[]
   image: string
   coinType: number
   blockExplorerBaseUrl: string
   rpcApiUrl: string
+  lcdApiUrl: string
   ledgerAppName: string
   ibcChains: IBCChain[]
   gasAdjustment: number
