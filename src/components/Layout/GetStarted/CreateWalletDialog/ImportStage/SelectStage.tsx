@@ -1,47 +1,92 @@
 import React from 'react'
+import { ReactComponent as RecoveryPhraseIconLight } from '../../../../../assets/images/onboard/enter_passphase_light.svg'
+import { ReactComponent as RecoveryPhraseIconDark } from '../../../../../assets/images/onboard/enter_passphase_dark.svg'
+import { ReactComponent as BackupPhraseIconLight } from '../../../../../assets/images/onboard/backup_phrase_light.svg'
+import { ReactComponent as BackupPhraseIconDark } from '../../../../../assets/images/onboard/backup_phrase_dark.svg'
+import { ReactComponent as ConnectLedgerIconLight } from '../../../../../assets/images/onboard/connect_ledger_light.svg'
+import { ReactComponent as ConnectLedgerIconDark } from '../../../../../assets/images/onboard/connect_ledger_dark.svg'
+import { ReactComponent as PrivateKeyIconLight } from '../../../../../assets/images/onboard/private_key_light.svg'
+import { ReactComponent as PrivateKeyIconDark } from '../../../../../assets/images/onboard/private_key_dark.svg'
 import ButtonArea from '../../../../Element/buttonArea'
 import { Stage, ImportStage } from '../index'
+import { useRecoilValue } from 'recoil'
+import { themeState } from '../../../../../recoil/general'
 
 interface Props {
   setStage: (state: Stage, resetHistory?: boolean, replaceHistory?: boolean) => void
 }
 
-const SelectStage = ({ setStage }) => {
+const SelectStage: React.FC<Props> = ({ setStage }) => {
+  const theme = useRecoilValue(themeState)
   const methods = [
     {
-      title: 'Import Secret Recovery Phrase to restore a wallet',
-      description:
-        'If you would like to restore a previous wallet, please import the 24-word secret recovery phrase.',
+      image:
+        theme === 'light' ? (
+          <RecoveryPhraseIconLight width={40} height={40} />
+        ) : (
+          <RecoveryPhraseIconDark width={40} height={40} />
+        ),
+      title: 'Import Secret Recovery Phrase',
+      description: 'Restore your wallet by entering the 12 or 24-word secret recovery phrase',
       stage: ImportStage.ImportMnemonicPhraseStage,
     },
     {
+      image:
+        theme === 'light' ? (
+          <BackupPhraseIconLight width={40} height={40} />
+        ) : (
+          <BackupPhraseIconDark width={40} height={40} />
+        ),
       title: 'Use Secret Recovery Phrase Backup',
       description:
-        'Secret Recovery Phrase Backup is your secret recovery phrase encrypted with a password set by yourself. A wallet can be restored from the decrypted backup.',
+        'Restore your wallet by entering your password & an encrypted secret recovery phrase backup which was created by you',
       stage: ImportStage.MnemonicPhraseBackupStage,
     },
     {
-      title: 'Connect with Ledger Hardware Wallet',
-      description: 'Connect your Ledger Nano S or Nano X to start.',
+      image:
+        theme === 'light' ? (
+          <ConnectLedgerIconLight width={40} height={40} />
+        ) : (
+          <ConnectLedgerIconDark width={40} height={40} />
+        ),
+      title: 'Connect with Ledger',
+      description: 'Connect your Ledger Nano S or Nano X to start',
+    },
+    {
+      image:
+        theme === 'light' ? (
+          <PrivateKeyIconLight width={40} height={40} />
+        ) : (
+          <PrivateKeyIconDark width={40} height={40} />
+        ),
+      title: 'Import Private Key',
+      description:
+        'Restore your wallet by entering strings of alphanumeric characters to decrypt from your public key.',
     },
   ]
 
   return (
     <div className="px-6">
-      <div className="text-center text-gray-500 my-5">
-        <p>Welcome to Forbole X, import existing wallet to manage your assets,</p>
-        <p>control your multi assets in a single interface</p>
+      <div className="text-center text-gray-500 my-5 text-sm">
+        <p>
+          Welcome to Forbole X, import existing wallet to manage your assets, control your multi
+          assets in a single interface
+        </p>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-4 mb-4">
         {methods.map((m) => (
           <ButtonArea
+            key={m.title}
             onClick={() => {
               m.stage && setStage(m.stage)
             }}
           >
-            <div className="p-4">
-              <h5>{m.title}</h5>
-              <p className="text-sm text-gray-500 mt-2">{m.description}</p>
+            <div className="flex items-center">
+              <div className="ml-4">{m.image}</div>
+              <div className="p-4">
+                <h5>{m.title}</h5>
+                <p className="text-sm text-gray-500 mt-2">{m.description}</p>
+              </div>
             </div>
           </ButtonArea>
         ))}
