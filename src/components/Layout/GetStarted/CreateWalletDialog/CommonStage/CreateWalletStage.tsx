@@ -9,7 +9,7 @@ interface Props {
 const CreateWalletStage = ({ mnemonic, onSubmit }: Props) => {
   return (
     <div className="p-4 space-y-5">
-      <p className="text-sm text-gray-700 text-center mb-12">
+      <p className="text-sm text-gray-700 text-center mb-8">
         Please write down and store your recovery phrase safe. <br />
         This is the <b>ONLY WAY</b> to restore your account.
       </p>
