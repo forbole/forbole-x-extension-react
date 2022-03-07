@@ -82,7 +82,7 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
             }}
           >
             <div className="flex items-center">
-              <div className="mx-4">{m.image}</div>
+              <div className="ml-4">{m.image}</div>
               <div className="p-4">
                 <h5>{m.title}</h5>
                 <p className="text-sm text-gray-500 mt-2">{m.description}</p>
