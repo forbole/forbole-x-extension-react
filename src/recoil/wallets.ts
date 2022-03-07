@@ -51,7 +51,7 @@ export const useCreateWallet = () => {
   const createWallet = useCallback(
     async (params: CreateWalletParams) => {
       const createdAt = Date.now()
-      const id = String(Math.random())
+      const id = String(createdAt)
 
       const newWallets = [
         ...wallets,

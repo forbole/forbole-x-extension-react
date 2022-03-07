@@ -26,15 +26,15 @@ const SetSecurityPasswordStage = ({ onSubmit }: Props) => {
   }, [watch('password')])
 
   const onFormSubmit = (data) => {
-    if (passwordSecurityLevel > 0) {
-      onSubmit(watch('password'))
-    }
+    onSubmit(watch('password'))
   }
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)}>
       <div className="p-5 space-y-6 flex flex-col items-center">
-        <p>Create a password to access your wallet</p>
+        <p className="text-sm text-gray-700 text-center mb-8">
+          Create a password to access your wallet
+        </p>
         <input
           key="password"
           type="password"

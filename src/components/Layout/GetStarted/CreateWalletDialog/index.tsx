@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react'
 import Dialog from '../../../Element/dialog'
 import useStateHistory from '../../../../misc/useStateHistory'
 import StartStage from './CommonStage/StartStage'
-import WhatIsMnemonicStage from './CommonStage/WhatIsMnemonicStage'
 import SelectStage from './ImportStage/SelectStage'
 import ConfirmMnemonicStage from './CommonStage/ConfirmMnemonicStage'
 import ImportMnemonicPhraseStage from './ImportStage/ImportMnemonicPhraseStage'
@@ -12,6 +11,7 @@ import ImportWalletStage from './CommonStage/ImportWalletStage'
 import { useCreateWallet } from '../../../../recoil/wallets'
 import getWalletAddress from '../../../../misc/getWalletAddress'
 import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
+import CreateWalletStage from './CommonStage/CreateWalletStage'
 
 interface Props {
   open: boolean
@@ -89,36 +89,35 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
           title: 'Getting Started',
           content: (
             <StartStage
-              onImportWalet={() => setStage(ImportStage.SelectStage)}
+              onImportWalet={() => {
+                setMnemonic('')
+                setStage(ImportStage.SelectStage)
+              }}
               onCreateWallet={async () => {
                 const newWallet = await DirectSecp256k1HdWallet.generate(24)
                 setMnemonic(newWallet.mnemonic)
-                setStage(ImportStage.ImportMnemonicPhraseStage)
+                setStage(CommonStage.CreateWalletStage)
               }}
             />
           ),
         }
-      case CommonStage.WhatIsMnemonicStage:
+      case CommonStage.CreateWalletStage:
         return {
-          title: 'Wallet Mnemonic',
+          title: 'Create Wallet',
           content: (
-            <WhatIsMnemonicStage
+            <CreateWalletStage
               mnemonic={mnemonic}
-              setStage={() => {
-                setStage(CommonStage.ConfirmMnemonicStage)
-              }}
+              onSubmit={() => setStage(CommonStage.ConfirmMnemonicStage)}
             />
           ),
         }
       case CommonStage.ConfirmMnemonicStage:
         return {
-          title: 'Confirm Mnemonic',
+          title: 'Confirm Recovery Phrase',
           content: (
             <ConfirmMnemonicStage
               mnemonic={mnemonic}
-              setStage={() => {
-                setStage(CommonStage.SetSecurityPasswordStage)
-              }}
+              onSubmit={() => setStage(CommonStage.SetSecurityPasswordStage)}
             />
           ),
         }
