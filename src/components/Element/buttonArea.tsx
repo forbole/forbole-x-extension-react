@@ -12,8 +12,8 @@ const ButtonArea = ({ children, onClick, selected, type }: Props) => {
   return (
     <div
       className={classNames(
-        `${type === 'select' && selected ? 'border-gray-500' : 'hover:border-gray-500'}`,
-        'border rounded-sm cursor-pointer'
+        `${type === 'select' && 'bg-popup-100 border-0 hover:bg-gray-200'}`,
+        'border rounded-sm cursor-pointer w-full'
       )}
       onClick={onClick}
     >

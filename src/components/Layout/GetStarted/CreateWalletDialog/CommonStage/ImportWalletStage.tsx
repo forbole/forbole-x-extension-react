@@ -25,27 +25,27 @@ const ImportWalletStage = ({ onSubmit }: Props) => {
         />
       </div>
       <p className="text-sm pb-2">Select the currencies you would like to import</p>
-      <div className="flex">
+      <div className="flex flex-col space-y-2">
         {Object.values(chains).map((c) => {
           const isSelected = !!selectedCryptos.find((cc) => c.chainId === cc.chainId)
           return (
             <ButtonArea
-              type="select"
-              selected={isSelected}
-              key={c.chainId}
-              onClick={() =>
-                setSelectedCryptos((chains) =>
-                  chains.includes(c.chainId)
-                    ? chains.filter((chain) => chain !== c.chainId)
-                    : [...chains, c]
-                )
-              }
-            >
-              <div className="flex items-center py-3 px-6 space-x-2">
-                <img className="h-8" src={c.image} alt={c.symbol} />
-                <p>{c.chainName}</p>
-              </div>
-            </ButtonArea>
+            type="select"
+            selected={isSelected}
+            key={c.chainId}
+            onClick={() =>
+              setSelectedCryptos((chains) =>
+                chains.includes(c.chainId)
+                  ? chains.filter((chain) => chain !== c.chainId)
+                  : [...chains, c]
+              )
+            }
+          >
+            <div className="flex items-center py-3 px-4 space-x-2 w-full">
+              <img className="h-8" src={c.image} alt={c.symbol} />
+              <p>{c.chainName}</p>
+            </div>
+          </ButtonArea>  
           )
         })}
       </div>
