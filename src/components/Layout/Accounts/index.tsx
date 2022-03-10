@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRecoilValue } from 'recoil'
 import AccountStatCard from '../../../components/Wallet/AccountStatCard'
 import { walletAccountsState } from '../../../recoil/accounts'
@@ -16,7 +15,7 @@ const WalletAccounts = ({ walletId }: Props) => {
         <div className="space-y-3">
           <h3>Accounts</h3>
           {accounts.map((a) => (
-            <AccountStatCard key={a.address} walletId={walletId} address={a.address} />
+            <AccountStatCard key={a.address} account={a} />
           ))}
         </div>
       </div>
