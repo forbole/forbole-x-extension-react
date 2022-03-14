@@ -12,6 +12,7 @@ import { useCreateWallet } from '../../../../recoil/wallets'
 import getWalletAddress from '../../../../misc/getWalletAddress'
 import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
 import CreateWalletStage from './CommonStage/CreateWalletStage'
+import ImportPrivateKeyStage from './ImportStage/ImportPrivateKey'
 
 interface Props {
   open: boolean
@@ -21,6 +22,7 @@ interface Props {
 export enum ImportStage {
   SelectStage = 'Select',
   ImportMnemonicPhraseStage = 'import secret recovery phrase',
+  ImportPrivateKeyStage = 'import private key',
   MnemonicPhraseBackupStage = 'use secret recovery phrase backup',
   ConnectLedgerDeviceStage = 'connect ledger device',
 }
@@ -49,6 +51,7 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
   )
 
   const [mnemonic, setMnemonic] = useState('')
+  const [privateKey, setPrivateKey] = useState('')
   const [securityPassword, setSecurityPassword] = useState('')
   const createWallet = useCreateWallet()
 
@@ -59,7 +62,7 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
           getWalletAddress({
             prefix: c.prefix,
             mnemonic,
-            // privateKey: ,
+            privateKey,
             hdPath: {
               coinType: c.coinType,
             },
@@ -79,7 +82,7 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
       })
       onClose()
     },
-    [mnemonic, securityPassword, createWallet, onClose]
+    [mnemonic, privateKey, securityPassword, createWallet, onClose]
   )
 
   const content: Content = React.useMemo(() => {
@@ -91,11 +94,13 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
             <StartStage
               onImportWalet={() => {
                 setMnemonic('')
+                setPrivateKey('')
                 setStage(ImportStage.SelectStage)
               }}
               onCreateWallet={async () => {
                 const newWallet = await DirectSecp256k1HdWallet.generate(24)
                 setMnemonic(newWallet.mnemonic)
+                setPrivateKey('')
                 setStage(CommonStage.CreateWalletStage)
               }}
             />
@@ -146,6 +151,20 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
               mnemonic={mnemonic}
               onSubmit={(m) => {
                 setMnemonic(m)
+                setPrivateKey('')
+                setStage(CommonStage.SetSecurityPasswordStage)
+              }}
+            />
+          ),
+        }
+      case ImportStage.ImportPrivateKeyStage:
+        return {
+          title: 'Import Private Key',
+          content: (
+            <ImportPrivateKeyStage
+              onSubmit={(p) => {
+                setPrivateKey(p)
+                setMnemonic('')
                 setStage(CommonStage.SetSecurityPasswordStage)
               }}
             />
@@ -163,6 +182,7 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
             <SecretRecoveryPhraseStage
               onSubmit={(m) => {
                 setMnemonic(m)
+                setPrivateKey('')
                 setStage(CommonStage.SetSecurityPasswordStage)
               }}
             />
