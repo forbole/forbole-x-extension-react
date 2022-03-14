@@ -47,7 +47,9 @@ const SecretRecoveryPhraseStage = ({ onSubmit }: Props) => {
           name="password"
           control={control}
           rules={{ required: true }}
-          render={({ field }) => <Input placeholder="Encryption Password" {...field} />}
+          render={({ field }) => (
+            <Input type="password" placeholder="Encryption Password" {...field} />
+          )}
         />
         {errors.password && (
           <p className="mt-4 text-red-500">Invalid recovery phrase backup or password</p>

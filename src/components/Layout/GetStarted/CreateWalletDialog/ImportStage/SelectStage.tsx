@@ -62,6 +62,7 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
       title: 'Import Private Key',
       description:
         'Restore your wallet by entering strings of alphanumeric characters to decrypt from your public key.',
+      stage: ImportStage.ImportPrivateKeyStage,
     },
   ]
 

@@ -34,7 +34,7 @@ const ImportMnemonicPhraseStage = ({ onSubmit, mnemonic: defaultMnemonic }: Prop
           <MnemonicPhraseInput mnemonic={mnemonic} onChange={setMnemonic} />
           {error && <span className="text-red-500">{error}</span>}
         </div>
-        <Button text="Next" onClick={() => onSubmit(mnemonic)} />
+        <Button text="Next" type="submit" />
       </div>
     </form>
   )
