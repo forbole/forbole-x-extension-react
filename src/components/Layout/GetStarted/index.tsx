@@ -20,7 +20,7 @@ const GetStarted = (props: Props) => {
         <div className="pt-10 max-w-sm w-full">
           <Button
             text="Get Started"
-            bgColor="indigo"
+            bgColor="primary"
             onClick={() => {
               setIsOnboardingDialogOpen(true)
             }}

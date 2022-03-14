@@ -76,14 +76,17 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
       <div className="space-y-4 mb-4">
         {methods.map((m) => (
           <ButtonArea
+            className="rounded-xl"
             key={m.title}
             onClick={() => {
               m.stage && setStage(m.stage)
             }}
           >
-            <div className="flex items-center">
-              <div className="ml-4">{m.image}</div>
-              <div className="p-4">
+            <div className="p-4 flex">
+              <div className="min-w-min flex justify-center items-center">
+                <div className="mr-4">{m.image}</div>
+              </div>
+              <div>
                 <h5>{m.title}</h5>
                 <p className="text-sm text-gray-500 mt-2">{m.description}</p>
               </div>

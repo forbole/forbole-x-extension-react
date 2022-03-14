@@ -37,21 +37,6 @@ const Drawer = ({ open, setOpen, children }: Props) => {
             >
               <div className="w-screen max-w-[280px]">
                 <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-auto">
-                  {/* <div className="px-4 sm:px-6">
-                    <div className="flex items-start justify-between">
-                      <Dialog.Title className="text-lg font-medium">Panel title</Dialog.Title>
-                      <div className="ml-3 h-7 flex items-center">
-                        <button
-                          type="button"
-                          className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                          onClick={() => setOpen(false)}
-                        >
-                          <span className="sr-only">Close panel</span>
-                         X
-                        </button>
-                      </div>
-                    </div>
-                  </div> */}
                   <div className="mt-1 relative flex-1 px-4">{children}</div>
                 </div>
               </div>
