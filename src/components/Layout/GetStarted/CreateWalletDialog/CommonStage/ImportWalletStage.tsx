@@ -25,7 +25,7 @@ const ImportWalletStage = ({ onSubmit }: Props) => {
         />
       </div>
       <div className="flex flex-col">
-      <p className="text-sm pb-2">You don’t have any account, add account here</p>
+        <p className="text-sm pb-2">You don’t have any account, add account here</p>
         {Object.values(chains).map((c, index) => {
           const isSelected = !!selectedCryptos.find((cc) => c.chainId === cc.chainId)
           return (
@@ -33,34 +33,37 @@ const ImportWalletStage = ({ onSubmit }: Props) => {
               type="select"
               index={index}
               length={2}
-            selected={isSelected}
-            key={c.chainId}
-            onClick={() =>
-              setSelectedCryptos((chains) =>
-                chains.includes(c)
-                  ? chains.filter((chain) => chain.chainId !== c.chainId)
-                  : [...chains, c]
-              )
-            }
+              selected={isSelected}
+              key={c.chainId}
+              onClick={() =>
+                setSelectedCryptos((chains) =>
+                  chains.includes(c)
+                    ? chains.filter((chain) => chain.chainId !== c.chainId)
+                    : [...chains, c]
+                )
+              }
             >
               <>
                 <div className="flex items-center py-3 px-4 space-x-2 w-full">
-                <input type="checkbox" className='form-checkbox h-4 w-4 text-primary rounded-sm bg-transparent mr-2' checked={isSelected} />
-              <img className="h-8" src={c.image} alt={c.symbol} />
-                <p>{c.chainName}</p>                
+                  <input
+                    type="checkbox"
+                    className="form-checkbox h-4 w-4 text-primary rounded-sm bg-transparent mr-2"
+                    checked={isSelected}
+                  />
+                  <img className="h-8" src={c.image} alt={c.symbol} />
+                  <p>{c.chainName}</p>
                 </div>
-                {
-Object.values(chains).length>1&&index+1<Object.values(chains).length&&
-              <div className='h-px bg-black mx-4 opacity-10' />
-                }
-            </>
-          </ButtonArea>  
+                {Object.values(chains).length > 1 && index + 1 < Object.values(chains).length && (
+                  <div className="h-px bg-black mx-4 opacity-10" />
+                )}
+              </>
+            </ButtonArea>
           )
         })}
       </div>
       <div className="w-full pt-20">
         <Button
-          disabled={selectedCryptos.length<1||!name}
+          disabled={selectedCryptos.length < 1 || !name}
           text="Next"
           onClick={() => {
             onSubmit(name, selectedCryptos)

@@ -15,9 +15,7 @@ const PasswordStrengthDisplay = ({ passwordSecurityLevel }: Props) => {
   return (
     <div className="flex w-full h-1 items-center">
       <div className="bg-red-500 bg-yellow-700 bg-green-700 bg-gray-200 bg-gray-800 text-red-500 text-yellow-700 text-green-700" />
-      <div
-        className={`nightwind-prevent bg-${indicator[0].color} w-full h-1`}
-      />
+      <div className={`nightwind-prevent bg-${indicator[0].color} w-full h-1`} />
       <div
         className={`nightwind-prevent ${
           passwordSecurityLevel > 0

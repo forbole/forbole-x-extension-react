@@ -1,10 +1,10 @@
 import React from 'react'
 import ButtonArea from '../../../../Element/buttonArea'
 import { Stage, ImportStage } from '../index'
-import {ReactComponent as ImportPhraseImg} from '../../../../../assets/images/import_phrase.svg'
-import {ReactComponent as ImportBackupImg} from '../../../../../assets/images/import_backup.svg'
-import {ReactComponent as ImportLedgerImg} from '../../../../../assets/images/import_ledger.svg'
-import {ReactComponent as ImportKeyImg} from '../../../../../assets/images/import_key.svg'
+import { ReactComponent as ImportPhraseImg } from '../../../../../assets/images/import_phrase.svg'
+import { ReactComponent as ImportBackupImg } from '../../../../../assets/images/import_backup.svg'
+import { ReactComponent as ImportLedgerImg } from '../../../../../assets/images/import_ledger.svg'
+import { ReactComponent as ImportKeyImg } from '../../../../../assets/images/import_key.svg'
 
 interface Props {
   setStage: (state: Stage, resetHistory?: boolean, replaceHistory?: boolean) => void
@@ -14,8 +14,7 @@ const SelectStage = ({ setStage }) => {
   const methods = [
     {
       title: 'Import Secret Recovery Phrase',
-      description:
-        'Restore your wallet by entering the 12 or 24-word secret recovery phrase',
+      description: 'Restore your wallet by entering the 12 or 24-word secret recovery phrase',
       image: <ImportPhraseImg />,
       stage: ImportStage.ImportMnemonicPhraseStage,
     },
@@ -33,7 +32,8 @@ const SelectStage = ({ setStage }) => {
     },
     {
       title: 'Import Private Key',
-      description: 'Restore your wallet by entering strings of alphanumeric characters to decrypt from your public key',
+      description:
+        'Restore your wallet by entering strings of alphanumeric characters to decrypt from your public key',
       image: <ImportKeyImg />,
     },
   ]
@@ -53,12 +53,12 @@ const SelectStage = ({ setStage }) => {
             }}
           >
             <div className="p-4 flex">
-              <div className='min-w-min flex justify-center items-center'>
-                <div className='mr-4'>{m.image}</div>
-</div>
+              <div className="min-w-min flex justify-center items-center">
+                <div className="mr-4">{m.image}</div>
+              </div>
               <div>
-              <h5>{m.title}</h5>
-              <p className="text-sm text-gray-500 mt-2">{m.description}</p>
+                <h5>{m.title}</h5>
+                <p className="text-sm text-gray-500 mt-2">{m.description}</p>
               </div>
             </div>
           </ButtonArea>
