@@ -28,6 +28,9 @@ module.exports = {
         button: {
           100: '#4e46e5',
         },
+        primary: {
+          100: '#007FFF',
+        }
       },
       fontSize: {
         'xxs': '0.65rem'
@@ -50,5 +53,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('nightwind')],
+  plugins: [require('@tailwindcss/forms'),require('nightwind')],
 };
