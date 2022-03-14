@@ -8,9 +8,10 @@ interface Props {
   selected?: boolean
   index?: number
   length?: number
+  className?: string
 }
 
-const ButtonArea = ({ children, onClick, selected, type, index, length }: Props) => {
+const ButtonArea = ({ children, onClick, selected, type, index, length, className }: Props) => {
   return (
     <div
       className={classNames(
@@ -19,6 +20,7 @@ const ButtonArea = ({ children, onClick, selected, type, index, length }: Props)
         type==='select' && index === 0 &&`rounded-t-sm`,
         type==='select' && index+1 === length &&`rounded-b-sm`,
         selected && `bg-gray-200 dark:bg-gray-700`,
+        className
       )}
       onClick={onClick}
     >
