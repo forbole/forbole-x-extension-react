@@ -1,53 +1,83 @@
 import React from 'react'
+import { ReactComponent as RecoveryPhraseIconLight } from '../../../../../assets/images/onboard/enter_passphase_light.svg'
+import { ReactComponent as RecoveryPhraseIconDark } from '../../../../../assets/images/onboard/enter_passphase_dark.svg'
+import { ReactComponent as BackupPhraseIconLight } from '../../../../../assets/images/onboard/backup_phrase_light.svg'
+import { ReactComponent as BackupPhraseIconDark } from '../../../../../assets/images/onboard/backup_phrase_dark.svg'
+import { ReactComponent as ConnectLedgerIconLight } from '../../../../../assets/images/onboard/connect_ledger_light.svg'
+import { ReactComponent as ConnectLedgerIconDark } from '../../../../../assets/images/onboard/connect_ledger_dark.svg'
+import { ReactComponent as PrivateKeyIconLight } from '../../../../../assets/images/onboard/private_key_light.svg'
+import { ReactComponent as PrivateKeyIconDark } from '../../../../../assets/images/onboard/private_key_dark.svg'
 import ButtonArea from '../../../../Element/buttonArea'
 import { Stage, ImportStage } from '../index'
-import { ReactComponent as ImportPhraseImg } from '../../../../../assets/images/import_phrase.svg'
-import { ReactComponent as ImportBackupImg } from '../../../../../assets/images/import_backup.svg'
-import { ReactComponent as ImportLedgerImg } from '../../../../../assets/images/import_ledger.svg'
-import { ReactComponent as ImportKeyImg } from '../../../../../assets/images/import_key.svg'
+import { useRecoilValue } from 'recoil'
+import { themeState } from '../../../../../recoil/general'
 
 interface Props {
   setStage: (state: Stage, resetHistory?: boolean, replaceHistory?: boolean) => void
 }
 
-const SelectStage = ({ setStage }) => {
+const SelectStage: React.FC<Props> = ({ setStage }) => {
+  const theme = useRecoilValue(themeState)
   const methods = [
     {
+      image:
+        theme === 'light' ? (
+          <RecoveryPhraseIconLight width={40} height={40} />
+        ) : (
+          <RecoveryPhraseIconDark width={40} height={40} />
+        ),
       title: 'Import Secret Recovery Phrase',
       description: 'Restore your wallet by entering the 12 or 24-word secret recovery phrase',
-      image: <ImportPhraseImg />,
       stage: ImportStage.ImportMnemonicPhraseStage,
     },
     {
-      title: 'Use Recovery Phrase Backup',
+      image:
+        theme === 'light' ? (
+          <BackupPhraseIconLight width={40} height={40} />
+        ) : (
+          <BackupPhraseIconDark width={40} height={40} />
+        ),
+      title: 'Use Secret Recovery Phrase Backup',
       description:
         'Restore your wallet by entering your password & an encrypted secret recovery phrase backup which was created by you',
-      image: <ImportBackupImg />,
       stage: ImportStage.MnemonicPhraseBackupStage,
     },
     {
+      image:
+        theme === 'light' ? (
+          <ConnectLedgerIconLight width={40} height={40} />
+        ) : (
+          <ConnectLedgerIconDark width={40} height={40} />
+        ),
       title: 'Connect with Ledger',
       description: 'Connect your Ledger Nano S or Nano X to start',
-      image: <ImportLedgerImg />,
     },
     {
+      image:
+        theme === 'light' ? (
+          <PrivateKeyIconLight width={40} height={40} />
+        ) : (
+          <PrivateKeyIconDark width={40} height={40} />
+        ),
       title: 'Import Private Key',
       description:
-        'Restore your wallet by entering strings of alphanumeric characters to decrypt from your public key',
-      image: <ImportKeyImg />,
+        'Restore your wallet by entering strings of alphanumeric characters to decrypt from your public key.',
     },
   ]
 
   return (
     <div className="px-6">
       <div className="text-center text-gray-500 my-5 text-sm">
-        <p>Welcome to Forbole X, import existing wallet to manage your assets,</p>
-        <p>control your multi assets in a single interface</p>
+        <p>
+          Welcome to Forbole X, import existing wallet to manage your assets, control your multi
+          assets in a single interface
+        </p>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-4 mb-4">
         {methods.map((m) => (
           <ButtonArea
             className="rounded-xl"
+            key={m.title}
             onClick={() => {
               m.stage && setStage(m.stage)
             }}

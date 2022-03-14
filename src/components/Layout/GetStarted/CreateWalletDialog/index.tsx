@@ -140,7 +140,7 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
         }
       case ImportStage.ImportMnemonicPhraseStage:
         return {
-          title: 'Import Mnemonic Phrase',
+          title: 'Recovery Phrase',
           content: (
             <ImportMnemonicPhraseStage
               mnemonic={mnemonic}
@@ -158,8 +158,15 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
         }
       case ImportStage.MnemonicPhraseBackupStage:
         return {
-          title: 'Secret Recovery Phrase Backup',
-          content: <SecretRecoveryPhraseStage />,
+          title: 'Recovery Phrase Backup',
+          content: (
+            <SecretRecoveryPhraseStage
+              onSubmit={(m) => {
+                setMnemonic(m)
+                setStage(CommonStage.SetSecurityPasswordStage)
+              }}
+            />
+          ),
         }
     }
   }, [stage, onCreateWithMnemionicOrPrivKey, mnemonic, setStage])

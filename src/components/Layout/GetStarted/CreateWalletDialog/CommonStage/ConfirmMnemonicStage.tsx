@@ -13,7 +13,7 @@ const ConfirmMnemonicStage = ({ mnemonic, onSubmit }: Props) => {
 
   return (
     <div className="p-4 space-y-5">
-      <p className="text-sm text-gray-700 text-center mb-12">
+      <p className="text-sm text-gray-700 text-center mb-8">
         Please enter your recovery phrase in order and
         <br />
         make sure your recovery phrase is written correctly
