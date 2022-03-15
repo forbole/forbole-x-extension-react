@@ -13,6 +13,7 @@ import getWalletAddress from '../../../../misc/getWalletAddress'
 import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
 import CreateWalletStage from './CommonStage/CreateWalletStage'
 import ImportPrivateKeyStage from './ImportStage/ImportPrivateKey'
+import ImportLedgerStage from './ImportStage/ImportLedgerStage'
 
 interface Props {
   open: boolean
@@ -23,6 +24,7 @@ export enum ImportStage {
   SelectStage = 'Select',
   ImportMnemonicPhraseStage = 'import secret recovery phrase',
   ImportPrivateKeyStage = 'import private key',
+  ImportLedgerWalletStage = 'import ledger wallet',
   MnemonicPhraseBackupStage = 'use secret recovery phrase backup',
   ConnectLedgerDeviceStage = 'connect ledger device',
 }
@@ -34,7 +36,6 @@ export enum CommonStage {
   ConfirmMnemonicStage = 'confirm secret recovery',
   SetSecurityPasswordStage = 'set security password',
   ImportWalletStage = 'import wallet',
-  ImportLedgerWalletStage = 'import ledger wallet',
   WhatIsMnemonicStage = 'what is secret recovery phrase',
 }
 
@@ -166,6 +167,20 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
                 setPrivateKey(p)
                 setMnemonic('')
                 setStage(CommonStage.SetSecurityPasswordStage)
+              }}
+            />
+          ),
+        }
+      case ImportStage.ImportLedgerWalletStage:
+        return {
+          title: 'Unlock Ledger',
+          content: (
+            <ImportLedgerStage
+              onConnect={(m) => {
+                console.log(m)
+                // setMnemonic(m)
+                // setPrivateKey('')
+                // setStage(CommonStage.SetSecurityPasswordStage)
               }}
             />
           ),

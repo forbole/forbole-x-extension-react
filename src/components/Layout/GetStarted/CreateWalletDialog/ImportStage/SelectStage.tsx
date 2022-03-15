@@ -51,6 +51,7 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
         ),
       title: 'Connect with Ledger',
       description: 'Connect your Ledger Nano S or Nano X to start',
+      stage: ImportStage.ImportLedgerWalletStage,
     },
     {
       image:
