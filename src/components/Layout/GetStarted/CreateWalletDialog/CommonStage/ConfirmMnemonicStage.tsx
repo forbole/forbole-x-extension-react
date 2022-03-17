@@ -12,8 +12,8 @@ const ConfirmMnemonicStage = ({ mnemonic, onSubmit }: Props) => {
   const [error, setError] = useState('')
 
   return (
-    <div className="p-4 space-y-5">
-      <p className="text-sm text-gray-700 text-center mb-8">
+    <div className="p-6 space-y-5">
+      <p className="text-sm text-gray-700 text-center mb-12">
         Please enter your recovery phrase in order and
         <br />
         make sure your recovery phrase is written correctly
@@ -22,6 +22,7 @@ const ConfirmMnemonicStage = ({ mnemonic, onSubmit }: Props) => {
       {error && <span className="text-red-500">{error}</span>}
       <Button
         text="Next"
+        disabled={confirmMnemonic.length<24}
         onClick={() => {
           if (confirmMnemonic === mnemonic) {
             onSubmit()

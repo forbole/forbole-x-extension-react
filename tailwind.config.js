@@ -50,6 +50,9 @@ module.exports = {
         popup: {
           100: '#25282D',
         },
+        primary: {
+          100: '#007FFF',
+        }
       },
     },
   },

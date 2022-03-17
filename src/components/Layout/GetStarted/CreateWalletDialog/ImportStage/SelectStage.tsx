@@ -74,7 +74,7 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
           assets in a single interface
         </p>
       </div>
-      <div className="space-y-4 mb-4">
+      <div className="space-y-4 flex flex-col items-center">
         {methods.map((m) => (
           <ButtonArea
             className="rounded-xl"
@@ -94,6 +94,7 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
             </div>
           </ButtonArea>
         ))}
+        <span className='text-center text-primary-100 text-sm cursor-pointer'>What is secret recovery phrase?</span>
       </div>
     </div>
   )

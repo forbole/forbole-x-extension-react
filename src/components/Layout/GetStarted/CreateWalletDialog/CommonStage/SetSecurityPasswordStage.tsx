@@ -47,7 +47,11 @@ const SetSecurityPasswordStage = ({ onSubmit }: Props) => {
         <p className="w-full text-sm">* at least 6 characters in length</p>
 
         <div className="w-full pt-20">
-          <Button text="Next" type="submit" />
+          <Button
+            text="Next"
+            disabled={watch('password') ? watch('password').length < 6 : true}
+            type="submit"
+          />
         </div>
       </div>
     </form>
