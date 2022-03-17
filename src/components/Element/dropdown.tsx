@@ -16,7 +16,7 @@ interface Props {
 const Dropdown = ({ children, items }: Props) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <Menu.Button className="">{children}</Menu.Button>
+      <Menu.Button className="flex items-end">{children}</Menu.Button>
       <Transition
         as={Fragment}
         enter="transition ease-out duration-100"

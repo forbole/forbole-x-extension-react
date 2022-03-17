@@ -26,7 +26,7 @@ const Wallet = () => {
             { title: 'Delete Wallet' },
           ]}
         >
-          <WalletIcon className="w-5 fill-dark dark:fill-white" />
+          <WalletIcon className="w-6 h-6 fill-dark dark:fill-white" />
         </Dropdown>
       }
     >
