@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
-const Textarea = ({ className, ...props }) => {
+const Textarea = ({ className, ...props }: any) => {
   return (
     <textarea
       className={classNames(

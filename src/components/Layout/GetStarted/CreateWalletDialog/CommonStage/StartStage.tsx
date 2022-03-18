@@ -18,13 +18,13 @@ const StartStage = ({ onImportWalet, onCreateWallet }: Props) => {
   return (
     <div>
       <div className="flex w-full space-x-7 justify-center mt-10 px-5">
-        <ButtonArea onClick={onImportWalet}>
+        <ButtonArea className='rounded-xl' onClick={onImportWalet}>
           <div className="px-12 py-24 flex flex-col items-center space-y-10">
             {theme === 'dark' ? <WithMnemonicIconDark /> : <WithMnemonicIconLight />}
             <p className="text-sm">Import Wallet</p>
           </div>
         </ButtonArea>
-        <ButtonArea onClick={onCreateWallet}>
+        <ButtonArea className='rounded-xl' onClick={onCreateWallet}>
           <div className="px-12 py-24 flex flex-col items-center space-y-10">
             {theme === 'dark' ? <WithoutMnemonicIconDark /> : <WithoutMnemonicIconLight />}
             <p className="text-sm">Create Wallet</p>

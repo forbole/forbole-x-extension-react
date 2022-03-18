@@ -37,6 +37,7 @@
     "@cosmjs/stargate": "^0.27.1",
     "@extend-chrome/storage": "^1.5.0",
     "@headlessui/react": "^1.4.2",
+    "@ledgerhq/hw-transport-webhid": "^6.24.1",
     "@tailwindcss/forms": "^0.4.0",
     "big.js": "^6.1.1",
     "buffer": "^6.0.3",
@@ -57,8 +58,10 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "recharts": "^2.1.9",
+    "react-slick": "^0.28.1",
     "recoil": "^0.6.1",
     "sass": "^1.45.1",
+    "slick-carousel": "^1.8.1",
     "stream-browserify": "^3.0.0",
     "web-vitals": "^2.1.2"
   },

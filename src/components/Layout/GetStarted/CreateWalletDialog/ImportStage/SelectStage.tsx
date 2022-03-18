@@ -51,6 +51,7 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
         ),
       title: 'Connect with Ledger',
       description: 'Connect your Ledger Nano S or Nano X to start',
+      stage: ImportStage.ImportLedgerWalletStage,
     },
     {
       image:
@@ -62,6 +63,7 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
       title: 'Import Private Key',
       description:
         'Restore your wallet by entering strings of alphanumeric characters to decrypt from your public key.',
+      stage: ImportStage.ImportPrivateKeyStage,
     },
   ]
 
@@ -73,7 +75,7 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
           assets in a single interface
         </p>
       </div>
-      <div className="space-y-4 mb-4">
+      <div className="space-y-4 flex flex-col items-center">
         {methods.map((m) => (
           <ButtonArea
             className="rounded-xl"
@@ -93,6 +95,7 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
             </div>
           </ButtonArea>
         ))}
+        <span className='text-center text-primary-100 text-sm cursor-pointer'>What is secret recovery phrase?</span>
       </div>
     </div>
   )
