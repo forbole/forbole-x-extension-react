@@ -1,5 +1,5 @@
-const plugin = require('tailwindcss/plugin');
-const colors = require('tailwindcss/colors');
+const plugin = require('tailwindcss/plugin')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   content: ['./public/**/*.html', './src/**/*.{js,jsx,ts,tsx}'],
@@ -12,7 +12,7 @@ module.exports = {
           100: '#F7F7F7',
         },
         font: {
-          100: '#E6E6E6',
+          100: '#000000',
           200: '#646464',
         },
         icon: {
@@ -30,11 +30,11 @@ module.exports = {
         },
         primary: {
           100: '#007FFF',
-        }
+        },
       },
       fontSize: {
-        'xxs': '0.65rem'
-      }
+        xxs: '0.65rem',
+      },
     },
 
     // define color mapping
@@ -44,7 +44,7 @@ module.exports = {
           100: '#1D1E22',
         },
         font: {
-          100: '#000000',
+          100: '#E6E6E6',
           200: '#9D9D9D',
         },
         popup: {
@@ -52,9 +52,9 @@ module.exports = {
         },
         primary: {
           100: '#007FFF',
-        }
+        },
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'),require('nightwind')],
-};
+  plugins: [require('@tailwindcss/forms'), require('nightwind')],
+}

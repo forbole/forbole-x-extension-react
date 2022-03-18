@@ -57,6 +57,7 @@
     "react-hook-form": "^7.22.5",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "recharts": "^2.1.9",
     "react-slick": "^0.28.1",
     "recoil": "^0.6.1",
     "sass": "^1.45.1",

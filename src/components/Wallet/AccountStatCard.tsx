@@ -7,7 +7,7 @@ interface Props {
 
 const AccountStatCard = ({ account }: Props) => {
   return (
-    <div className="bg-popup-100 p-6">
+    <div className="bg-popup-100 p-6 rounded-md">
       <div className="w-full flex space-x-3 mb-3">
         <DsmAvatar className="w-12 h-12" />
         <div>
