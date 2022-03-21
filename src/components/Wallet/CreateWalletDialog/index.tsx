@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
-import Dialog from '../../../Element/dialog'
-import useStateHistory from '../../../../misc/useStateHistory'
+import Dialog from '../../Element/dialog'
+import useStateHistory from '../../../misc/useStateHistory'
 import StartStage from './CommonStage/StartStage'
 import SelectStage from './ImportStage/SelectStage'
 import ConfirmMnemonicStage from './CommonStage/ConfirmMnemonicStage'
@@ -8,8 +8,8 @@ import ImportMnemonicPhraseStage from './ImportStage/ImportMnemonicPhraseStage'
 import SecretRecoveryPhraseStage from './ImportStage/SecretRecoveryPhraseStage'
 import SetSecurityPasswordStage from './CommonStage/SetSecurityPasswordStage'
 import ImportWalletStage from './CommonStage/ImportWalletStage'
-import { useCreateWallet } from '../../../../recoil/wallets'
-import getWalletAddress from '../../../../misc/getWalletAddress'
+import { useCreateWallet } from '../../../recoil/wallets'
+import getWalletAddress from '../../../misc/getWalletAddress'
 import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
 import CreateWalletStage from './CommonStage/CreateWalletStage'
 import ImportPrivateKeyStage from './ImportStage/ImportPrivateKey'
@@ -79,6 +79,8 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
             })
           )
         ))
+      closeAllLedgerConnections()
+      onClose()
       await createWallet({
         type: ledgerTransport ? 'ledger' : privateKey ? 'private key' : 'mnemonic',
         name,
@@ -90,8 +92,6 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
           address: addresses[i],
         })),
       })
-      closeAllLedgerConnections()
-      onClose()
     },
     [mnemonic, privateKey, securityPassword, createWallet, onClose]
   )

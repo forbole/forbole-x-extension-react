@@ -1,5 +1,5 @@
-import MnemonicPhraseInput from '../../../../CreateWallet/MnemonicPhraseInput'
-import Button from '../../../../Element/button'
+import MnemonicPhraseInput from '../../../CreateWallet/MnemonicPhraseInput'
+import Button from '../../../Element/button'
 
 interface Props {
   mnemonic: string

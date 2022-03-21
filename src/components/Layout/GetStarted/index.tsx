@@ -1,6 +1,6 @@
 import OnboardingDialog from './OnboardingDialog'
 import WelcomeStep from './WelcomeStep'
-import CreateWalletDialog from './CreateWalletDialog'
+import CreateWalletDialog from '../../Wallet/CreateWalletDialog'
 import { useState } from 'react'
 import Button from '../../Element/button'
 import { useCreatePassword } from '../../../recoil/general'
@@ -20,7 +20,6 @@ const GetStarted = (props: Props) => {
         <div className="pt-10 max-w-sm w-full">
           <Button
             text="Get Started"
-            bgColor="primary"
             onClick={() => {
               setIsOnboardingDialogOpen(true)
             }}

@@ -9,7 +9,7 @@ interface Props {
   toPrevStage?: () => void
 
   title?: string
-  children: JSX.Element
+  children: React.ReactNode
 }
 
 const Dialog = ({ open, onClose, title, children, toPrevStage }: Props) => {
@@ -18,7 +18,7 @@ const Dialog = ({ open, onClose, title, children, toPrevStage }: Props) => {
   return (
     open && (
       <div className="absolute top-0 w-full bg-backgroundColor-100 h-full pt-5 overflow-auto">
-        <div className={`flex ${toPrevStage ? 'justify-between' : 'justify-end'} mx-5`}>
+        <div className={`flex ${toPrevStage ? 'justify-between' : 'justify-end'} mx-5 h-7`}>
           {toPrevStage && (
             <ArrowLeftIcon
               className={`${iconProps} w-6 h-4 mt-1 cursor-pointer`}

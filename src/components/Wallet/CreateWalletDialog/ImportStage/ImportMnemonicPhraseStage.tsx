@@ -1,7 +1,7 @@
 import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
 import React from 'react'
-import MnemonicPhraseInput from '../../../../CreateWallet/MnemonicPhraseInput'
-import Button from '../../../../Element/button'
+import MnemonicPhraseInput from '../../../CreateWallet/MnemonicPhraseInput'
+import Button from '../../../Element/button'
 
 interface Props {
   onSubmit(mnemonic: string): void
