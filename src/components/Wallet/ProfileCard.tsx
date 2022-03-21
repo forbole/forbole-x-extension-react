@@ -14,8 +14,9 @@ type Props = {}
 
 const ProfileCard = (props?: Props) => {
   const theme = useRecoilValue(themeState)
+  const [showMore, setShowMore] = React.useState(false)
 
-  const profile = {
+  const profile: Profile = {
     bio: 'Hello World! **Lorem ipsum dolor sit amet,** consecteturim praesent elementum facilisis',
     coverPic: '/images/default_cover_image_dark.png',
     dtag: 'testertag',
@@ -67,7 +68,22 @@ const ProfileCard = (props?: Props) => {
         </div>
       </div>
       <div className="flex flex-col px-6 pt-5">
-        <Markdown>{profile.bio}</Markdown>
+        <div className="inline">
+          <Markdown className="inline">
+            {showMore ? profile.bio : profile.bio.toString().slice(0, 5)}
+          </Markdown>
+          <button className="text-font-200 text-sm pl-2" onClick={() => setShowMore(!showMore)}>
+            Show {showMore ? 'less' : 'more'}
+          </button>
+        </div>
+        <button
+          className="text-primary-100 underline underline-offset-1 text-left text-sm"
+          onClick={() => {
+            // onChainConnectionClick
+          }}
+        >
+          {chainConnections.length} connections
+        </button>
       </div>
     </div>
   )
