@@ -16,8 +16,8 @@ const AccountList = ({ accounts }) => {
       <ShareIcon className='w-[18px] h-[18px] fill-icon-light dark:fill-icon-dark' />
       </div>
       {accounts?.map((acct) => (
-        <Link to={`/account/${acct.address}`}>
-          <AccountStatCard key={acct.address} account={acct} />
+        <Link key={acct.address} to={`/account/${acct.address}`}>
+          <AccountStatCard account={acct} />
         </Link>
       ))}
     </div>

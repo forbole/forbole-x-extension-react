@@ -23,7 +23,6 @@ const BalanceCard = ({ account }: Props) => {
       return []
     }
 
-    console.log(account)
     return Object.keys(account?.contents?.balances)
       .filter(
         (k) =>
@@ -81,7 +80,6 @@ const BalanceCard = ({ account }: Props) => {
         <div className="flex justify-between">
           <h2>Total balance</h2>
           <h2>
-            {' '}
             {account.state === 'hasValue' &&
               formatCoins(account.contents.chain, account.contents.balances.total)}
           </h2>
@@ -89,7 +87,7 @@ const BalanceCard = ({ account }: Props) => {
         <div className="flex justify-between">
           {account.state === 'hasValue' && (
             <p>
-              ${account.contents?.prices[0].price} / {account.contents?.prices[0].token.symbol}
+              {formatCurrency(account.contents?.prices[0].price)} / {account.contents?.prices[0].token.symbol}
             </p>
           )}
           <p>
