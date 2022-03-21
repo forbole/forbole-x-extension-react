@@ -31,6 +31,9 @@ module.exports = {
         primary: {
           100: '#007FFF',
         },
+        secondary: {
+          100: '#ECB140',
+        },
       },
       fontSize: {
         xxs: '0.65rem',
@@ -52,6 +55,9 @@ module.exports = {
         },
         primary: {
           100: '#007FFF',
+        },
+        secondary: {
+          100: '#ECB140',
         },
       },
     },

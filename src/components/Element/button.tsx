@@ -6,19 +6,21 @@ interface Props {
   text?: string
   onClick?: (x: any) => void
   type?: any
-  bgColor?: string
   loading?: boolean
   disabled?: boolean
+  secondary?: boolean
 }
 
-const Button = ({ text, onClick, type, bgColor, loading, disabled }: Props) => {
+const Button = ({ text, onClick, type, loading, disabled, secondary }: Props) => {
   return (
     <button
       disabled={loading || disabled}
       type={type}
       onClick={onClick}
       className={classNames(
-        `bg-primary-100 dark:bg-primary-100 disabled:opacity-50 dark:disabled:opacity-50`,
+        `${
+          secondary ? 'bg-secondary-100 dark:bg-primary-100' : 'bg-primary-100 dark:bg-primary-100'
+        } hover:opacity-80 disabled:opacity-50 dark:disabled:opacity-50`,
         'nightwind-prevent focus:outline-none inline-flex items-center w-full justify-center space-x-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white'
       )}
     >

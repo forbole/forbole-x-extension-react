@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import MnemonicPhraseInput from '../../../../CreateWallet/MnemonicPhraseInput'
-import Button from '../../../../Element/button'
+import MnemonicPhraseInput from '../../../CreateWallet/MnemonicPhraseInput'
+import Button from '../../../Element/button'
 
 interface Props {
   mnemonic: string
@@ -22,7 +22,7 @@ const ConfirmMnemonicStage = ({ mnemonic, onSubmit }: Props) => {
       {error && <span className="text-red-500">{error}</span>}
       <Button
         text="Next"
-        disabled={confirmMnemonic.length<24}
+        disabled={confirmMnemonic.length < 24}
         onClick={() => {
           if (confirmMnemonic === mnemonic) {
             onSubmit()

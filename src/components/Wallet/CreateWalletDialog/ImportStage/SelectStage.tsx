@@ -1,16 +1,16 @@
 import React from 'react'
-import { ReactComponent as RecoveryPhraseIconLight } from '../../../../../assets/images/onboard/enter_passphase_light.svg'
-import { ReactComponent as RecoveryPhraseIconDark } from '../../../../../assets/images/onboard/enter_passphase_dark.svg'
-import { ReactComponent as BackupPhraseIconLight } from '../../../../../assets/images/onboard/backup_phrase_light.svg'
-import { ReactComponent as BackupPhraseIconDark } from '../../../../../assets/images/onboard/backup_phrase_dark.svg'
-import { ReactComponent as ConnectLedgerIconLight } from '../../../../../assets/images/onboard/connect_ledger_light.svg'
-import { ReactComponent as ConnectLedgerIconDark } from '../../../../../assets/images/onboard/connect_ledger_dark.svg'
-import { ReactComponent as PrivateKeyIconLight } from '../../../../../assets/images/onboard/private_key_light.svg'
-import { ReactComponent as PrivateKeyIconDark } from '../../../../../assets/images/onboard/private_key_dark.svg'
-import ButtonArea from '../../../../Element/buttonArea'
+import { ReactComponent as RecoveryPhraseIconLight } from '../../../../assets/images/onboard/enter_passphase_light.svg'
+import { ReactComponent as RecoveryPhraseIconDark } from '../../../../assets/images/onboard/enter_passphase_dark.svg'
+import { ReactComponent as BackupPhraseIconLight } from '../../../../assets/images/onboard/backup_phrase_light.svg'
+import { ReactComponent as BackupPhraseIconDark } from '../../../../assets/images/onboard/backup_phrase_dark.svg'
+import { ReactComponent as ConnectLedgerIconLight } from '../../../../assets/images/onboard/connect_ledger_light.svg'
+import { ReactComponent as ConnectLedgerIconDark } from '../../../../assets/images/onboard/connect_ledger_dark.svg'
+import { ReactComponent as PrivateKeyIconLight } from '../../../../assets/images/onboard/private_key_light.svg'
+import { ReactComponent as PrivateKeyIconDark } from '../../../../assets/images/onboard/private_key_dark.svg'
+import ButtonArea from '../../../Element/buttonArea'
 import { Stage, ImportStage } from '../index'
 import { useRecoilValue } from 'recoil'
-import { themeState } from '../../../../../recoil/general'
+import { themeState } from '../../../../recoil/general'
 
 interface Props {
   setStage: (state: Stage, resetHistory?: boolean, replaceHistory?: boolean) => void
@@ -95,7 +95,9 @@ const SelectStage: React.FC<Props> = ({ setStage }) => {
             </div>
           </ButtonArea>
         ))}
-        <span className='text-center text-primary-100 text-sm cursor-pointer'>What is secret recovery phrase?</span>
+        <span className="text-center text-primary-100 text-sm cursor-pointer">
+          What is secret recovery phrase?
+        </span>
       </div>
     </div>
   )

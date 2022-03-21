@@ -1,9 +1,9 @@
 import CryptoJS from 'crypto-js'
 import { Controller, useForm } from 'react-hook-form'
 import get from 'lodash/get'
-import Button from '../../../../Element/button'
-import { Input } from '../../../../Element/input'
-import Textarea from '../../../../Element/textarea'
+import Button from '../../../Element/button'
+import { Input } from '../../../Element/input'
+import Textarea from '../../../Element/textarea'
 import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
 
 interface Props {

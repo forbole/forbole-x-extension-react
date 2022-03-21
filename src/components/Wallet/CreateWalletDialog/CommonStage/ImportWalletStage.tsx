@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import chains from '../../../../../misc/chains'
-import Button from '../../../../Element/button'
-import ButtonArea from '../../../../Element/buttonArea'
+import chains from '../../../../misc/chains'
+import Button from '../../../Element/button'
+import ButtonArea from '../../../Element/buttonArea'
 
 type Props = {
   onSubmit: (name: string, chains: Chain[]) => void

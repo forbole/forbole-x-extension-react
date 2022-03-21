@@ -1,10 +1,10 @@
 import { LaunchpadLedger } from '@cosmjs/ledger-amino'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Slider from 'react-slick'
-import { ReactComponent as UnlockLedgerIcon } from '../../../../../assets/images/ledger/unlock-ledger.svg'
-import { ReactComponent as UnlockLedger2Icon } from '../../../../../assets/images/ledger/unlock-ledger-2.svg'
-import { ReactComponent as OpenLedgerAppIcon } from '../../../../../assets/images/ledger/open-ledger-app.svg'
-import { useCallback, useEffect } from 'react'
+import { ReactComponent as UnlockLedgerIcon } from '../../../../assets/images/ledger/unlock-ledger.svg'
+import { ReactComponent as UnlockLedger2Icon } from '../../../../assets/images/ledger/unlock-ledger-2.svg'
+import { ReactComponent as OpenLedgerAppIcon } from '../../../../assets/images/ledger/open-ledger-app.svg'
+import { useCallback, useEffect, useState } from 'react'
 
 export const closeAllLedgerConnections = async () => {
   const devices = await TransportWebHID.list()
@@ -15,13 +15,12 @@ interface Props {
   onConnect?(transport: any): void
   onAppOpen?(transport: any): void
   ledgerApp?: string
-  transport?: any
 }
 
 let retryTimeout
 let pendingTimeout
 
-const ImportLedgerStage = ({ onConnect, onAppOpen, ledgerApp, transport }: Props) => {
+const ImportLedgerStage = ({ onConnect, onAppOpen, ledgerApp }: Props) => {
   const connectLedger = useCallback(async () => {
     let transport
     try {
@@ -41,7 +40,6 @@ const ImportLedgerStage = ({ onConnect, onAppOpen, ledgerApp, transport }: Props
         onAppOpen(transport)
       }
     } catch (err) {
-      console.log(err)
       clearTimeout(pendingTimeout)
       if (err.message === 'The device is already open.') {
         // Ledger is connected previously. Close the previous connections
@@ -63,7 +61,7 @@ const ImportLedgerStage = ({ onConnect, onAppOpen, ledgerApp, transport }: Props
       clearTimeout(retryTimeout)
       clearTimeout(pendingTimeout)
     }
-  }, [connectLedger, ledgerApp])
+  }, [connectLedger])
 
   return (
     <div className="p-4 space-y-5 flex flex-col items-center">

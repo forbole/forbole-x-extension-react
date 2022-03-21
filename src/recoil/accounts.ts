@@ -1,7 +1,7 @@
 import { atom, selectorFamily, selector, noWait } from 'recoil'
 import { fetchAccountBalance } from '../fetches/accounts'
 import { passwordState } from './general'
-import { encryptAndSaveToChromeStorage } from './utils/chromeStorageEncryption'
+import { encryptAndSaveToChromeStorage, removeStorage } from './utils/chromeStorageEncryption'
 
 export const accountsState = atom<Account[]>({
   key: 'accounts',
@@ -10,7 +10,11 @@ export const accountsState = atom<Account[]>({
     ({ onSet, getPromise }) => {
       onSet(async (newAccounts) => {
         const password = await getPromise(passwordState)
-        password && (await encryptAndSaveToChromeStorage('accounts', newAccounts, password))
+        if (password && newAccounts.length) {
+          await encryptAndSaveToChromeStorage('accounts', newAccounts, password)
+        } else {
+          await removeStorage('accounts')
+        }
       })
     },
   ],
