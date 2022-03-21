@@ -1,6 +1,7 @@
 import React from 'react'
 import { useRecoilValue } from 'recoil'
 import { themeState } from '../../recoil/general'
+import Markdown from '../Markdown'
 
 type ProfileCardProps = {
   profile?: Profile
@@ -15,7 +16,7 @@ const ProfileCard = (props?: Props) => {
   const theme = useRecoilValue(themeState)
 
   const profile = {
-    bio: 'Lorem ipsum dolor sit amet, consecteturim praesent elementum facilisis',
+    bio: 'Hello World! **Lorem ipsum dolor sit amet,** consecteturim praesent elementum facilisis',
     coverPic: '/images/default_cover_image_dark.png',
     dtag: 'testertag',
     nickname: 'Tester',
@@ -38,7 +39,7 @@ const ProfileCard = (props?: Props) => {
   ]
   //   const { profile, chainConnections, onEditProfile, onChainConnectionClick } = props
   return (
-    <div className="mx-5 rounded-xl bg-popup-100">
+    <div className="mx-5 rounded-xl pb-6 bg-popup-100">
       <img
         className="object-cover rounded-t-xl h-[130px]"
         src={profile.coverPic ? profile.coverPic : `/images/default_cover_image_${theme}.png`}
@@ -64,6 +65,9 @@ const ProfileCard = (props?: Props) => {
             Edit Profile
           </button>
         </div>
+      </div>
+      <div className="flex flex-col px-6 pt-5">
+        <Markdown>{profile.bio}</Markdown>
       </div>
     </div>
   )
