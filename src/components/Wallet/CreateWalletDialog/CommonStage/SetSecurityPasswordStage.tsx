@@ -1,8 +1,8 @@
 import React from 'react'
-import PasswordStrengthDisplay from '../../../../CreateWallet/PasswordStrengthDisplay'
+import PasswordStrengthDisplay from '../../../CreateWallet/PasswordStrengthDisplay'
 import { passwordStrength } from 'check-password-strength'
 import { useForm } from 'react-hook-form'
-import Button from '../../../../Element/button'
+import Button from '../../../Element/button'
 
 type Props = {
   onSubmit: (password: string) => void

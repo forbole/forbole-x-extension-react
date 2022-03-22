@@ -1,7 +1,7 @@
 import { DirectSecp256k1Wallet } from '@cosmjs/proto-signing'
 import React from 'react'
-import Button from '../../../../Element/button'
-import Textarea from '../../../../Element/textarea'
+import Button from '../../../Element/button'
+import Textarea from '../../../Element/textarea'
 
 interface Props {
   onSubmit(privateKey: string): void

@@ -1,14 +1,16 @@
-import { atom, selector, useRecoilState, useSetRecoilState } from 'recoil'
+import { atom, selector, useRecoilState, useRecoilStateLoadable, useSetRecoilState } from 'recoil'
 import CryptoJS from 'crypto-js'
 import { useCallback } from 'react'
 import {
   encryptAndSaveToChromeStorage,
   getStorage,
+  removeStorage,
   setStorage,
 } from './utils/chromeStorageEncryption'
 import chains from '../misc/chains'
 import { isFirstTimeUserState, passwordState } from './general'
 import { accountsState } from './accounts'
+import { cloneDeep } from 'lodash'
 
 export const currentWalletIdState = atom<string>({
   key: 'currentWalletId',
@@ -27,7 +29,11 @@ export const walletsState = atom<Wallet[]>({
     ({ onSet, getPromise }) => {
       onSet(async (newWallets) => {
         const password = await getPromise(passwordState)
-        password && (await encryptAndSaveToChromeStorage('wallets', newWallets, password))
+        if (password && newWallets.length) {
+          await encryptAndSaveToChromeStorage('wallets', newWallets, password)
+        } else {
+          await removeStorage('wallets')
+        }
       })
     },
   ],
@@ -43,8 +49,8 @@ export const currentWalletState = selector<Wallet | undefined>({
 })
 
 export const useCreateWallet = () => {
-  const [wallets, setWallets] = useRecoilState(walletsState)
-  const [accounts, setAccounts] = useRecoilState(accountsState)
+  const setWallets = useSetRecoilState(walletsState)
+  const setAccounts = useSetRecoilState(accountsState)
   const setFirstTime = useSetRecoilState(isFirstTimeUserState)
   const setCurrentWalletId = useSetRecoilState(currentWalletIdState)
 
@@ -53,7 +59,7 @@ export const useCreateWallet = () => {
       const createdAt = Date.now()
       const id = String(createdAt)
 
-      const newWallets = [
+      setWallets((wallets) => [
         ...wallets,
         {
           type: params.type,
@@ -69,8 +75,8 @@ export const useCreateWallet = () => {
               ? CryptoJS.AES.encrypt(params.privateKey, params.securityPassword).toString()
               : '',
         },
-      ]
-      const newAccounts = [
+      ])
+      setAccounts((accounts) => [
         ...accounts,
         ...params.accounts.map((account) => ({
           walletId: id,
@@ -85,14 +91,101 @@ export const useCreateWallet = () => {
           fav: false,
           createdAt,
         })),
-      ]
-      setWallets(newWallets)
-      setAccounts(newAccounts)
+      ])
       setFirstTime(false)
       setCurrentWalletId(id)
     },
-    [setWallets, setAccounts, setFirstTime, accounts, wallets, setCurrentWalletId]
+    [setWallets, setAccounts, setFirstTime, setCurrentWalletId]
   )
 
   return createWallet
+}
+
+export const useDeleteWallet = () => {
+  const [wallets, setWallets] = useRecoilState(walletsState)
+  const setAccounts = useSetRecoilState(accountsState)
+  const [currentWalletId, setCurrentWalletId] = useRecoilStateLoadable(currentWalletIdState)
+  const setIsFirstTimeUser = useSetRecoilState(isFirstTimeUserState)
+
+  const deleteWallet = useCallback(
+    (id: string) => {
+      const newWallets = wallets.filter((w) => w.id !== id)
+      if (id === currentWalletId.contents) {
+        setCurrentWalletId(newWallets[0] ? newWallets[0].id : '')
+      }
+      if (!newWallets.length) {
+        setIsFirstTimeUser(true)
+      }
+      setWallets(newWallets)
+      setAccounts((accounts) => accounts.filter((a) => a.walletId !== id))
+    },
+    [setWallets, setAccounts, currentWalletId, setCurrentWalletId, wallets, setIsFirstTimeUser]
+  )
+
+  return deleteWallet
+}
+
+export const useUpdateWallet = () => {
+  const setWallets = useSetRecoilState(walletsState)
+
+  const updateWallet = useCallback(
+    (id: string, params: { name?: string; password?: string; oldPassword?: string }) => {
+      setWallets((wallets) =>
+        wallets.map((w) => {
+          if (w.id === id) {
+            const updatedWallet = cloneDeep(w)
+            if (params.name) {
+              updatedWallet.name = params.name
+            }
+            if (params.oldPassword) {
+              if (updatedWallet.mnemonic) {
+                let mnemonic
+                try {
+                  mnemonic = CryptoJS.AES.decrypt(
+                    updatedWallet.mnemonic,
+                    params.oldPassword
+                  ).toString(CryptoJS.enc.Utf8)
+                  if (!mnemonic) {
+                    throw new Error()
+                  }
+                } catch (err) {
+                  throw new Error('Incorrect password')
+                }
+                if (params.password) {
+                  updatedWallet.mnemonic = CryptoJS.AES.encrypt(
+                    mnemonic,
+                    params.password
+                  ).toString()
+                }
+              } else if (updatedWallet.privateKey) {
+                let privateKey
+                try {
+                  privateKey = CryptoJS.AES.decrypt(
+                    updatedWallet.privateKey,
+                    params.oldPassword
+                  ).toString(CryptoJS.enc.Utf8)
+                  if (!privateKey) {
+                    throw new Error()
+                  }
+                } catch (err) {
+                  throw new Error('Incorrect password')
+                }
+                if (params.password) {
+                  updatedWallet.privateKey = CryptoJS.AES.encrypt(
+                    privateKey,
+                    params.password
+                  ).toString()
+                }
+              }
+            }
+            return updatedWallet
+          } else {
+            return w
+          }
+        })
+      )
+    },
+    [setWallets]
+  )
+  return updateWallet
 }

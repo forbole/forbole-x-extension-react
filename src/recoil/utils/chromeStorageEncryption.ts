@@ -20,6 +20,16 @@ export const setStorage = async (items: { [key: string]: string }) => {
   }
 }
 
+export const removeStorage = async (key: string) => {
+  if (chrome.storage) {
+    await require('@extend-chrome/storage').local.remove(key)
+    return
+  } else {
+    localStorage.removeItem(key)
+    Promise.resolve()
+  }
+}
+
 export const encryptAndSaveToChromeStorage = async (key: string, value: any, password: string) => {
   await setStorage({
     [key]: CryptoJS.AES.encrypt(JSON.stringify(value), password).toString(),
