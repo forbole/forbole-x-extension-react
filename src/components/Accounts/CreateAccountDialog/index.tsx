@@ -1,30 +1,25 @@
 import React, { useCallback, useState } from 'react'
 import Dialog from '../../Element/dialog'
 import useStateHistory from '../../../misc/useStateHistory'
-import StartStage from './CommonStage/StartStage'
-import SelectStage from './ImportStage/SelectStage'
-import ConfirmMnemonicStage from './CommonStage/ConfirmMnemonicStage'
-import ImportMnemonicPhraseStage from './ImportStage/ImportMnemonicPhraseStage'
-import SecretRecoveryPhraseStage from './ImportStage/SecretRecoveryPhraseStage'
-import SetSecurityPasswordStage from './CommonStage/SetSecurityPasswordStage'
-import ImportWalletStage from './CommonStage/ImportWalletStage'
 import { useCreateWallet } from '../../../recoil/wallets'
 import getWalletAddress from '../../../misc/getWalletAddress'
 import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
-import CreateWalletStage from './CommonStage/CreateWalletStage'
-import ImportPrivateKeyStage from './ImportStage/ImportPrivateKey'
-import ImportLedgerStage, { closeAllLedgerConnections } from './ImportStage/ImportLedgerStage'
+import ImportLedgerStage, { closeAllLedgerConnections } from './ImportLedgerStage'
+import EnterSecurityPasswordStage from './EnterSecurityPasswordStage'
 
 let ledgerTransport
 
 interface Props {
   open: boolean
   onClose: () => void
+  wallet: Wallet
 }
 
 export enum Stage {
   EnterSecurityPasswordStage = 'enter security password',
   ConnectLedgerStage = 'connect ledger',
+  SelectAccount = 'select account',
+  SelectHDPath = 'select hd path',
 }
 
 interface Content {
@@ -32,155 +27,67 @@ interface Content {
   content: React.ReactNode
 }
 
-const CreateWalletDialog = ({ open, onClose }: Props) => {
+const CreateAccountDialog = ({ open, onClose, wallet }: Props) => {
   const [stage, setStage, toPrevStage, isPrevStageAvailable] = useStateHistory<Stage>(
-    Stage.StartStage
+    wallet.type === 'ledger' ? Stage.ConnectLedgerStage : Stage.EnterSecurityPasswordStage
   )
-  const [ledgerChains, setLedgerChains] = useState([])
-  const [ledgerAddresses, setLedgerAddresses] = useState([])
-  const [walletName, setWalletName] = useState('')
 
-  const [mnemonic, setMnemonic] = useState('')
-  const [privateKey, setPrivateKey] = useState('')
   const [securityPassword, setSecurityPassword] = useState('')
   const createWallet = useCreateWallet()
 
-  const onCreateWallet = useCallback(
+  const onCreateAccount = useCallback(
     async (name: string, chains: Chain[], ledgerAddresses?: string[]) => {
-      const addresses =
-        ledgerAddresses ||
-        (await Promise.all(
-          chains.map((c) =>
-            getWalletAddress({
-              prefix: c.prefix,
-              mnemonic,
-              privateKey,
-              ledgerTransport,
-              ledgerAppName: '',
-              hdPath: {
-                coinType: c.coinType,
-              },
-            })
-          )
-        ))
+      // const address = getWalletAddress({
+      //         prefix: c.prefix,
+      //         mnemonic,
+      //         privateKey,
+      //         ledgerTransport,
+      //         ledgerAppName: '',
+      //         hdPath: {
+      //           coinType: c.coinType,
+      //         },
+      //       })
       closeAllLedgerConnections()
       onClose()
-      await createWallet({
-        type: ledgerTransport ? 'ledger' : privateKey ? 'private key' : 'mnemonic',
-        name,
-        mnemonic,
-        privateKey,
-        securityPassword,
-        accounts: chains.map((c, i) => ({
-          chain: c.chainId,
-          address: addresses[i],
-        })),
-      })
+      // await createWallet({
+      //   type: ledgerTransport ? 'ledger' : privateKey ? 'private key' : 'mnemonic',
+      //   name,
+      //   mnemonic,
+      //   privateKey,
+      //   securityPassword,
+      //   accounts: chains.map((c, i) => ({
+      //     chain: c.chainId,
+      //     address: addresses[i],
+      //   })),
+      // })
     },
-    [mnemonic, privateKey, securityPassword, createWallet, onClose]
+    [securityPassword, onClose]
   )
 
   const content: Content = React.useMemo(() => {
     switch (stage) {
-      case CommonStage.StartStage:
+      case Stage.EnterSecurityPasswordStage:
         return {
           title: 'Getting Started',
           content: (
-            <StartStage
-              onImportWalet={() => {
-                setMnemonic('')
-                setPrivateKey('')
-                setStage(ImportStage.SelectStage)
-              }}
-              onCreateWallet={async () => {
-                const newWallet = await DirectSecp256k1HdWallet.generate(24)
-                setMnemonic(newWallet.mnemonic)
-                setPrivateKey('')
-                setStage(CommonStage.CreateWalletStage)
-              }}
+            <EnterSecurityPasswordStage
+            // onImportWalet={() => {
+            //   setMnemonic('')
+            //   setPrivateKey('')
+            //   setStage(ImportStage.SelectStage)
+            // }}
+            // onCreateWallet={async () => {
+            //   const newWallet = await DirectSecp256k1HdWallet.generate(24)
+            //   setMnemonic(newWallet.mnemonic)
+            //   setPrivateKey('')
+            //   setStage(CommonStage.CreateWalletStage)
+            // }}
             />
           ),
         }
-      case CommonStage.CreateWalletStage:
+      case Stage.ConnectLedgerStage:
         return {
           title: 'Create Wallet',
-          content: (
-            <CreateWalletStage
-              mnemonic={mnemonic}
-              onSubmit={() => setStage(CommonStage.ConfirmMnemonicStage)}
-            />
-          ),
-        }
-      case CommonStage.ConfirmMnemonicStage:
-        return {
-          title: 'Confirm Recovery Phrase',
-          content: (
-            <ConfirmMnemonicStage
-              mnemonic={mnemonic}
-              onSubmit={() => setStage(CommonStage.SetSecurityPasswordStage)}
-            />
-          ),
-        }
-      case CommonStage.SetSecurityPasswordStage:
-        return {
-          title: 'Set Security Password',
-          content: (
-            <SetSecurityPasswordStage
-              onSubmit={(pw) => {
-                setSecurityPassword(pw)
-                setStage(CommonStage.ImportWalletStage)
-              }}
-            />
-          ),
-        }
-      case CommonStage.ImportWalletStage:
-        return {
-          title: 'Import Wallet',
-          content: (
-            <ImportWalletStage
-              onSubmit={(name, chains) => {
-                if (ledgerTransport) {
-                  setWalletName(name)
-                  setLedgerChains(chains)
-                  setLedgerAddresses([])
-                  setStage(ImportStage.ImportLedgerWalletStage)
-                } else {
-                  onCreateWallet(name, chains)
-                }
-              }}
-            />
-          ),
-        }
-      case ImportStage.ImportMnemonicPhraseStage:
-        return {
-          title: 'Recovery Phrase',
-          content: (
-            <ImportMnemonicPhraseStage
-              mnemonic={mnemonic}
-              onSubmit={(m) => {
-                setMnemonic(m)
-                setPrivateKey('')
-                setStage(CommonStage.SetSecurityPasswordStage)
-              }}
-            />
-          ),
-        }
-      case ImportStage.ImportPrivateKeyStage:
-        return {
-          title: 'Import Private Key',
-          content: (
-            <ImportPrivateKeyStage
-              onSubmit={(p) => {
-                setPrivateKey(p)
-                setMnemonic('')
-                setStage(CommonStage.SetSecurityPasswordStage)
-              }}
-            />
-          ),
-        }
-      case ImportStage.ImportLedgerWalletStage:
-        return {
-          title: ledgerChains.length ? 'Open Ledger App' : 'Unlock Ledger',
           content: (
             <ImportLedgerStage
               onConnect={
@@ -220,21 +127,13 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
             />
           ),
         }
-      case ImportStage.SelectStage:
+      case Stage.SelectAccount:
         return {
-          title: 'Access My Wallet',
-          content: <SelectStage setStage={setStage} />,
-        }
-      case ImportStage.MnemonicPhraseBackupStage:
-        return {
-          title: 'Recovery Phrase Backup',
+          title: 'Confirm Recovery Phrase',
           content: (
-            <SecretRecoveryPhraseStage
-              onSubmit={(m) => {
-                setMnemonic(m)
-                setPrivateKey('')
-                setStage(CommonStage.SetSecurityPasswordStage)
-              }}
+            <ConfirmMnemonicStage
+              mnemonic={mnemonic}
+              onSubmit={() => setStage(CommonStage.SetSecurityPasswordStage)}
             />
           ),
         }
@@ -247,7 +146,9 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
       open={open}
       onClose={() => {
         onClose()
-        setStage(CommonStage.StartStage)
+        setStage(
+          wallet.type === 'ledger' ? Stage.ConnectLedgerStage : Stage.EnterSecurityPasswordStage
+        )
       }}
       toPrevStage={
         isPrevStageAvailable
@@ -264,4 +165,4 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
   )
 }
 
-export default CreateWalletDialog
+export default CreateAccountDialog

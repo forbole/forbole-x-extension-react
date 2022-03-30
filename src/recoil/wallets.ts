@@ -1,4 +1,11 @@
-import { atom, selector, useRecoilState, useRecoilStateLoadable, useSetRecoilState } from 'recoil'
+import {
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilStateLoadable,
+  useRecoilValue,
+  useSetRecoilState,
+} from 'recoil'
 import CryptoJS from 'crypto-js'
 import { useCallback } from 'react'
 import {
@@ -125,8 +132,49 @@ export const useDeleteWallet = () => {
   return deleteWallet
 }
 
+export const useDecryptWallet = () => {
+  const wallets = useRecoilValue(walletsState)
+  const decryptWallet = useCallback(
+    (id: string, password: string) => {
+      const wallet = wallets.find((w) => w.id === id)
+      if (!wallet) {
+        throw new Error('Wallet does not exist')
+      }
+      if (wallet.mnemonic) {
+        try {
+          const mnemonic = CryptoJS.AES.decrypt(wallet.mnemonic, password).toString(
+            CryptoJS.enc.Utf8
+          )
+          if (!mnemonic) {
+            throw new Error()
+          }
+          return { mnemonic }
+        } catch (err) {
+          throw new Error('Incorrect password')
+        }
+      }
+      if (wallet.privateKey) {
+        try {
+          const privateKey = CryptoJS.AES.decrypt(wallet.privateKey, password).toString(
+            CryptoJS.enc.Utf8
+          )
+          if (!privateKey) {
+            throw new Error()
+          }
+          return { privateKey }
+        } catch (err) {
+          throw new Error('Incorrect password')
+        }
+      }
+    },
+    [wallets]
+  )
+  return decryptWallet
+}
+
 export const useUpdateWallet = () => {
   const setWallets = useSetRecoilState(walletsState)
+  const decryptWallet = useDecryptWallet()
 
   const updateWallet = useCallback(
     (id: string, params: { name?: string; password?: string; oldPassword?: string }) => {
@@ -138,44 +186,14 @@ export const useUpdateWallet = () => {
               updatedWallet.name = params.name
             }
             if (params.oldPassword) {
-              if (updatedWallet.mnemonic) {
-                let mnemonic
-                try {
-                  mnemonic = CryptoJS.AES.decrypt(
-                    updatedWallet.mnemonic,
-                    params.oldPassword
-                  ).toString(CryptoJS.enc.Utf8)
-                  if (!mnemonic) {
-                    throw new Error()
-                  }
-                } catch (err) {
-                  throw new Error('Incorrect password')
-                }
-                if (params.password) {
-                  updatedWallet.mnemonic = CryptoJS.AES.encrypt(
-                    mnemonic,
-                    params.password
-                  ).toString()
-                }
-              } else if (updatedWallet.privateKey) {
-                let privateKey
-                try {
-                  privateKey = CryptoJS.AES.decrypt(
-                    updatedWallet.privateKey,
-                    params.oldPassword
-                  ).toString(CryptoJS.enc.Utf8)
-                  if (!privateKey) {
-                    throw new Error()
-                  }
-                } catch (err) {
-                  throw new Error('Incorrect password')
-                }
-                if (params.password) {
-                  updatedWallet.privateKey = CryptoJS.AES.encrypt(
-                    privateKey,
-                    params.password
-                  ).toString()
-                }
+              const { mnemonic, privateKey } = decryptWallet(id, params.oldPassword)
+              if (params.password && mnemonic) {
+                updatedWallet.mnemonic = CryptoJS.AES.encrypt(mnemonic, params.password).toString()
+              } else if (params.password && privateKey) {
+                updatedWallet.privateKey = CryptoJS.AES.encrypt(
+                  privateKey,
+                  params.password
+                ).toString()
               }
             }
             return updatedWallet
@@ -185,7 +203,7 @@ export const useUpdateWallet = () => {
         })
       )
     },
-    [setWallets]
+    [setWallets, decryptWallet]
   )
   return updateWallet
 }
