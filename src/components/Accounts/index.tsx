@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil'
-import { walletAccountsState } from '../../../recoil/accounts'
+import { walletAccountsState } from '../../recoil/accounts'
 import AccountList from './AccountList'
 
 interface Props {

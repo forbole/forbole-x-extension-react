@@ -1,6 +1,6 @@
 import OnboardingDialog from './OnboardingDialog'
 import WelcomeStep from './WelcomeStep'
-import CreateWalletDialog from '../../Wallet/CreateWalletDialog'
+import CreateWalletDialog from '../../Wallets/CreateWalletDialog'
 import { useState } from 'react'
 import Button from '../../Element/button'
 import { useCreatePassword } from '../../../recoil/general'
