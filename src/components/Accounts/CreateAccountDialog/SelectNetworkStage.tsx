@@ -43,7 +43,7 @@ const SelectNetworkStage = ({ onSubmit }: Props) => {
           )
         })}
       </div>
-      <div className="w-full pt-20">
+      <div className="absolute bottom-4 left-4 right-4">
         <Button
           disabled={!selectedCrypto}
           text="Next"

@@ -1,6 +1,6 @@
 import { LaunchpadLedger } from '@cosmjs/ledger-amino'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
-import { ReactComponent as OpenLedgerAppIcon } from '../../../../assets/images/ledger/open-ledger-app.svg'
+import { ReactComponent as OpenLedgerAppIcon } from '../../../assets/images/ledger/open-ledger-app.svg'
 import { useCallback, useEffect } from 'react'
 
 export const closeAllLedgerConnections = async () => {

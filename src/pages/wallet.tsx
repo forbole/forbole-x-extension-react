@@ -67,7 +67,7 @@ const Wallet = () => {
         <GetStarted />
       ) : (
         <>
-          {wallet.contents && <WalletAccounts walletId={wallet.contents.id} />}
+          {wallet.contents && <WalletAccounts wallet={wallet.contents} />}
           <UnlockDialog open={!password} />
           <CreateWalletDialog
             open={isCreateWalletDialogOpen}

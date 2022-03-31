@@ -3,19 +3,13 @@ import { walletAccountsState } from '../../recoil/accounts'
 import AccountList from './AccountList'
 
 interface Props {
-  walletId: string
+  wallet: Wallet
 }
 
-const WalletAccounts = ({ walletId }: Props) => {
-  const accounts = useRecoilValue(walletAccountsState(walletId))
+const WalletAccounts = ({ wallet }: Props) => {
+  const accounts = useRecoilValue(walletAccountsState(wallet.id))
 
-  return (
-    <div>
-      <div className="px-5">
-        <AccountList accounts={accounts} />
-      </div>
-    </div>
-  )
+  return <AccountList accounts={accounts} wallet={wallet} />
 }
 
 export default WalletAccounts
