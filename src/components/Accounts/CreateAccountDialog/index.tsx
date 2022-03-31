@@ -7,6 +7,7 @@ import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
 import ImportLedgerStage, { closeAllLedgerConnections } from './ImportLedgerStage'
 import EnterSecurityPasswordStage from './EnterSecurityPasswordStage'
 import SelectNetworkStage from './SelectNetworkStage'
+import SelectAccountStage from './SelectAccountStage'
 
 let ledgerTransport
 
@@ -112,18 +113,22 @@ const CreateAccountDialog = ({ open, onClose, wallet }: Props) => {
             />
           ),
         }
-      // case Stage.SelectAccount:
-      //   return {
-      //     title: 'Confirm Recovery Phrase',
-      //     content: (
-      //       <ConfirmMnemonicStage
-      //         mnemonic={mnemonic}
-      //         onSubmit={() => setStage(CommonStage.SetSecurityPasswordStage)}
-      //       />
-      //     ),
-      //   }
+      case Stage.SelectAccount:
+        return {
+          title: 'Add Account',
+          content: (
+            <SelectAccountStage
+              wallet={wallet}
+              chain={chain}
+              securityPassword={securityPassword}
+              ledgerTransport={ledgerTransport}
+              onSubmit={() => {}}
+              onAdvanceClick={() => setStage(Stage.SelectHDPath)}
+            />
+          ),
+        }
     }
-  }, [stage, setStage, chain, wallet])
+  }, [stage, setStage, chain, wallet, securityPassword])
 
   return (
     <Dialog
