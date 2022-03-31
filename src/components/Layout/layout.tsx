@@ -5,7 +5,7 @@ import Drawer from './drawer'
 import { useState } from 'react'
 import DrawerMenu from './drawerMenu'
 import { Link } from 'react-router-dom'
-
+import { Toaster } from 'react-hot-toast';
 interface Props {
   children: JSX.Element
   title?: React.ReactNode
@@ -36,6 +36,7 @@ const Layout = ({ children, title, rightElement, backPath }: Props) => {
           {rightElement ?? <div className='w-6 h-6' />}
         </div>
         <div className="h-full grow">{children}</div>
+        <Toaster position="bottom-center" />
       </div>
       <Drawer open={open} setOpen={setOpen}>
         <DrawerMenu />

@@ -40,7 +40,7 @@ const ProfileCard = (props?: Props) => {
   ]
   //   const { profile, chainConnections, onEditProfile, onChainConnectionClick } = props
   return (
-    <div className="mx-5 rounded-xl pb-6 mb-3 bg-popup-100">
+    <div className="mx-5 rounded-xl pb-6 bg-popup-100">
       <img
         className="object-cover rounded-t-xl h-[130px]"
         src={profile.coverPic ? profile.coverPic : `/images/default_cover_image_${theme}.png`}
