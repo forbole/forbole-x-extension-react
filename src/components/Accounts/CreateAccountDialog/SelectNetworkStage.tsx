@@ -12,6 +12,7 @@ const SelectNetworkStage = ({ onSubmit }: Props) => {
 
   return (
     <div className="p-5 space-y-5">
+      <p className="max-w-sm mb-2">Select network</p>
       <div className="flex flex-col">
         {Object.values(chains).map((c, index) => {
           const isSelected = selectedCrypto && selectedCrypto.chainId === c.chainId

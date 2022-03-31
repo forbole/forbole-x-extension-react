@@ -6,6 +6,7 @@ import getWalletAddress from '../../../misc/getWalletAddress'
 import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
 import ImportLedgerStage, { closeAllLedgerConnections } from './ImportLedgerStage'
 import EnterSecurityPasswordStage from './EnterSecurityPasswordStage'
+import SelectNetworkStage from './SelectNetworkStage'
 
 let ledgerTransport
 
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export enum Stage {
+  SelectNetworkStage = 'select network',
   EnterSecurityPasswordStage = 'enter security password',
   ConnectLedgerStage = 'connect ledger',
   SelectAccount = 'select account',
@@ -28,11 +30,13 @@ interface Content {
 }
 
 const CreateAccountDialog = ({ open, onClose, wallet }: Props) => {
-  const [stage, setStage, toPrevStage, isPrevStageAvailable] = useStateHistory<Stage>(
-    wallet.type === 'ledger' ? Stage.ConnectLedgerStage : Stage.EnterSecurityPasswordStage
+  const [stage, setStage, toPrevStage, isPrevStageAvailable] = useStateHistory(
+    Stage.SelectNetworkStage
   )
 
   const [securityPassword, setSecurityPassword] = useState('')
+  const [chain, setChain] = useState<Chain>()
+
   const createWallet = useCreateWallet()
 
   const onCreateAccount = useCallback(
@@ -66,79 +70,60 @@ const CreateAccountDialog = ({ open, onClose, wallet }: Props) => {
 
   const content: Content = React.useMemo(() => {
     switch (stage) {
+      case Stage.SelectNetworkStage:
+        return {
+          title: 'Add Account',
+          content: (
+            <SelectNetworkStage
+              onSubmit={(c) => {
+                setChain(c)
+                setStage(
+                  wallet.type === 'ledger'
+                    ? Stage.ConnectLedgerStage
+                    : Stage.EnterSecurityPasswordStage
+                )
+              }}
+            />
+          ),
+        }
       case Stage.EnterSecurityPasswordStage:
         return {
-          title: 'Getting Started',
+          title: 'Wallet Password',
           content: (
             <EnterSecurityPasswordStage
-            // onImportWalet={() => {
-            //   setMnemonic('')
-            //   setPrivateKey('')
-            //   setStage(ImportStage.SelectStage)
-            // }}
-            // onCreateWallet={async () => {
-            //   const newWallet = await DirectSecp256k1HdWallet.generate(24)
-            //   setMnemonic(newWallet.mnemonic)
-            //   setPrivateKey('')
-            //   setStage(CommonStage.CreateWalletStage)
-            // }}
+              onSubmit={(p) => {
+                setSecurityPassword(p)
+                setStage(Stage.SelectAccount)
+              }}
+              wallet={wallet}
             />
           ),
         }
       case Stage.ConnectLedgerStage:
         return {
-          title: 'Create Wallet',
+          title: 'Connect Ledger',
           content: (
             <ImportLedgerStage
-              onConnect={
-                ledgerChains.length
-                  ? undefined
-                  : (transport) => {
-                      ledgerTransport = transport
-                      setStage(CommonStage.ImportWalletStage)
-                    }
-              }
-              onAppOpen={
-                ledgerChains.length
-                  ? async (transport) => {
-                      ledgerTransport = transport
-                      if (ledgerAddresses.length === ledgerChains.length) {
-                        onCreateWallet(walletName, ledgerChains, ledgerAddresses)
-                      } else {
-                        const address = await getWalletAddress({
-                          prefix: ledgerChains[ledgerAddresses.length].prefix,
-                          ledgerTransport,
-                          ledgerAppName: ledgerChains[ledgerAddresses.length].ledgerAppName,
-                          hdPath: {
-                            coinType: ledgerChains[ledgerAddresses.length].coinType,
-                          },
-                        })
-                        setLedgerAddresses((a) => [...a, address])
-                      }
-                    }
-                  : undefined
-              }
-              ledgerApp={
-                ledgerChains.length
-                  ? ledgerChains[Math.min(ledgerAddresses.length, ledgerChains.length - 1)]
-                      .ledgerAppName
-                  : undefined
-              }
+              onAppOpen={async (transport) => {
+                ledgerTransport = transport
+                setStage(Stage.SelectAccount)
+              }}
+              ledgerApp={chain?.ledgerAppName}
             />
           ),
         }
-      case Stage.SelectAccount:
-        return {
-          title: 'Confirm Recovery Phrase',
-          content: (
-            <ConfirmMnemonicStage
-              mnemonic={mnemonic}
-              onSubmit={() => setStage(CommonStage.SetSecurityPasswordStage)}
-            />
-          ),
-        }
+      // case Stage.SelectAccount:
+      //   return {
+      //     title: 'Confirm Recovery Phrase',
+      //     content: (
+      //       <ConfirmMnemonicStage
+      //         mnemonic={mnemonic}
+      //         onSubmit={() => setStage(CommonStage.SetSecurityPasswordStage)}
+      //       />
+      //     ),
+      //   }
     }
-  }, [stage, onCreateWallet, mnemonic, setStage, ledgerAddresses, ledgerChains, walletName])
+  }, [stage, setStage, chain, wallet])
 
   return (
     <Dialog
