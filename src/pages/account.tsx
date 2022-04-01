@@ -4,6 +4,7 @@ import { useRecoilValue, useRecoilValueLoadable } from 'recoil'
 import Layout from '../components/Layout/layout'
 import BalanceCard from '../components/Wallet/BalanceCard'
 import ProfileCard from '../components/Wallet/ProfileCard'
+import WalletCard from '../components/Wallet/WalletCard'
 import { accountDetailState } from '../recoil/accounts'
 import { isFirstTimeUserState, passwordState } from '../recoil/general'
 import { currentWalletState } from '../recoil/wallets'
@@ -22,10 +23,11 @@ const Account = (props: Props) => {
 
   return (
     <Layout title="Account" backPath="/">
-      <>
+      <div className='flex flex-col space-y-3'>
         <ProfileCard />
+        <WalletCard account={account} />
         <BalanceCard account={account} />
-      </>
+      </div>
     </Layout>
   )
 }

@@ -31,6 +31,9 @@ module.exports = {
         primary: {
           100: '#007FFF',
         },
+        success: {
+          100: '#1EC490',
+        },
         secondary: {
           100: '#ECB140',
         },
@@ -55,6 +58,9 @@ module.exports = {
         },
         primary: {
           100: '#007FFF',
+        },
+        success: {
+          100: '#1EC490',
         },
         secondary: {
           100: '#ECB140',
