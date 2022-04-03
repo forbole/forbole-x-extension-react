@@ -6,14 +6,17 @@ import { ReactComponent as ShareIcon } from '../../assets/images/icons/icon_shar
 import { ReactComponent as AddIcon } from '../../assets/images/icons/icon_add_wallet.svg'
 import IconButton from '../Element/iconButton'
 import CreateAccountDialog from './CreateAccountDialog'
+import { useRecoilValue } from 'recoil'
+import { walletAccountsState } from '../../recoil/accounts'
 
 type Props = {
   wallet: Wallet
-  accounts: AccountDetail[]
 }
 
-const AccountList: React.FC<Props> = ({ accounts, wallet }) => {
+const AccountList: React.FC<Props> = ({ wallet }) => {
+  const accounts = useRecoilValue(walletAccountsState(wallet.id))
   const [isCreateAccountDialogOpen, setIsCreateAccountDialogOpen] = React.useState(false)
+
   return (
     <>
       <div className="space-y-3 flex flex-col px-5">

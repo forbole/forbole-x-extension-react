@@ -1,6 +1,5 @@
 import GetStarted from '../components/Layout/GetStarted'
 import Layout from '../components/Layout/layout'
-import WalletAccounts from '../components/Accounts'
 import { currentWalletIdState, currentWalletState, walletsState } from '../recoil/wallets'
 import { useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil'
 import UnlockDialog from '../components/Layout/UnlockDialog'
@@ -13,6 +12,7 @@ import { useState } from 'react'
 import DeleteWalletDialog from '../components/Wallets/DeleteWalletDialog'
 import UpdateWalletNameDialog from '../components/Wallets/UpdateWalletNameDialog'
 import UpdateWalletPasswordDialog from '../components/Wallets/UpdateWalletPasswordDialog'
+import AccountList from '../components/Accounts/AccountList'
 
 const Wallet = () => {
   const firstTime = useRecoilValueLoadable(isFirstTimeUserState)
@@ -67,7 +67,7 @@ const Wallet = () => {
         <GetStarted />
       ) : (
         <>
-          {wallet.contents && <WalletAccounts wallet={wallet.contents} />}
+          {wallet.contents && <AccountList wallet={wallet.contents} />}
           <UnlockDialog open={!password} />
           <CreateWalletDialog
             open={isCreateWalletDialogOpen}

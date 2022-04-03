@@ -1,19 +1,19 @@
 import { times } from 'lodash'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { fetchAccountBalance, fetchAvailableAccountBalance } from '../../../fetches/accounts'
-import chains from '../../../misc/chains'
+import { useCallback, useEffect, useState } from 'react'
+import { useRecoilValue } from 'recoil'
+import { fetchAvailableAccountBalance } from '../../../fetches/accounts'
 import getWalletAddress from '../../../misc/getWalletAddress'
 import { formatCoins } from '../../../misc/utils'
+import { accountsState } from '../../../recoil/accounts'
 import { useDecryptWallet } from '../../../recoil/wallets'
 import Button from '../../Element/button'
-import ButtonArea from '../../Element/buttonArea'
 import Checkbox from '../../Element/checkbox'
 import Table from '../../Element/table'
 
 const NO_OF_ADDRESSES = 10
 
 type Props = {
-  onSubmit: (addresses: string[]) => void
+  onSubmit: (accounts: { address: string; hdPath: HdPath }[]) => void
   onAdvanceClick: () => void
   wallet: Wallet
   chain: Chain
@@ -29,8 +29,13 @@ const SelectAccountStage = ({
   securityPassword,
   ledgerTransport,
 }: Props) => {
-  const [addresses, setAddresses] = useState<{ address: string; balance: Coin[] }[]>([])
-  const [selectedAddresses, setSelectedAddresses] = useState([])
+  const accounts = useRecoilValue(accountsState)
+  const [addresses, setAddresses] = useState<
+    { address: string; balance: Coin[]; hdPath: HdPath }[]
+  >([])
+  const [selectedAddresses, setSelectedAddresses] = useState<{ address: string; hdPath: HdPath }[]>(
+    []
+  )
   const decryptWallet = useDecryptWallet()
 
   const loadAddresses = useCallback(async () => {
@@ -56,7 +61,13 @@ const SelectAccountStage = ({
       const balances = await Promise.all(
         addressesResult.map((a) => fetchAvailableAccountBalance(chain.chainId, a))
       )
-      setAddresses(addressesResult.map((a, i) => ({ address: a, balance: balances[i] })))
+      setAddresses(
+        addressesResult.map((a, i) => ({
+          address: a,
+          balance: balances[i],
+          hdPath: { account: i, change: 0, index: 0 },
+        }))
+      )
     } catch (err) {
       console.log(err)
     }
@@ -72,19 +83,29 @@ const SelectAccountStage = ({
       <div className="h-[360px] overflow-auto -mx-5 px-5">
         <Table
           head={['', '#', 'Address', <p className="text-right">Balance</p>]}
-          rows={addresses.map((a, i) => [
-            <Checkbox
-              checked={selectedAddresses.includes(a.address)}
-              onChange={() =>
-                setSelectedAddresses((sa) =>
-                  sa.includes(a.address) ? sa.filter((s) => s !== a.address) : [...sa, a.address]
-                )
-              }
-            />,
-            i,
-            a.address.slice(0, 10) + '......' + a.address.slice(-10),
-            <p className="text-right">{formatCoins(chain.chainId, a.balance)}</p>,
-          ])}
+          rows={addresses.map((a, i) => {
+            const isAddressExist = accounts.find((aa) => a.address === aa.address)
+            return [
+              <Checkbox
+                disabled={isAddressExist}
+                checked={selectedAddresses.find((s) => s.address === a.address)}
+                onChange={() =>
+                  setSelectedAddresses((sa) =>
+                    sa.find((s) => s.address === a.address)
+                      ? sa.filter((s) => s.address !== a.address)
+                      : [...sa, { address: a.address, hdPath: a.hdPath }]
+                  )
+                }
+              />,
+              <p className={isAddressExist ? 'opacity-50' : ''}>{i}</p>,
+              <p className={isAddressExist ? 'opacity-50' : ''}>
+                {a.address.slice(0, 10) + '......' + a.address.slice(-10)}
+              </p>,
+              <p className={isAddressExist ? 'opacity-50 text-right' : 'text-right'}>
+                {formatCoins(chain.chainId, a.balance)}
+              </p>,
+            ]
+          })}
         />
       </div>
       <button onClick={onAdvanceClick} className="text-primary-100 mt-4 hover:opacity-80">

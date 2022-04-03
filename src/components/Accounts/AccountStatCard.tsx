@@ -1,4 +1,4 @@
-import { ReactComponent as DsmAvatar } from '../../assets/images/cryptocurrencies/dsm.svg'
+import chains from '../../misc/chains'
 import { formatCoins, formatCurrency, sumCoinsValues } from '../../misc/utils'
 
 interface Props {
@@ -9,7 +9,7 @@ const AccountStatCard = ({ account }: Props) => {
   return (
     <div className="bg-popup-100 p-6 rounded-md">
       <div className="w-full flex space-x-3 mb-3">
-        <DsmAvatar className="w-12 h-12" />
+        <img src={chains[account.chain]?.image} className="w-12 h-12" alt={account.chain} />
         <div>
           <h4>{account.name}</h4>
           <p className="text-font-200 text-xs">{account.address}</p>

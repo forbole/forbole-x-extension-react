@@ -25,7 +25,7 @@ const WalletCard = ({ account }: Props) => {
 
   return (
     <div className="mx-5 p-6 rounded-xl bg-popup-100">
-      <div className="w-full flex items-start space-x-3 mb-3">
+      <div className="w-full flex items-start space-x-3 mb-6">
         <img
           src={chains[account.contents.chain]?.image}
           className="w-9 h-9 self-center"
@@ -42,10 +42,10 @@ const WalletCard = ({ account }: Props) => {
         <IconMore className="cursor-pointer" />
       </div>
       <div className="flex justify-between space-x-4">
-        <button className="nightwind-prevent text-white bg-primary-100 w-full py-[9px] rounded-md">
+        <button className="nightwind-prevent text-white bg-primary-100 w-64 py-[9px] rounded-md">
           Delegate
         </button>
-        <button className="nightwind-prevent text-white bg-success-100 w-full py-[9px] rounded-md">
+        <button className="nightwind-prevent text-white bg-success-100 w-64 py-[9px] rounded-md">
           Send
         </button>
         <button className="nightwind-prevent text-white bg-secondary-100 w-full py-[9px] rounded-md">

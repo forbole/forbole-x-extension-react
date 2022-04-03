@@ -1,13 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Dialog from '../../Element/dialog'
 import useStateHistory from '../../../misc/useStateHistory'
-import { useCreateWallet } from '../../../recoil/wallets'
-import getWalletAddress from '../../../misc/getWalletAddress'
-import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
 import ImportLedgerStage, { closeAllLedgerConnections } from './ImportLedgerStage'
 import EnterSecurityPasswordStage from './EnterSecurityPasswordStage'
 import SelectNetworkStage from './SelectNetworkStage'
 import SelectAccountStage from './SelectAccountStage'
+import { useCreateAccounts } from '../../../recoil/accounts'
 
 let ledgerTransport
 
@@ -38,35 +36,30 @@ const CreateAccountDialog = ({ open, onClose, wallet }: Props) => {
   const [securityPassword, setSecurityPassword] = useState('')
   const [chain, setChain] = useState<Chain>()
 
-  const createWallet = useCreateWallet()
+  useEffect(() => {
+    if (!open) {
+      setStage(Stage.SelectNetworkStage, true)
+      setSecurityPassword('')
+      setChain(undefined)
+    }
+  }, [open])
+
+  const createAccounts = useCreateAccounts()
 
   const onCreateAccount = useCallback(
-    async (name: string, chains: Chain[], ledgerAddresses?: string[]) => {
-      // const address = getWalletAddress({
-      //         prefix: c.prefix,
-      //         mnemonic,
-      //         privateKey,
-      //         ledgerTransport,
-      //         ledgerAppName: '',
-      //         hdPath: {
-      //           coinType: c.coinType,
-      //         },
-      //       })
+    async (accounts: { address: string; hdPath: HdPath }[]) => {
       closeAllLedgerConnections()
       onClose()
-      // await createWallet({
-      //   type: ledgerTransport ? 'ledger' : privateKey ? 'private key' : 'mnemonic',
-      //   name,
-      //   mnemonic,
-      //   privateKey,
-      //   securityPassword,
-      //   accounts: chains.map((c, i) => ({
-      //     chain: c.chainId,
-      //     address: addresses[i],
-      //   })),
-      // })
+      await createAccounts(
+        accounts.map((a) => ({
+          walletId: wallet.id,
+          address: a.address,
+          chain: chain.chainId,
+          hdPath: a.hdPath,
+        }))
+      )
     },
-    [securityPassword, onClose]
+    [onClose, createAccounts, chain, wallet]
   )
 
   const content: Content = React.useMemo(() => {
@@ -122,13 +115,13 @@ const CreateAccountDialog = ({ open, onClose, wallet }: Props) => {
               chain={chain}
               securityPassword={securityPassword}
               ledgerTransport={ledgerTransport}
-              onSubmit={() => {}}
+              onSubmit={onCreateAccount}
               onAdvanceClick={() => setStage(Stage.SelectHDPath)}
             />
           ),
         }
     }
-  }, [stage, setStage, chain, wallet, securityPassword])
+  }, [stage, setStage, chain, wallet, securityPassword, onCreateAccount])
 
   return (
     <Dialog
