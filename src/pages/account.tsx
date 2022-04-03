@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import { useRecoilValue, useRecoilValueLoadable } from 'recoil'
 import Layout from '../components/Layout/layout'
 import BalanceCard from '../components/Accounts/BalanceCard'
+import ProfileCard from '../components/Accounts/ProfileCard'
+import WalletCard from '../components/Accounts/WalletCard'
 import { accountDetailState } from '../recoil/accounts'
 import { isFirstTimeUserState, passwordState } from '../recoil/general'
 import { currentWalletState } from '../recoil/wallets'
@@ -21,7 +23,11 @@ const Account = (props: Props) => {
 
   return (
     <Layout title="Account" backPath="/">
-      <BalanceCard account={account} />
+      <div className="flex flex-col space-y-3">
+        <ProfileCard />
+        <WalletCard account={account} />
+        <BalanceCard account={account} />
+      </div>
     </Layout>
   )
 }
