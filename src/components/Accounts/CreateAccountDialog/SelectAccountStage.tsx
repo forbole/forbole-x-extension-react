@@ -1,4 +1,3 @@
-import { times } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import { fetchAvailableAccountBalance } from '../../../fetches/accounts'
@@ -9,6 +8,7 @@ import { useDecryptWallet } from '../../../recoil/wallets'
 import Button from '../../Element/button'
 import Checkbox from '../../Element/checkbox'
 import Table from '../../Element/table'
+import { ReactComponent as Loading } from '../../../assets/images/icons/loading.svg'
 
 const NO_OF_ADDRESSES = 10
 
@@ -33,6 +33,7 @@ const SelectAccountStage = ({
   const [addresses, setAddresses] = useState<
     { address: string; balance: Coin[]; hdPath: HdPath }[]
   >([])
+  const [loading, setLoading] = useState(false)
   const [selectedAddresses, setSelectedAddresses] = useState<{ address: string; hdPath: HdPath }[]>(
     []
   )
@@ -40,24 +41,30 @@ const SelectAccountStage = ({
 
   const loadAddresses = useCallback(async () => {
     try {
-      const { mnemonic, privateKey } = decryptWallet(wallet.id, securityPassword)
-      const addressesResult = await Promise.all(
-        times(NO_OF_ADDRESSES).map((i) =>
-          getWalletAddress({
-            prefix: chain.prefix,
-            mnemonic,
-            privateKey,
-            ledgerTransport,
-            hdPath: {
-              coinType: chain.coinType,
-              account: i,
-              change: 0,
-              index: 0,
-            },
-            ledgerAppName: chain.ledgerAppName,
-          })
-        )
-      )
+      setLoading(true)
+      const { mnemonic, privateKey } =
+        wallet.type === 'ledger'
+          ? { mnemonic: '', privateKey: '' }
+          : decryptWallet(wallet.id, securityPassword)
+      const noOfAddresses = wallet.type === 'private key' ? 1 : NO_OF_ADDRESSES
+      const addressesResult = []
+      for (let i = 0; i < noOfAddresses; i += 1) {
+        const address = await getWalletAddress({
+          prefix: chain.prefix,
+          mnemonic,
+          privateKey,
+          ledgerTransport,
+          hdPath: {
+            coinType: chain.coinType,
+            account: i,
+            change: 0,
+            index: 0,
+          },
+          ledgerAppName: chain.ledgerAppName,
+        })
+        addressesResult.push(address)
+      }
+
       const balances = await Promise.all(
         addressesResult.map((a) => fetchAvailableAccountBalance(chain.chainId, a))
       )
@@ -68,7 +75,9 @@ const SelectAccountStage = ({
           hdPath: { account: i, change: 0, index: 0 },
         }))
       )
+      setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.log(err)
     }
   }, [wallet, securityPassword, ledgerTransport, chain, decryptWallet])
@@ -80,7 +89,7 @@ const SelectAccountStage = ({
   return (
     <div className="p-5">
       <p className="max-w-sm mb-2">Select account(s) you want to add</p>
-      <div className="h-[360px] overflow-auto -mx-5 px-5">
+      <div className="relative h-[360px] overflow-auto -mx-5 px-5">
         <Table
           head={['', '#', 'Address', <p className="text-right">Balance</p>]}
           rows={addresses.map((a, i) => {
@@ -107,10 +116,17 @@ const SelectAccountStage = ({
             ]
           })}
         />
+        {loading && (
+          <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
+            <Loading className="w-12 h-12 nightwind-prevent text-primary-100 animate-spin" />
+          </div>
+        )}
       </div>
-      <button onClick={onAdvanceClick} className="text-primary-100 mt-4 hover:opacity-80">
-        Advanced account
-      </button>
+      {wallet.type !== 'private key' && (
+        <button onClick={onAdvanceClick} className="text-primary-100 mt-4 hover:opacity-80">
+          Advanced account
+        </button>
+      )}
       <div className="absolute bottom-4 left-4 right-4">
         <Button
           disabled={!selectedAddresses.length}

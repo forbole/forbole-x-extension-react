@@ -98,7 +98,7 @@ const CreateAccountDialog = ({ open, onClose, wallet }: Props) => {
           title: 'Connect Ledger',
           content: (
             <ImportLedgerStage
-              onAppOpen={async (transport) => {
+              onAppOpen={(transport) => {
                 ledgerTransport = transport
                 setStage(Stage.SelectAccount)
               }}

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Dialog from '../../Element/dialog'
 import useStateHistory from '../../../misc/useStateHistory'
 import StartStage from './CommonStage/StartStage'
@@ -59,6 +59,21 @@ const CreateWalletDialog = ({ open, onClose }: Props) => {
   const [mnemonic, setMnemonic] = useState('')
   const [privateKey, setPrivateKey] = useState('')
   const [securityPassword, setSecurityPassword] = useState('')
+
+  useEffect(() => {
+    if (!open) {
+      setLedgerChains([])
+      setLedgerAddresses([])
+      setWalletName('')
+      setMnemonic('')
+      setPrivateKey('')
+      setSecurityPassword('')
+      setStage(CommonStage.StartStage, true)
+      closeAllLedgerConnections()
+      ledgerTransport = undefined
+    }
+  }, [open])
+
   const createWallet = useCreateWallet()
 
   const onCreateWallet = useCallback(
