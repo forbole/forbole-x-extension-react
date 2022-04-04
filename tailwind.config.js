@@ -23,8 +23,8 @@ module.exports = {
           100: 'white',
         },
         surface: {
-          100: '#25282D',
-          200: '#2B2F35',
+          100: '#F2F2F2',
+          200: '#FFFFFF',
         },
         divider: {
           100: '#2B2F35',

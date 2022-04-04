@@ -26,7 +26,7 @@ const Account = (props: Props) => {
     <Layout title="Account" backPath="/">
       <div className="flex flex-col space-y-3 h-full relative">
         <ProfileCard />
-          <WalletCard account={account} />
+        <WalletCard account={account} />
         <BalanceCard account={account} />
         <StakingCard account={account} />
       </div>

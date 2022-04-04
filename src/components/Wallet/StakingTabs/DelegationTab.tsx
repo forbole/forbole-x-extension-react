@@ -10,7 +10,7 @@ const DelegationCard = () => {
           <h4 className="text-primary-100 leading-none">Forbole</h4>
           <p>Commission: 10%</p>
         </div>
-        <button className="bg-primary-100 rounded-md px-4 py-2">Manage</button>
+        <button className="bg-primary-100 rounded-md px-4 py-2 text-white nightwind-prevent">Manage</button>
       </div>
       <div>
         <div className="flex justify-between">
@@ -33,7 +33,7 @@ const DelegationTab = (props: Props) => {
         <DelegationCard />
       </div>
       {[...Array(5)].map((e, i) => (
-        <div className={`p-6 odd:bg-surface-200 even:bg-surface-100 last:rounded-b-xl`}>
+        <div className={`p-6 odd:bg-surface-200 even:bg-surface-100 last:rounded-b-xl text-black`}>
           <DelegationCard />
         </div>
       ))}
