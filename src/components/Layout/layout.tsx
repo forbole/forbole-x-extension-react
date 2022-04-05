@@ -5,7 +5,7 @@ import Drawer from './drawer'
 import { useState } from 'react'
 import DrawerMenu from './drawerMenu'
 import { Link } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast'
 interface Props {
   children: JSX.Element
   title?: React.ReactNode
@@ -18,7 +18,7 @@ const Layout = ({ children, title, rightElement, backPath }: Props) => {
 
   return (
     <>
-      <div className="bg-backgroundColor-100 text-font-100 w-full min-h-screen text-base flex flex-col relative">
+      <div className="bg-backgroundColor-100 text-font-100 w-full h-screen text-base flex flex-col relative">
         <div className="w-full flex justify-between items-end px-5 py-6">
           {backPath ? (
             <Link to={backPath}>
@@ -32,10 +32,10 @@ const Layout = ({ children, title, rightElement, backPath }: Props) => {
               }}
             />
           )}
-          {typeof title === 'string' ? <h4 className='leading-none'>{title}</h4> : title}
-          {rightElement ?? <div className='w-6 h-6' />}
+          {typeof title === 'string' ? <h4 className="leading-none">{title}</h4> : title}
+          {rightElement ?? <div className="w-6 h-6" />}
         </div>
-        <div className="h-full grow">{children}</div>
+        <div className="h-full grow overflow-auto">{children}</div>
         <Toaster position="bottom-center" />
       </div>
       <Drawer open={open} setOpen={setOpen}>

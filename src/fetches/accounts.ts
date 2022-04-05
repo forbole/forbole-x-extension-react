@@ -4,6 +4,11 @@ import { fetchCoingecko, fetchLcd } from '.'
 import chains from '../misc/chains'
 import { sumCoins } from '../misc/utils'
 
+export const fetchAvailableAccountBalance = async (chainId: string, address: string) => {
+  const available = await fetchLcd(chainId, `/cosmos/bank/v1beta1/balances/${address}`)
+  return get(available, 'balances', []) || []
+}
+
 export const fetchAccountBalance = async (chainId: string, address: string) => {
   const chain = chains[chainId]
   const [prices, available, delegations, rewards, unbonding] = await Promise.all([
