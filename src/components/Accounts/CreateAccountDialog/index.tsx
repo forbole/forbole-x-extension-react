@@ -20,7 +20,6 @@ export enum Stage {
   EnterSecurityPasswordStage = 'enter security password',
   ConnectLedgerStage = 'connect ledger',
   SelectAccount = 'select account',
-  SelectHDPath = 'select hd path',
 }
 
 interface Content {
@@ -116,7 +115,6 @@ const CreateAccountDialog = ({ open, onClose, wallet }: Props) => {
               securityPassword={securityPassword}
               ledgerTransport={ledgerTransport}
               onSubmit={onCreateAccount}
-              onAdvanceClick={() => setStage(Stage.SelectHDPath)}
             />
           ),
         }
