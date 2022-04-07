@@ -4,6 +4,7 @@ import useStateHistory from '../../../misc/useStateHistory'
 import SelectActionStage from './SelectActionStage'
 import ChangeMonikerStage from './ChangeMonikerStage'
 import RemoveAccountStage from './RemoveAccountStage'
+import { useChangeAccountName } from '../../../recoil/accounts'
 
 interface Props {
   open: boolean
@@ -24,6 +25,7 @@ interface Content {
 }
 
 const EditAccountDialog = ({ open, onClose, account }: Props) => {
+  const changeAccountName = useChangeAccountName()
   const [stage, setStage, toPrevStage, isPrevStageAvailable] = useStateHistory(
     Stage.SelectActionStage
   )
@@ -50,7 +52,15 @@ const EditAccountDialog = ({ open, onClose, account }: Props) => {
       case Stage.ChangeMonikerStage:
         return {
           title: 'Change Account Moniker',
-          content: <ChangeMonikerStage onSubmit={() => {}} account={account} />,
+          content: (
+            <ChangeMonikerStage
+              onSubmit={(name: string) => {
+                changeAccountName({ walletId: account.walletId, address: account.address, name })
+                onClose()
+              }}
+              account={account}
+            />
+          ),
         }
       case Stage.RemoveAccountStage:
         return {
