@@ -21,8 +21,8 @@
     // @apply text-blue-600 underline;
   }
   caption {
-    @apply text-xs
-  }  
+    @apply text-xs;
+  }
 }
 
 @layer utilities {
@@ -39,17 +39,19 @@
 
 body {
   margin: 0;
-  font-family: "Hind Madurai", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Hind Madurai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 600px;
-  width: 580px;
+  width: 480px;
   overflow: hidden;
 }
 
+#root {
+  height: 100%;
+}
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

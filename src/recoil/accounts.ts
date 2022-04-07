@@ -1,5 +1,7 @@
-import { atom, selectorFamily, selector, noWait } from 'recoil'
+import { useCallback } from 'react'
+import { atom, selectorFamily, selector, noWait, useSetRecoilState } from 'recoil'
 import { fetchAccountBalance } from '../fetches/accounts'
+import chains from '../misc/chains'
 import { passwordState } from './general'
 import { encryptAndSaveToChromeStorage, removeStorage } from './utils/chromeStorageEncryption'
 
@@ -65,3 +67,32 @@ export const walletAccountsState = selectorFamily<AccountDetail[], string>({
       )
     },
 })
+
+export const useCreateAccounts = () => {
+  const setAccounts = useSetRecoilState(accountsState)
+
+  const createAccounts = useCallback(
+    (params: { walletId: string; address: string; chain: string; hdPath: HdPath }[]) => {
+      const createdAt = Date.now()
+      setAccounts((accounts) => [
+        ...accounts,
+        ...params.map((account) => ({
+          walletId: account.walletId,
+          address: account.address,
+          chain: account.chain,
+          hdPath: {
+            account: 0,
+            change: 0,
+            index: 0,
+          },
+          name: chains[account.chain].symbol,
+          fav: false,
+          createdAt,
+        })),
+      ])
+    },
+    [setAccounts]
+  )
+
+  return createAccounts
+}

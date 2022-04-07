@@ -55,7 +55,7 @@ export const formatCoins = (
   const chain = chains[chainId]
   return coins.length
     ? coins.map((c) => formatCoin(chainId, c, compact)).join(delimeter || '\n')
-    : [formatCoin(chainId, { amount: '0', denom: chain.stakingDenom }, compact)]
+    : formatCoin(chainId, { amount: '0', denom: chain.stakingDenom }, compact)
 }
 
 export const formatCurrency = (amount: number, compact?: boolean): string =>

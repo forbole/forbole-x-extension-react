@@ -19,15 +19,17 @@ interface Coin {
   denom: string
 }
 
+interface HdPath {
+  account: number
+  change: number
+  index: number
+}
+
 interface Account {
   walletId: string
   address: string
   chain: string
-  hdPath: {
-    account: number
-    change: number
-    index: number
-  }
+  hdPath: HdPath
   name: string
   fav: boolean
   createdAt: number
