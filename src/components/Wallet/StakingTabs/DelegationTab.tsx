@@ -29,9 +29,6 @@ const DelegationCard = () => {
 const DelegationTab = (props: Props) => {
   return (
     <div>
-      <div className={`p-6 bg-surface-200`}>
-        <DelegationCard />
-      </div>
       {[...Array(5)].map((e, i) => (
         <div className={`p-6 odd:bg-surface-200 even:bg-surface-100 last:rounded-b-xl text-black`}>
           <DelegationCard />
