@@ -1,13 +1,16 @@
 import chains from '../../misc/chains'
 import { formatCoins, formatCurrency, sumCoinsValues } from '../../misc/utils'
+import IconButton from '../Element/iconButton'
+import { ReactComponent as MoreIcon } from '../../assets/images/icons/icon_more.svg'
 
 interface Props {
   account: AccountDetail
+  onEditClick(): void
 }
 
-const AccountStatCard = ({ account }: Props) => {
+const AccountStatCard = ({ account, onEditClick }: Props) => {
   return (
-    <div className="bg-popup-100 p-6 rounded-md">
+    <div className="relative bg-popup-100 p-6 rounded-md">
       <div className="w-full flex space-x-3 mb-3">
         <img src={chains[account.chain]?.image} className="w-12 h-12" alt={account.chain} />
         <div>
@@ -26,10 +29,19 @@ const AccountStatCard = ({ account }: Props) => {
             <h4>{formatCoins(account.chain, account.balances.rewards)}</h4>
           </div>
           <div>
-            <p className="text-font-200 text-sm">Delegate (41% Inflation)</p>
+            <p className="text-font-200 text-sm">Delegate</p>
             <h4>{formatCoins(account.chain, account.balances.delegated)}</h4>
           </div>
         </div>
+      </div>
+      <div className="absolute top-4 right-4">
+        <IconButton
+          icon={<MoreIcon />}
+          onClick={(e) => {
+            e.preventDefault()
+            onEditClick()
+          }}
+        />
       </div>
     </div>
   )

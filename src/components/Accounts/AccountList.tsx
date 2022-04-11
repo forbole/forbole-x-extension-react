@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-
 import AccountStatCard from './AccountStatCard'
 import { ReactComponent as ShareIcon } from '../../assets/images/icons/icon_share.svg'
 import { ReactComponent as AddIcon } from '../../assets/images/icons/icon_add_wallet.svg'
@@ -8,6 +7,7 @@ import IconButton from '../Element/iconButton'
 import CreateAccountDialog from './CreateAccountDialog'
 import { useRecoilValue } from 'recoil'
 import { walletAccountsState } from '../../recoil/accounts'
+import EditAccountDialog from './EditAccountDialog'
 
 type Props = {
   wallet: Wallet
@@ -15,7 +15,9 @@ type Props = {
 
 const AccountList: React.FC<Props> = ({ wallet }) => {
   const accounts = useRecoilValue(walletAccountsState(wallet.id))
-  const [isCreateAccountDialogOpen, setIsCreateAccountDialogOpen] = React.useState(false)
+  const [isCreateAccountDialogOpen, setIsCreateAccountDialogOpen] = useState(false)
+
+  const [edittingAccount, setEdittingAccount] = useState<Account>()
 
   return (
     <>
@@ -29,7 +31,7 @@ const AccountList: React.FC<Props> = ({ wallet }) => {
         </div>
         {accounts?.map((acct) => (
           <Link key={acct.address} to={`/account/${acct.address}`}>
-            <AccountStatCard account={acct} />
+            <AccountStatCard account={acct} onEditClick={() => setEdittingAccount(acct)} />
           </Link>
         ))}
       </div>
@@ -37,6 +39,11 @@ const AccountList: React.FC<Props> = ({ wallet }) => {
         wallet={wallet}
         open={isCreateAccountDialogOpen}
         onClose={() => setIsCreateAccountDialogOpen(false)}
+      />
+      <EditAccountDialog
+        open={!!edittingAccount}
+        onClose={() => setEdittingAccount(undefined)}
+        account={edittingAccount}
       />
     </>
   )
