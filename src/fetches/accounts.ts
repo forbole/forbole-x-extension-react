@@ -9,6 +9,11 @@ export const fetchAvailableAccountBalance = async (chainId: string, address: str
   return get(available, 'balances', []) || []
 }
 
+export const fetchProfile = async (chainId: string, address: string) => {
+  const response = await fetchLcd(chainId, `/cosmos/auth/v1beta1/accounts/${address}`)
+  return get(response, 'account', undefined)
+}
+
 export const fetchAccountBalance = async (chainId: string, address: string) => {
   const chain = chains[chainId]
   const [prices, available, delegations, rewards, unbonding] = await Promise.all([

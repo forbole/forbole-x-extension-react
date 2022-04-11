@@ -6,15 +6,20 @@ import { useState } from 'react'
 import DrawerMenu from './drawerMenu'
 import { Link } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import UnlockDialog from './UnlockDialog'
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil'
+import { isFirstTimeUserState, passwordState } from '../../recoil/general'
+import GetStarted from './GetStarted'
 interface Props {
-  children: JSX.Element
   title?: React.ReactNode
   rightElement?: React.ReactNode
   backPath?: string
 }
 
-const Layout = ({ children, title, rightElement, backPath }: Props) => {
+const Layout: React.FC<Props> = ({ children, title, rightElement, backPath }) => {
   const [open, setOpen] = useState(false)
+  const firstTime = useRecoilValueLoadable(isFirstTimeUserState)
+  const password = useRecoilValue(passwordState)
 
   return (
     <>
@@ -35,12 +40,15 @@ const Layout = ({ children, title, rightElement, backPath }: Props) => {
           {typeof title === 'string' ? <h4 className="leading-none">{title}</h4> : title}
           {rightElement ?? <div className="w-6 h-6" />}
         </div>
-        <div className="h-full grow overflow-auto">{children}</div>
+        <div className="h-full grow overflow-auto">
+          {firstTime.state !== 'hasValue' || firstTime.contents ? <GetStarted /> : children}
+        </div>
         <Toaster position="bottom-center" />
       </div>
       <Drawer open={open} setOpen={setOpen}>
         <DrawerMenu />
       </Drawer>
+      <UnlockDialog open={!password} />
     </>
   )
 }

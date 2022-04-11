@@ -6,9 +6,9 @@ const options = {
   forceBlock: true,
   overrides: {
     a: {
-      component: <link />,
       props: {
         target: '_blank',
+        class: 'text-primary-100 underline hover:opacity-80',
         onClick: (e) => e.stopPropagation(),
       },
     },
