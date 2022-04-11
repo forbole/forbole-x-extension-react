@@ -113,3 +113,37 @@ export const useCreateAccounts = () => {
 
   return createAccounts
 }
+
+export const useChangeAccountName = () => {
+  const setAccounts = useSetRecoilState(accountsState)
+
+  const changeAccountName = useCallback(
+    (params: { walletId: string; address: string; name: string }) => {
+      setAccounts((accounts) =>
+        accounts.map((a) =>
+          a.walletId === params.walletId && a.address === params.address
+            ? { ...a, name: params.name }
+            : a
+        )
+      )
+    },
+    [setAccounts]
+  )
+
+  return changeAccountName
+}
+
+export const useDeleteAccount = () => {
+  const setAccounts = useSetRecoilState(accountsState)
+
+  const deleteAccount = useCallback(
+    (params: { walletId: string; address: string }) => {
+      setAccounts((accounts) =>
+        accounts.filter((a) => !(a.walletId === params.walletId && a.address === params.address))
+      )
+    },
+    [setAccounts]
+  )
+
+  return deleteAccount
+}
