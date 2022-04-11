@@ -15,10 +15,14 @@ const ButtonItem: React.FC<{ text: string; onClick: () => void; destructive?: bo
   return (
     <button
       onClick={onClick}
-      className="flex justify-between items-center p-4 bg-popup-100 hover:opacity-70 mb-[1px]"
+      className={`flex justify-between items-center p-4 bg-popup-100 hover:opacity-70 mb-[1px] ${
+        destructive ? 'text-primary-100' : ''
+      }`}
     >
       {text}
-      <ArrowIcon className="w-[18px] h-[18px] fill-icon-light dark:fill-icon-dark" />
+      {!destructive && (
+        <ArrowIcon className="w-[18px] h-[18px] fill-icon-light dark:fill-icon-dark" />
+      )}
     </button>
   )
 }

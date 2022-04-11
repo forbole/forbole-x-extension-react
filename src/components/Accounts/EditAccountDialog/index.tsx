@@ -4,6 +4,7 @@ import useStateHistory from '../../../misc/useStateHistory'
 import SelectActionStage from './SelectActionStage'
 import ChangeMonikerStage from './ChangeMonikerStage'
 import RemoveAccountStage from './RemoveAccountStage'
+import ShareAddressStage from './ShareAddressStage'
 import { useChangeAccountName, useDeleteAccount } from '../../../recoil/accounts'
 
 interface Props {
@@ -63,6 +64,11 @@ const EditAccountDialog = ({ open, onClose, account }: Props) => {
               account={account}
             />
           ),
+        }
+      case Stage.ShareAddressStage:
+        return {
+          title: 'Address',
+          content: <ShareAddressStage address={account.address} />,
         }
       case Stage.RemoveAccountStage:
         return {
