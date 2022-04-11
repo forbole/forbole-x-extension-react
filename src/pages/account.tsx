@@ -5,7 +5,7 @@ import Layout from '../components/Layout/layout'
 import BalanceCard from '../components/Accounts/BalanceCard'
 import ProfileCard from '../components/Accounts/ProfileCard'
 import WalletCard from '../components/Accounts/WalletCard'
-import { accountDetailState } from '../recoil/accounts'
+import { accountDetailState, profileDetailState } from '../recoil/accounts'
 import { isFirstTimeUserState, passwordState } from '../recoil/general'
 import { currentWalletState } from '../recoil/wallets'
 
@@ -20,11 +20,14 @@ const Account = (props: Props) => {
   const account = useRecoilValueLoadable(
     accountDetailState({ walletId: wallet.contents?.id, address: params.address })
   )
+  const profile = useRecoilValueLoadable(
+    profileDetailState({ walletId: wallet.contents?.id, address: params.address })
+  )
 
   return (
     <Layout title="Account" backPath="/">
       <div className="flex flex-col space-y-3">
-        <ProfileCard />
+        {profile.state === 'hasValue' && <ProfileCard profile={profile} />}
         <WalletCard account={account} />
         <BalanceCard account={account} />
       </div>

@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { atom, selectorFamily, selector, noWait, useSetRecoilState } from 'recoil'
-import { fetchAccountBalance } from '../fetches/accounts'
+import { fetchAccountBalance, fetchProfile } from '../fetches/accounts'
 import chains from '../misc/chains'
 import { passwordState } from './general'
 import { encryptAndSaveToChromeStorage, removeStorage } from './utils/chromeStorageEncryption'
@@ -44,6 +44,23 @@ export const accountDetailState = selectorFamily<
       const account = get(accountState({ walletId, address }))
       const { balances, prices } = await fetchAccountBalance(account.chain, account.address)
       return { ...account, balances, prices }
+    },
+})
+
+export const profileDetailState = selectorFamily<
+  Profile,
+  { walletId: string; address: string }
+>({
+  key: 'profile',
+  get:
+    ({ walletId, address }) =>
+    async ({ get }) => {
+      const account = get(accountState({ walletId, address }))
+      const response = await fetchProfile(account.chain, account.address)
+      if (response.error) {
+        throw response.error;
+      }
+      return response;
     },
 })
 
