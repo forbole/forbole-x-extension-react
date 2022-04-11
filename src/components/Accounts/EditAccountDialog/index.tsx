@@ -68,7 +68,7 @@ const EditAccountDialog = ({ open, onClose, account }: Props) => {
       case Stage.ShareAddressStage:
         return {
           title: 'Address',
-          content: <ShareAddressStage address={account.address} />,
+          content: <ShareAddressStage address={account?.address} />,
         }
       case Stage.RemoveAccountStage:
         return {
