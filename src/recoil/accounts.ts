@@ -115,3 +115,18 @@ export const useChangeAccountName = () => {
 
   return changeAccountName
 }
+
+export const useDeleteAccount = () => {
+  const setAccounts = useSetRecoilState(accountsState)
+
+  const deleteAccount = useCallback(
+    (params: { walletId: string; address: string }) => {
+      setAccounts((accounts) =>
+        accounts.filter((a) => !(a.walletId === params.walletId && a.address === params.address))
+      )
+    },
+    [setAccounts]
+  )
+
+  return deleteAccount
+}
