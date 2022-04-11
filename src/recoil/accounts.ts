@@ -47,10 +47,7 @@ export const accountDetailState = selectorFamily<
     },
 })
 
-export const profileDetailState = selectorFamily<
-  Profile,
-  { walletId: string; address: string }
->({
+export const profileDetailState = selectorFamily<Profile, { walletId: string; address: string }>({
   key: 'profile',
   get:
     ({ walletId, address }) =>
@@ -58,9 +55,9 @@ export const profileDetailState = selectorFamily<
       const account = get(accountState({ walletId, address }))
       const response = await fetchProfile(account.chain, account.address)
       if (response.error) {
-        throw response.error;
+        throw response.error
       }
-      return response;
+      return response
     },
 })
 

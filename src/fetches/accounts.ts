@@ -10,12 +10,8 @@ export const fetchAvailableAccountBalance = async (chainId: string, address: str
 }
 
 export const fetchProfile = async (chainId: string, address: string) => {
-  try {
-    const response = await fetchLcd(chainId, `/cosmos/auth/v1beta1/accounts/${address}`)  
-    return get(response, 'account', undefined);
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchLcd(chainId, `/cosmos/auth/v1beta1/accounts/${address}`)
+  return get(response, 'account', undefined)
 }
 
 export const fetchAccountBalance = async (chainId: string, address: string) => {
