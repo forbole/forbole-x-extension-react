@@ -42,8 +42,11 @@ export const accountDetailState = selectorFamily<
     ({ walletId, address }) =>
     async ({ get }) => {
       const account = get(accountState({ walletId, address }))
-      const { balances, prices } = await fetchAccountBalance(account.chain, account.address)
-      return { ...account, balances, prices }
+      const { balances, prices, delegations, unbonding, redelegations } = await fetchAccountBalance(
+        account.chain,
+        account.address
+      )
+      return { ...account, balances, prices, delegations, unbonding, redelegations }
     },
 })
 
