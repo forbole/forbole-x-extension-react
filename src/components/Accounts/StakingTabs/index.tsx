@@ -9,16 +9,10 @@ type Props = {
 
 const StakingTabs = ({ tabIndex }: Props) => {
   return (
-    <div className='relative'>
-      <div className={`${tabIndex === 0 ? 'opacity-100' : 'opacity-0 absolute'}`}>
-        <DelegationTab />
-      </div>
-      <div className={`${tabIndex === 1 ? 'opacity-100' : 'opacity-0 absolute'}`}>
-        <RedelegationTab />
-      </div>
-      <div className={`${tabIndex === 2 ? 'opacity-100' : 'opacity-0 absolute'}`}>
-        <UnbondingTab />
-      </div>
+    <div className="relative">
+      {tabIndex === 0 && <DelegationTab />}
+      {tabIndex === 1 && <RedelegationTab />}
+      {tabIndex === 2 && <UnbondingTab />}
     </div>
   )
 }

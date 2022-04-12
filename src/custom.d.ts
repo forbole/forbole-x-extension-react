@@ -104,11 +104,13 @@ interface Chain {
 }
 
 interface Profile {
-  bio: string
-  coverPic: string
   dtag: string
   nickname: string
-  profilePic: string
+  bio: string
+  pictures: {
+    profile: string
+    cover: string
+  }
 }
 
 interface ChainConnection {

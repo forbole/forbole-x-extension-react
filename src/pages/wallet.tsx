@@ -1,9 +1,6 @@
-import GetStarted from '../components/Layout/GetStarted'
 import Layout from '../components/Layout/layout'
 import { currentWalletIdState, currentWalletState, walletsState } from '../recoil/wallets'
 import { useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil'
-import UnlockDialog from '../components/Layout/UnlockDialog'
-import { isFirstTimeUserState, passwordState } from '../recoil/general'
 import Dropdown from '../components/Element/dropdown'
 import { ReactComponent as WalletIcon } from '../assets/images/icons/icon_wallet_manage.svg'
 import { ReactComponent as ArrowDownIcon } from '../assets/images/icons/icon_arrow_down.svg'
@@ -15,8 +12,6 @@ import UpdateWalletPasswordDialog from '../components/Wallets/UpdateWalletPasswo
 import AccountList from '../components/Accounts/AccountList'
 
 const Wallet = () => {
-  const firstTime = useRecoilValueLoadable(isFirstTimeUserState)
-  const password = useRecoilValue(passwordState)
   const wallet = useRecoilValueLoadable(currentWalletState)
   const wallets = useRecoilValue(walletsState)
   const setCurrentWalletId = useSetRecoilState(currentWalletIdState)
@@ -63,33 +58,26 @@ const Wallet = () => {
         )
       }
     >
-      {firstTime.state !== 'hasValue' || firstTime.contents ? (
-        <GetStarted />
-      ) : (
-        <>
-          {wallet.contents && <AccountList wallet={wallet.contents} />}
-          <UnlockDialog open={!password} />
-          <CreateWalletDialog
-            open={isCreateWalletDialogOpen}
-            onClose={() => setIsCreateWalletDialogOpen(false)}
-          />
-          <DeleteWalletDialog
-            open={isDeleteWalletDialogOpen}
-            onClose={() => setIsDeleteWalletDialogOpen(false)}
-            wallet={wallet.contents}
-          />
-          <UpdateWalletNameDialog
-            open={isUpdateWalletNameDialogOpen}
-            onClose={() => setIsUpdateWalletNameDialogOpen(false)}
-            wallet={wallet.contents}
-          />
-          <UpdateWalletPasswordDialog
-            open={isUpdateWalletPasswordDialogOpen}
-            onClose={() => setIsUpdateWalletPasswordDialogOpen(false)}
-            wallet={wallet.contents}
-          />
-        </>
-      )}
+      {wallet.contents && <AccountList wallet={wallet.contents} />}
+      <CreateWalletDialog
+        open={isCreateWalletDialogOpen}
+        onClose={() => setIsCreateWalletDialogOpen(false)}
+      />
+      <DeleteWalletDialog
+        open={isDeleteWalletDialogOpen}
+        onClose={() => setIsDeleteWalletDialogOpen(false)}
+        wallet={wallet.contents}
+      />
+      <UpdateWalletNameDialog
+        open={isUpdateWalletNameDialogOpen}
+        onClose={() => setIsUpdateWalletNameDialogOpen(false)}
+        wallet={wallet.contents}
+      />
+      <UpdateWalletPasswordDialog
+        open={isUpdateWalletPasswordDialogOpen}
+        onClose={() => setIsUpdateWalletPasswordDialogOpen(false)}
+        wallet={wallet.contents}
+      />
     </Layout>
   )
 }
