@@ -23,8 +23,8 @@ const Layout: React.FC<Props> = ({ children, title, rightElement, backPath }) =>
 
   return (
     <>
-      <div className="bg-backgroundColor-100 text-font-100 w-full h-screen text-base flex flex-col relative">
-        <div className="w-full flex justify-between items-end px-5 py-6">
+      <div className="bg-backgroundColor-100 text-font-100 w-full h-screen flex flex-col text-base relative">
+        <div className="w-full flex justify-between items-end px-5 py-6 sticky">
           {backPath ? (
             <Link to={backPath}>
               <ArrowLeftIcon className="w-6 h-6 fill-icon-light dark:fill-icon-dark cursor-pointer" />
@@ -40,7 +40,7 @@ const Layout: React.FC<Props> = ({ children, title, rightElement, backPath }) =>
           {typeof title === 'string' ? <h4 className="leading-none">{title}</h4> : title}
           {rightElement ?? <div className="w-6 h-6" />}
         </div>
-        <div className="h-full grow overflow-auto">
+        <div className="h-full grow overflow-y-auto no-scrollbar w-full">
           {firstTime.state !== 'hasValue' || firstTime.contents ? <GetStarted /> : children}
         </div>
         <Toaster position="bottom-center" />

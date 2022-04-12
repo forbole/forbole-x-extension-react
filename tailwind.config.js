@@ -22,6 +22,10 @@ module.exports = {
         popup: {
           100: 'white',
         },
+        surface: {
+          100: '#F2F2F2',
+          200: '#FFFFFF',
+        },
         divider: {
           100: '#2B2F35',
         },
@@ -55,6 +59,10 @@ module.exports = {
         },
         popup: {
           100: '#25282D',
+        },
+        surface: {
+          100: '#25282D',
+          200: '#2B2F35',
         },
         primary: {
           100: '#007FFF',
