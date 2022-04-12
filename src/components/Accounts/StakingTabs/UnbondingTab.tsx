@@ -1,12 +1,5 @@
 import React from 'react'
-import dayjs from 'dayjs'
-let relativeTime = require('dayjs/plugin/relativeTime')
-dayjs.extend(relativeTime)
-declare module 'dayjs' {
-  interface Dayjs {
-    to(a: Dayjs, b: boolean)
-  }
-}
+import { formatDuration, intervalToDuration, format } from 'date-fns'
 
 type CardProps = {
   deliveryDate: any
@@ -15,6 +8,11 @@ type CardProps = {
 type Props = {}
 
 const UnbondingCard = (props: CardProps) => {
+  const duration = intervalToDuration({
+    start: new Date(),
+    end: props.deliveryDate,
+  })
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
@@ -31,8 +29,19 @@ const UnbondingCard = (props: CardProps) => {
         <div className="flex justify-between">
           <p>Expected Delivery</p>
           <p>
-            {props.deliveryDate.format('DD MMM, HH:mm')}
-            <span className="text-secondary-100">({props.deliveryDate.to(dayjs(), true)})</span>
+            {format(props.deliveryDate, 'dd MMM, HH:mm')}{" "}
+            <span className="text-secondary-100">
+              ( 
+              {formatDuration(duration, {
+                format: [
+                  Object.entries(duration)
+                    .filter(([_, value]) => value || 0 > 0)
+                    .map(([unit, _]) => unit)[0],
+                ],
+                delimiter: ', ',
+              })}
+               )
+            </span>
           </p>
         </div>
       </div>
@@ -41,7 +50,8 @@ const UnbondingCard = (props: CardProps) => {
 }
 
 const UnbondingTab = (props: Props) => {
-  const deliveryDate = dayjs('2022-12-12 11:40')
+  const deliveryDate = new Date(2022, 12, 12, 11, 20, 15)
+
   return (
     <div>
       {[...Array(5)].map((e, i) => (
