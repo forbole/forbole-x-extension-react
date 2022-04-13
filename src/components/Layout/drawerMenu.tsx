@@ -44,7 +44,7 @@ const DrawerMenu = (props: Props) => {
             <Link to={item.path} className="no-underline text-font-200">
               <button className="flex items-center space-x-5 hover:bg-gray-100 p-3 rounded-lg w-full">
                 {item.icon}
-                <h5>{item.title}</h5>
+                <h4>{item.title}</h4>
               </button>
             </Link>
           </div>

@@ -24,7 +24,7 @@ const Layout: React.FC<Props> = ({ children, title, rightElement, backPath }) =>
   return (
     <>
       <div className="bg-backgroundColor-100 text-font-100 w-full h-screen flex flex-col text-base relative">
-        <div className="w-full flex justify-between items-end px-5 py-6 sticky">
+        <div className="w-full flex justify-between items-end px-5 py-6 z-1">
           {backPath ? (
             <Link to={backPath}>
               <ArrowLeftIcon className="w-6 h-6 fill-icon-light dark:fill-icon-dark cursor-pointer" />
