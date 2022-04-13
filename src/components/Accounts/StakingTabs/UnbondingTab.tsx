@@ -26,7 +26,7 @@ const UnbondingCard = ({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <Avatar size={10} src={validator?.image} />
+          <Avatar size={9} src={validator?.image} />
           <div className="ml-2">
             <h4 className="text-primary-100 leading-none">{validator?.name}</h4>
             <p>Commission: {formatPercentage(validator?.commission)}</p>

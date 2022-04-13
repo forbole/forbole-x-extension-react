@@ -2,7 +2,7 @@ import CryptoJS from 'crypto-js'
 
 export const getStorage = async (key: string) => {
   if (chrome.storage) {
-    return await require('@extend-chrome/storage').local.get(key)[key]
+    return (await require('@extend-chrome/storage').storage.local.get(key))[key]
   } else {
     return Promise.resolve(localStorage.getItem(key))
   }
@@ -10,7 +10,7 @@ export const getStorage = async (key: string) => {
 
 export const setStorage = async (items: { [key: string]: string }) => {
   if (chrome.storage) {
-    await require('@extend-chrome/storage').local.set(items)
+    await require('@extend-chrome/storage').storage.local.set(items)
     return
   } else {
     Object.keys(items).forEach((key) => {
@@ -22,7 +22,7 @@ export const setStorage = async (items: { [key: string]: string }) => {
 
 export const removeStorage = async (key: string) => {
   if (chrome.storage) {
-    await require('@extend-chrome/storage').local.remove(key)
+    await require('@extend-chrome/storage').storage.local.remove(key)
     return
   } else {
     localStorage.removeItem(key)
