@@ -44,6 +44,22 @@ interface AccountDetail extends Account {
     total: Coin[]
   }
   prices: { price: number; token: Token }[]
+  delegations: {
+    balance: Coin
+    rewards: Coin[]
+    validator: string
+  }[]
+  redelegations: {
+    balance: Coin
+    completion: number
+    fromValidator: string
+    toValidator: string
+  }[]
+  unbonding: {
+    balance: Coin
+    completion: number
+    validator: string
+  }[]
 }
 
 interface CreateAccountParams {
