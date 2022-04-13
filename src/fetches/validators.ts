@@ -3,6 +3,7 @@ import { fetchKeybase, fetchLcd } from '.'
 import chains from '../misc/chains'
 import { fetchProfile } from './accounts'
 import { Bech32 } from '@cosmjs/encoding'
+import batchPromises from 'batch-promises'
 
 export const fetchValidators = async (chainId: string) => {
   let validators = []
@@ -28,14 +29,13 @@ export const fetchValidators = async (chainId: string) => {
         ).catch(() => Promise.resolve(undefined))
       )
     )
-    const keybasePics = await Promise.all(
-      response.validators.map((v) =>
-        get(v, ['description', 'identity'])
-          ? fetchKeybase(
-              `/user/lookup.json?fields=pictures&key_suffix=${get(v, ['description', 'identity'])}`
-            ).catch(() => Promise.resolve(undefined))
-          : Promise.resolve()
-      )
+    // Too many concurrent Keybase request will return error 429
+    const keybasePics = await batchPromises(10, response.validators, (v) =>
+      get(v, ['description', 'identity'])
+        ? fetchKeybase(
+            `/user/lookup.json?fields=pictures&key_suffix=${get(v, ['description', 'identity'])}`
+          ).catch(() => Promise.resolve(undefined))
+        : Promise.resolve()
     )
     validators = [
       ...validators,
