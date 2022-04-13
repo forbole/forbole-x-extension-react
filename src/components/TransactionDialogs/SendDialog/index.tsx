@@ -47,7 +47,11 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account, availab
       }}
       title={stage}
     >
-      <></>
+      <div className="px-5 flex flex-row items-start">
+        <p>Available amount</p>
+        <p className="font-bold pl-2">{`${availableTokens.coins[0].amount}`}</p>
+        <p className="font-bold pl-1">{`${availableTokens.coins[0].denom}`}</p>
+      </div>
     </Dialog>
   )
 }
