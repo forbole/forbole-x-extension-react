@@ -1,6 +1,6 @@
 import React from 'react'
-import { useRecoilValueLoadable } from 'recoil'
-import { themeState } from '../../recoil/general'
+import Avatar from '../Element/avatar'
+import Cover from '../Element/cover'
 import Markdown from '../Markdown'
 
 type ProfileCardProps = {
@@ -12,7 +12,6 @@ type ProfileCardProps = {
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {
   const [showMore, setShowMore] = React.useState(false)
-  const themeLoadable = useRecoilValueLoadable(themeState)
 
   const chainConnections = [
     {
@@ -32,27 +31,9 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
   return (
     profile && (
       <div className="mx-5 rounded-xl pb-6 bg-popup-100">
-        <img
-          className="object-cover rounded-t-xl h-[130px] w-full"
-          src={
-            profile.pictures.cover ||
-            (themeLoadable.contents === 'light'
-              ? require('../../assets/images/default_cover_image_light.png')
-              : require('../../assets/images/default_cover_image_dark.png'))
-          }
-          alt="cover"
-        />
+        <Cover src={profile.pictures.cover} />
         <div className="flex flex-row mx-5 mt-[-30px]">
-          <img
-            className="object-cover rounded-full w-20 h-20"
-            src={
-              profile.pictures.profile ||
-              (themeLoadable.contents === 'light'
-                ? require('../../assets/images/default_profile_pic_light.png')
-                : require('../../assets/images/default_profile_pic_dark.png'))
-            }
-            alt="profile"
-          />
+          <Avatar src={profile.pictures.profile} size={20} />
           <div className="flex flex-row items-end w-full justify-between">
             <div className="flex flex-col pl-3">
               <h3>{profile.nickname}</h3>

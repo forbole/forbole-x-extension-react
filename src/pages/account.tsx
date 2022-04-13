@@ -32,7 +32,7 @@ const Account = (props: Props) => {
         {profile.state === 'hasValue' && <ProfileCard profile={profile.contents} />}
         <WalletCard account={account} />
         <BalanceCard account={account} />
-        <StakingCard account={account} />
+        <StakingCard account={account} validators={validators} />
       </div>
     </Layout>
   )
