@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+import { useRecoilValueLoadable } from 'recoil'
+import { themeState } from '../../recoil/general'
 import Markdown from '../Markdown'
 
 type ProfileCardProps = {
@@ -10,6 +12,7 @@ type ProfileCardProps = {
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {
   const [showMore, setShowMore] = React.useState(false)
+  const themeLoadable = useRecoilValueLoadable(themeState)
 
   const chainConnections = [
     {
@@ -31,13 +34,23 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
       <div className="mx-5 rounded-xl pb-6 bg-popup-100">
         <img
           className="object-cover rounded-t-xl h-[130px] w-full"
-          src={profile.pictures.cover}
+          src={
+            profile.pictures.cover ||
+            (themeLoadable.contents === 'light'
+              ? require('../../assets/images/default_cover_image_light.png')
+              : require('../../assets/images/default_cover_image_dark.png'))
+          }
           alt="cover"
         />
         <div className="flex flex-row mx-5 mt-[-30px]">
           <img
             className="object-cover rounded-full w-20 h-20"
-            src={profile.pictures.profile}
+            src={
+              profile.pictures.profile ||
+              (themeLoadable.contents === 'light'
+                ? require('../../assets/images/default_profile_pic_light.png')
+                : require('../../assets/images/default_profile_pic_dark.png'))
+            }
             alt="profile"
           />
           <div className="flex flex-row items-end w-full justify-between">

@@ -8,6 +8,8 @@ import StakingCard from '../components/Accounts/StakingCard'
 import WalletCard from '../components/Accounts/WalletCard'
 import { accountDetailState, profileDetailState } from '../recoil/accounts'
 import { currentWalletState } from '../recoil/wallets'
+import { validatorsState } from '../recoil/validators'
+import get from 'lodash/get'
 
 type Props = {}
 
@@ -19,6 +21,9 @@ const Account = (props: Props) => {
   )
   const profile = useRecoilValueLoadable(
     profileDetailState({ walletId: wallet.contents?.id, address: params.address })
+  )
+  const validators = useRecoilValueLoadable(
+    validatorsState({ chainId: account.state === 'hasValue' ? account.contents.chain : '' })
   )
 
   return (

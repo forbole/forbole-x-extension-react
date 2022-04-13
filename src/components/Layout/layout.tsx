@@ -48,7 +48,7 @@ const Layout: React.FC<Props> = ({ children, title, rightElement, backPath }) =>
       <Drawer open={open} setOpen={setOpen}>
         <DrawerMenu />
       </Drawer>
-      <UnlockDialog open={!password} />
+      <UnlockDialog open={!password && !(firstTime.state !== 'hasValue' || firstTime.contents)} />
     </>
   )
 }

@@ -159,6 +159,16 @@ interface UpdateWalletParams {
   newSecurityPassword?: string
 }
 
+interface Validator {
+  address: string
+  image: string
+  name: string
+  commission: number
+  votingPower: number
+  status: string
+  jailed: boolean
+}
+
 interface TransactionMsgDelegate {
   typeUrl: '/cosmos.staking.v1beta1.MsgDelegate'
   value: {
