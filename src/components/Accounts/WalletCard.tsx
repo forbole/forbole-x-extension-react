@@ -11,13 +11,10 @@ type Props = {
 }
 
 const WalletCard = ({ account }: Props) => {
-  const [isCopySuccess, setIsCopySuccess] = React.useState(false)
-
   const copyText = React.useCallback(
     (e) => {
       e.stopPropagation()
       navigator.clipboard.writeText(account.contents.address)
-      setIsCopySuccess(true)
       toast.success('Copied to Clipboard!')
     },
     [account.contents.address]

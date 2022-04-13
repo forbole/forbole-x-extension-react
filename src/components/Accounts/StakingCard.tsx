@@ -19,7 +19,7 @@ const StakingCard = (props: Props) => {
         <div className="flex justify-between">
           <h3>Staking</h3>
           <ArrowRightIcon />
-      </div>
+        </div>
         <div className="bg-gray-200 flex justify-between text-center relative rounded-xl">
           {tabs.map((e, index) => (
             <p
