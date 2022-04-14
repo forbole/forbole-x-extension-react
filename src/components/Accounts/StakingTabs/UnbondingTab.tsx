@@ -1,46 +1,58 @@
-import React from 'react'
 import { formatDuration, intervalToDuration, format } from 'date-fns'
+import { formatCoin, formatPercentage } from '../../../misc/utils'
+import Avatar from '../../Element/avatar'
 
-type CardProps = {
-  deliveryDate: any
+interface Props {
+  chain: Chain
+  unbonding: Unbonding[]
+  validatorsMap: { [address: string]: Validator }
 }
 
-type Props = {}
-
-const UnbondingCard = (props: CardProps) => {
+const UnbondingCard = ({
+  chain,
+  unbonding,
+  validator,
+}: {
+  chain: Chain
+  unbonding: Unbonding
+  validator?: Validator
+}) => {
   const duration = intervalToDuration({
     start: new Date(),
-    end: props.deliveryDate,
+    end: unbonding.completion,
   })
 
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <div>
-          <h4 className="text-primary-100 leading-none">Forbole</h4>
-          <p>Commission: 10%</p>
+        <div className="flex items-center">
+          <Avatar size={9} src={validator?.image} />
+          <div className="ml-2">
+            <h4 className="text-primary-100 leading-none">{validator?.name}</h4>
+            <p>Commission: {formatPercentage(validator?.commission)}</p>
+          </div>
         </div>
       </div>
       <div>
         <div className="flex justify-between">
-          <p>Redelegated</p>
-          <p>100,211,613.340318 DSM</p>
+          <p>Unbonded Amount</p>
+          <p>{formatCoin(chain.chainId, unbonding.balance)}</p>
         </div>
         <div className="flex justify-between">
           <p>Expected Delivery</p>
           <p>
-            {format(props.deliveryDate, 'dd MMM, HH:mm')}{" "}
+            {format(unbonding.completion, 'dd MMM, HH:mm')}{' '}
             <span className="text-secondary-100">
-              ( 
+              (
               {formatDuration(duration, {
                 format: [
                   Object.entries(duration)
-                    .filter(([_, value]) => value || 0 > 0)
+                    .filter(([_, value]) => value)
                     .map(([unit, _]) => unit)[0],
                 ],
                 delimiter: ', ',
               })}
-               )
+              )
             </span>
           </p>
         </div>
@@ -49,14 +61,15 @@ const UnbondingCard = (props: CardProps) => {
   )
 }
 
-const UnbondingTab = (props: Props) => {
-  const deliveryDate = new Date(2022, 12, 12, 11, 20, 15)
-
+const UnbondingTab = ({ unbonding, chain, validatorsMap }: Props) => {
   return (
     <div>
-      {[...Array(5)].map((e, i) => (
-        <div className={`p-6 odd:bg-surface-200 even:bg-surface-100 last:rounded-b-xl text-black`}>
-          <UnbondingCard deliveryDate={deliveryDate} />
+      {unbonding.map((e, i) => (
+        <div
+          key={e.completion}
+          className={`p-6 odd:bg-surface-200 even:bg-surface-100 last:rounded-b-xl text-black`}
+        >
+          <UnbondingCard unbonding={e} chain={chain} validator={validatorsMap[e.validator]} />
         </div>
       ))}
     </div>

@@ -64,3 +64,10 @@ export const formatCurrency = (amount: number, compact?: boolean): string =>
     currency: 'USD',
     notation: compact ? 'compact' : undefined,
   }).format(amount || 0)} USD`
+
+export const formatPercentage = (percent: number): string =>
+  new Intl.NumberFormat('en', {
+    style: 'percent',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(percent || 0)

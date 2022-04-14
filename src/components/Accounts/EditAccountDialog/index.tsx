@@ -75,7 +75,7 @@ const EditAccountDialog = ({ open, onClose, account }: Props) => {
           title: ' ',
           content: (
             <RemoveAccountStage
-              onCancel={() => setStage(Stage.SelectActionStage)}
+              onCancel={toPrevStage}
               onDelete={() => {
                 deleteAccount({ walletId: account.walletId, address: account.address })
                 onClose()
@@ -84,7 +84,7 @@ const EditAccountDialog = ({ open, onClose, account }: Props) => {
           ),
         }
     }
-  }, [stage, account, changeAccountName, deleteAccount, onClose, setStage])
+  }, [stage, account, changeAccountName, deleteAccount, onClose, setStage, toPrevStage])
 
   return (
     <Dialog

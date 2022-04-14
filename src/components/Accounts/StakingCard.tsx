@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
 import { Loadable } from 'recoil'
 import { ReactComponent as ArrowRightIcon } from '../../assets/images/icons/icon_arrow_right.svg'
+import chains from '../../misc/chains'
 import StakingTabs from './StakingTabs'
-import DelegationTab from './StakingTabs/DelegationTab'
 
 type Props = {
-  account?: Loadable<AccountDetail>
+  account: Loadable<AccountDetail>
+  validators: Loadable<Validator[]>
 }
 
-const StakingCard = (props: Props) => {
+const StakingCard = ({ account, validators }: Props) => {
   const tabs = [{ title: 'Delegation' }, { title: 'Redelegation' }, { title: 'Unbonding' }]
 
   const [tabIndex, setTabIndex] = useState(0)
+  const chain = chains[account.contents?.chain]
 
   return (
     <div className="mx-5">
@@ -19,7 +21,7 @@ const StakingCard = (props: Props) => {
         <div className="flex justify-between">
           <h3>Staking</h3>
           <ArrowRightIcon />
-      </div>
+        </div>
         <div className="bg-gray-200 flex justify-between text-center relative rounded-xl">
           {tabs.map((e, index) => (
             <p
@@ -39,7 +41,16 @@ const StakingCard = (props: Props) => {
           />
         </div>
       </div>
-      <StakingTabs tabIndex={tabIndex} />
+      {chain && (
+        <StakingTabs
+          tabIndex={tabIndex}
+          chain={chain}
+          validators={validators.contents || []}
+          delegations={account.contents?.delegations || []}
+          redelegations={account.contents?.redelegations || []}
+          unbonding={account.contents?.unbonding || []}
+        />
+      )}
     </div>
   )
 }

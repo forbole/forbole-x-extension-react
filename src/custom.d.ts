@@ -35,6 +35,25 @@ interface Account {
   createdAt: number
 }
 
+interface Delegation {
+  balance: Coin
+  rewards: Coin[]
+  validator: string
+}
+
+interface Redelegation {
+  balance: Coin
+  completion: number
+  fromValidator: string
+  toValidator: string
+}
+
+interface Unbonding {
+  balance: Coin
+  completion: number
+  validator: string
+}
+
 interface AccountDetail extends Account {
   balances: {
     available: Coin[]
@@ -44,22 +63,9 @@ interface AccountDetail extends Account {
     total: Coin[]
   }
   prices: { price: number; token: Token }[]
-  delegations: {
-    balance: Coin
-    rewards: Coin[]
-    validator: string
-  }[]
-  redelegations: {
-    balance: Coin
-    completion: number
-    fromValidator: string
-    toValidator: string
-  }[]
-  unbonding: {
-    balance: Coin
-    completion: number
-    validator: string
-  }[]
+  delegations: Delegation[]
+  redelegations: Redelegation[]
+  unbonding: Unbonding[]
 }
 
 interface CreateAccountParams {
@@ -157,6 +163,16 @@ interface UpdateWalletParams {
   name?: string
   securityPassword?: string
   newSecurityPassword?: string
+}
+
+interface Validator {
+  address: string
+  image: string
+  name: string
+  commission: number
+  votingPower: number
+  status: string
+  jailed: boolean
 }
 
 interface TransactionMsgDelegate {

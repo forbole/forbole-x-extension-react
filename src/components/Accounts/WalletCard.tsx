@@ -19,7 +19,6 @@ const WalletCard = ({ account }: Props) => {
     (e) => {
       e.stopPropagation()
       navigator.clipboard.writeText(account.contents.address)
-      setIsCopySuccess(true)
       toast.success('Copied to Clipboard!')
     },
     [account.contents.address]
