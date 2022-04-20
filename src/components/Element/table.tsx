@@ -1,27 +1,28 @@
 import React from 'react'
 
 interface Props {
+  striped?: boolean
   head: React.ReactChild[]
   rows: React.ReactChild[][]
 }
 
-const Table: React.FC<Props> = ({ head, rows }) => {
+const Table: React.FC<Props> = ({ striped, head, rows }) => {
   return (
     <table className="w-full">
       <thead>
-        <tr className="border-b">
+        <tr className={striped ? 'border' : 'border-b'}>
           {head.map((h, i) => (
-            <th className="p-2 text-left" key={String(i)}>
+            <td className="p-4 text-left" key={String(i)}>
               {h}
-            </th>
+            </td>
           ))}
         </tr>
       </thead>
       <tbody>
         {rows.map((r, i) => (
-          <tr className="border-b" key={String(i)}>
+          <tr className={striped ? 'border odd:bg-surface-100' : 'border-b'} key={String(i)}>
             {r.map((c, j) => (
-              <td className="p-2 text-left" key={String(j)}>
+              <td className="p-4 text-left" key={String(j)}>
                 {c}
               </td>
             ))}

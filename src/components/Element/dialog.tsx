@@ -17,7 +17,7 @@ const Dialog = ({ open, onClose, title, children, toPrevStage }: Props) => {
 
   return (
     open && (
-      <div className="absolute top-0 w-full bg-backgroundColor-100 h-full pt-5 overflow-auto">
+      <div className="fixed top-0 w-full bg-backgroundColor-100 h-full pt-5 overflow-auto">
         <div className={`flex ${toPrevStage ? 'justify-between' : 'justify-end'} mx-5 h-7`}>
           {toPrevStage && (
             <ArrowLeftIcon

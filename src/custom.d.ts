@@ -35,6 +35,16 @@ interface Account {
   createdAt: number
 }
 
+interface Profile {
+  dtag: string
+  nickname: string
+  bio: string
+  pictures: {
+    profile: string
+    cover: string
+  }
+}
+
 interface Delegation {
   balance: Coin
   rewards: Coin[]
@@ -54,7 +64,13 @@ interface Unbonding {
   validator: string
 }
 
+interface Vesting {
+  amount: Coin[]
+  date: number
+}
+
 interface AccountDetail extends Account {
+  profile: Profile
   balances: {
     available: Coin[]
     delegated: Coin[]
@@ -65,7 +81,8 @@ interface AccountDetail extends Account {
   prices: { price: number; token: Token }[]
   delegations: Delegation[]
   redelegations: Redelegation[]
-  unbonding: Unbonding[]
+  unbondings: Unbonding[]
+  vestings: Vesting[]
 }
 
 interface CreateAccountParams {
@@ -123,16 +140,6 @@ interface Chain {
   gasAdjustment: number
   gasFee: { amount: number; denom: string }
   defaultGas: { [typeUrl: string]: number }
-}
-
-interface Profile {
-  dtag: string
-  nickname: string
-  bio: string
-  pictures: {
-    profile: string
-    cover: string
-  }
 }
 
 interface ChainConnection {
