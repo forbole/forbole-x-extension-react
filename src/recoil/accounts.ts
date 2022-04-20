@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
-import { atom, selectorFamily, selector, noWait, useSetRecoilState } from 'recoil'
-import { fetchAccountBalance, fetchProfile } from '../fetches/accounts'
+import { atom, selectorFamily, noWait, useSetRecoilState } from 'recoil'
+import lodashGet from 'lodash/get'
+import { fetchAccountBalance, fetchAccount } from '../fetches/accounts'
 import chains from '../misc/chains'
 import { passwordState } from './general'
 import { encryptAndSaveToChromeStorage, removeStorage } from './utils/chromeStorageEncryption'
@@ -42,25 +43,36 @@ export const accountDetailState = selectorFamily<
     ({ walletId, address }) =>
     async ({ get }) => {
       const account = get(accountState({ walletId, address }))
-      const { balances, prices, delegations, unbonding, redelegations } = await fetchAccountBalance(
-        account.chain,
-        account.address
-      )
-      return { ...account, balances, prices, delegations, unbonding, redelegations }
-    },
-})
-
-export const profileDetailState = selectorFamily<Profile, { walletId: string; address: string }>({
-  key: 'profile',
-  get:
-    ({ walletId, address }) =>
-    async ({ get }) => {
-      const account = get(accountState({ walletId, address }))
-      const response = await fetchProfile(account.chain, account.address)
-      if (response.error) {
-        throw response.error
+      const { balances, prices, delegations, unbondings, redelegations } =
+        await fetchAccountBalance(account.chain, account.address)
+      const authAccount = await fetchAccount(account.chain, account.address)
+      const vestings = []
+      const vestingPeriods = lodashGet(authAccount, 'account.vesting_periods', [])
+      for (let i = 0; i < vestingPeriods.length; i += 1) {
+        vestings.push({
+          amount: vestingPeriods[i].amount,
+          date:
+            (i === 0
+              ? Number(lodashGet(authAccount, 'account.start_time', '0')) * 1000
+              : vestings[i - 1].date) +
+            Number(vestingPeriods[i].length) * 1000,
+        })
       }
-      return response
+      return {
+        ...account,
+        balances,
+        prices,
+        delegations,
+        unbondings,
+        redelegations,
+        profile: {
+          dtag: authAccount.dtag,
+          nickname: authAccount.nickname,
+          pictures: authAccount.pictures,
+          bio: authAccount.bio,
+        },
+        vestings,
+      }
     },
 })
 

@@ -1,7 +1,7 @@
 import get from 'lodash/get'
 import { fetchKeybase, fetchLcd } from '.'
 import chains from '../misc/chains'
-import { fetchProfile } from './accounts'
+import { fetchAccount } from './accounts'
 import { Bech32 } from '@cosmjs/encoding'
 import batchPromises from 'batch-promises'
 
@@ -23,7 +23,7 @@ export const fetchValidators = async (chainId: string) => {
     }
     const profiles = await Promise.all(
       response.validators.map((v) =>
-        fetchProfile(
+        fetchAccount(
           chainId,
           Bech32.encode(chain.prefix, Bech32.decode(v.operator_address).data)
         ).catch(() => Promise.resolve(undefined))

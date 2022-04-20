@@ -10,7 +10,7 @@ export const fetchAvailableAccountBalance = async (chainId: string, address: str
   return get(available, 'balances', []) || []
 }
 
-export const fetchProfile = async (chainId: string, address: string) => {
+export const fetchAccount = async (chainId: string, address: string) => {
   const response = await fetchLcd(chainId, `/cosmos/auth/v1beta1/accounts/${address}`)
   return get(response, 'account', undefined)
 }
@@ -66,7 +66,7 @@ export const fetchAccountBalance = async (chainId: string, address: string) => {
           (r) => r.validator_address === get(d, 'delegation.validator_address', '')
         )?.reward || [],
     })),
-    unbonding: flatten(
+    unbondings: flatten(
       get(unbonding, 'unbonding_responses', []).map((u) =>
         u.entries.map((e) => ({
           balance: { amount: e.balance, denom: get(chains, [chainId, 'stakingDenom'], '') },
