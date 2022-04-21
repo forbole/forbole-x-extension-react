@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { ReactComponent as RemoveIcon } from '../../../assets/images/icons/icon_clear.svg'
 import useIconProps from '../../../misc/useIconProps'
@@ -44,7 +44,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account, availab
   const [recipients, setRecipients] = React.useState<
     Array<{ amount: string; denom: string; address: string }>
   >([{ amount: '', denom: Object.values(availableTokens.coins[0])[1] || '', address: '' }])
-  console.log('recipients array', recipients)
+  const [memo, setMemo] = React.useState('')
 
   return (
     <Dialog
@@ -54,13 +54,13 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account, availab
       }}
       title={stage}
     >
-      <div className="z-40">
+      <div className="flex flex-col">
         <div className="px-5 flex flex-row items-start">
           <p>Available amount</p>
           <p className="font-bold pl-2">{`${availableTokens.coins[0].amount}`}</p>
           <p className="font-bold pl-1">{`${availableTokens.coins[0].denom}`}</p>
         </div>
-        <div className="px-5 flex flex-row items-center">
+        <div className="px-5 pt-5 flex flex-row items-center">
           <div className="w-1/2">
             <p>Recipient address</p>
           </div>
@@ -105,10 +105,31 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account, availab
               { address: '', amount: '', denom: Object.values(availableTokens.coins[0])[1] },
             ])
           }}
-          className="px-5 text-primary-100 hover:opacity-80"
+          className="px-5 text-primary-100 hover:opacity-80 text-left"
         >
-          add address
+          Add address
         </button>
+        <div className="ml-5 mt-5">
+          <div className="w-1/2">
+            <p>Memo</p>
+          </div>
+          <input
+            className="bg-gray-200 p-1 rounded text-center w-1/2 h-[10rem]"
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
+            placeholder="Memo"
+          ></input>
+        </div>
+      </div>
+      <div className="w-full pt-20 px-5">
+        <Button
+          disabled={recipients.length <= 0}
+          text="Next"
+          type="submit"
+          onClick={() => {
+            // onSubmit(recipients)
+          }}
+        />
       </div>
     </Dialog>
   )
