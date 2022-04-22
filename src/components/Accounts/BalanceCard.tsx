@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { PieChart, Pie, Cell } from 'recharts'
 import { Loadable } from 'recoil'
-import { ReactComponent as ArrowDownIcon } from '../../assets/images/icons/icon_arrow_down.svg'
+import { ReactComponent as ArrowRightIcon } from '../../assets/images/icons/arrow_right.svg'
 import get from 'lodash/get'
 import { formatCoins, formatCurrency, sumCoinsValues } from '../../misc/utils'
 import VestingDialog from './VestingDialog'
@@ -45,10 +45,10 @@ const BalanceCard = ({ account }: Props) => {
           {get(account, 'contents.vestings', []).length && (
             <button
               onClick={() => setIsVestingDialogOpen(true)}
-              className="flex text-icon-light dark:text-icon-dark space-x-1 hover:opacity-80"
+              className="flex items-center text-icon-light dark:text-icon-dark space-x-2 hover:opacity-80"
             >
               <p>Vesting</p>
-              <ArrowDownIcon />
+              <ArrowRightIcon />
             </button>
           )}
         </div>
