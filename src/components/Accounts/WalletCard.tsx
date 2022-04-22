@@ -65,10 +65,6 @@ const WalletCard = ({ account }: Props) => {
           open={sendDialogOpen}
           onClose={() => setSendDialogOpen(false)}
           account={account.contents}
-          availableTokens={{
-            coins: [{ amount: '1000', denom: 'DSM' }],
-            tokens_prices: [{ DSM: '0.16' }],
-          }}
         />
       </>
     )

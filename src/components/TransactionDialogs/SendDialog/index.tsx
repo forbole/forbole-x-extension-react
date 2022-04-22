@@ -25,12 +25,11 @@ interface Content {
 
 interface SendDialogProps {
   account: AccountDetail
-  availableTokens: AvailableTokens
   open: boolean
   onClose: (open: boolean) => void
 }
 
-const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account, availableTokens }) => {
+const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account }) => {
   const [stage, setStage, toPrevStage, isPrevStageAvailable] = useStateHistory(Stage.SendStage)
   const {
     register,
@@ -43,7 +42,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account, availab
   const { balances } = account
   const [recipients, setRecipients] = React.useState<
     Array<{ amount: string; denom: string; address: string }>
-  >([{ amount: '', denom: Object.values(availableTokens.coins[0])[1] || '', address: '' }])
+  >([{ amount: '', denom: balances.total[0].denom || 'DSM', address: '' }])
   const [memo, setMemo] = React.useState('')
 
   return (
@@ -109,7 +108,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account, availab
           onClick={() => {
             setRecipients((d) => [
               ...d,
-              { address: '', amount: '', denom: Object.values(availableTokens.coins[0])[1] },
+              { address: '', amount: '', denom: balances.available[0].denom || 'DSM' },
             ])
           }}
           className="px-5 text-primary-100 hover:opacity-80 text-left"

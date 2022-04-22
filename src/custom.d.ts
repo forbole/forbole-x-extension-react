@@ -409,8 +409,3 @@ interface Transaction {
     gas: string
   }
 }
-
-interface AvailableTokens {
-  coins: Array<{ amount: string; denom: string }>
-  tokens_prices: TokenPrice[]
-}
