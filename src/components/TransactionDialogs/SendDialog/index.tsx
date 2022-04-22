@@ -42,7 +42,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account }) => {
   const { balances } = account
   const [recipients, setRecipients] = React.useState<
     Array<{ amount: string; denom: string; address: string }>
-  >([{ amount: '', denom: balances.total[0].denom || 'DSM', address: '' }])
+  >([{ amount: '', denom: 'DSM', address: '' }])
   const [memo, setMemo] = React.useState('')
 
   return (
@@ -83,7 +83,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account }) => {
             )}
             <div className="flex flex-row items-center justify-between w-full">
               <input
-                className="bg-gray-200 p-1 rounded text-center w-1/2"
+                className="bg-gray-200 p-1 rounded w-1/2"
                 value={v.address}
                 onChange={(e) =>
                   setRecipients((rs) =>
@@ -92,7 +92,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account }) => {
                 }
               />
               <input
-                className="bg-gray-200 p-1 rounded text-center w-1/2 ml-2"
+                className="bg-gray-200 p-1 rounded w-1/2 ml-2"
                 value={v.amount}
                 placeholder={v.denom}
                 onChange={(e) =>
@@ -106,10 +106,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account }) => {
         ))}{' '}
         <button
           onClick={() => {
-            setRecipients((d) => [
-              ...d,
-              { address: '', amount: '', denom: balances.available[0].denom || 'DSM' },
-            ])
+            setRecipients((d) => [...d, { address: '', amount: '', denom: 'DSM' }])
           }}
           className="px-5 text-primary-100 hover:opacity-80 text-left"
         >
