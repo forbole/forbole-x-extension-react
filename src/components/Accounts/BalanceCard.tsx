@@ -42,7 +42,7 @@ const BalanceCard = ({ account }: Props) => {
       <div className="mx-5 p-6 rounded-xl bg-popup-100">
         <div className="flex justify-between items-end">
           <h3>Balance</h3>
-          {get(account, 'contents.vestings', []).length && (
+          {!!get(account, 'contents.vestings', []).length && (
             <button
               onClick={() => setIsVestingDialogOpen(true)}
               className="flex items-center text-icon-light dark:text-icon-dark space-x-2 hover:opacity-80"
@@ -108,7 +108,7 @@ const BalanceCard = ({ account }: Props) => {
           </div>
         </div>
       </div>
-      {get(account, 'contents.vestings', []).length && (
+      {!!get(account, 'contents.vestings', []).length && (
         <VestingDialog
           open={isVestingDialogOpen}
           onClose={() => setIsVestingDialogOpen(false)}
