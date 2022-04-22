@@ -29,7 +29,7 @@ const Account = (props: Props) => {
         {account.state === 'hasValue' && (
           <ProfileCard profile={get(account, ['contents', 'profile'])} />
         )}
-        {account.state === 'hasValue' && <WalletCard account={account} />}
+        <WalletCard account={account} />
         <BalanceCard account={account} />
         <StakingCard account={account} validators={validators} />
       </div>
