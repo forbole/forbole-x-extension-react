@@ -65,12 +65,14 @@ export const accountDetailState = selectorFamily<
         delegations,
         unbondings,
         redelegations,
-        profile: {
-          dtag: authAccount.dtag,
-          nickname: authAccount.nickname,
-          pictures: authAccount.pictures,
-          bio: authAccount.bio,
-        },
+        profile: authAccount.dtag
+          ? {
+              dtag: authAccount.dtag,
+              nickname: authAccount.nickname,
+              pictures: authAccount.pictures,
+              bio: authAccount.bio,
+            }
+          : undefined,
         vestings,
       }
     },
