@@ -5,6 +5,7 @@ import useIconProps from '../../../misc/useIconProps'
 import Dialog from '../../Element/dialog'
 import Button from '../../Element/button'
 import useStateHistory from '../../../misc/useStateHistory'
+import { formatCoins } from '../../../misc/utils'
 
 interface Props {
   open: boolean
@@ -57,11 +58,10 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account }) => {
         <div className="px-5 flex flex-row items-start">
           <p>Available amount</p>
           {balances.available.map((x, y) => {
-            const { amount, denom } = x
+            // const { amount, denom } = x
             return (
               <>
-                <p className="font-bold pl-2">{amount}</p>
-                <p className="font-bold pl-1">{denom}</p>
+                <p className="font-bold pl-2">{formatCoins(account.chain, balances.available)}</p>
               </>
             )
           })}
@@ -117,7 +117,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account }) => {
             <p>Memo</p>
           </div>
           <input
-            className="bg-gray-200 p-1 rounded text-center w-1/2 h-[10rem]"
+            className="bg-gray-200 p-2 rounded w-1/2 h-[10rem]"
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             placeholder="Memo"
