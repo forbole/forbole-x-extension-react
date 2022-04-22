@@ -14,7 +14,6 @@ interface Props {
 
 export enum Stage {
   SendStage = 'Send',
-  ConfirmTxStage = 'Send',
   ShareAddressStage = 'share address',
   RemoveAccountStage = 'remove account',
 }
@@ -25,7 +24,7 @@ interface Content {
 }
 
 interface SendDialogProps {
-  account: Account
+  account: AccountDetail
   availableTokens: AvailableTokens
   open: boolean
   onClose: (open: boolean) => void
@@ -41,6 +40,8 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account, availab
     formState: { errors },
   } = useForm()
   const iconProps = useIconProps()
+  const { balances } = account
+  console.log(account)
   const [recipients, setRecipients] = React.useState<
     Array<{ amount: string; denom: string; address: string }>
   >([{ amount: '', denom: Object.values(availableTokens.coins[0])[1] || '', address: '' }])
@@ -57,8 +58,17 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account, availab
       <div className="flex flex-col">
         <div className="px-5 flex flex-row items-start">
           <p>Available amount</p>
-          <p className="font-bold pl-2">{`${availableTokens.coins[0].amount}`}</p>
-          <p className="font-bold pl-1">{`${availableTokens.coins[0].denom}`}</p>
+          {balances.available.map((x, y) => {
+            const { amount, denom } = x
+            return (
+              <>
+                <p className="font-bold pl-2">{amount}</p>
+                <p className="font-bold pl-1">{denom}</p>
+              </>
+            )
+          })}
+          {/* <p className="font-bold pl-2">{`${availableTokens.coins[0].amount}`}</p>
+          <p className="font-bold pl-1">{`${availableTokens.coins[0].denom}`}</p> */}
         </div>
         <div className="px-5 pt-5 flex flex-row items-center">
           <div className="w-1/2">
