@@ -6,6 +6,7 @@ import Dialog from '../../Element/dialog'
 import Button from '../../Element/button'
 import useStateHistory from '../../../misc/useStateHistory'
 import { formatCoins } from '../../../misc/utils'
+import { Loadable } from 'recoil'
 
 interface Props {
   open: boolean
@@ -15,8 +16,7 @@ interface Props {
 
 export enum Stage {
   SelectAmountStage = 'select amount',
-  ShareAddressStage = 'share address',
-  RemoveAccountStage = 'remove account',
+  SelectValidatorsStage = 'select validators',
 }
 
 interface Content {
@@ -28,9 +28,15 @@ interface DelegationDialogProps {
   account: AccountDetail
   open: boolean
   onClose: (open: boolean) => void
+  validatos?: Loadable<Validator[]>
 }
 
-const DelegationDialog: React.FC<DelegationDialogProps> = ({ open, onClose, account }) => {
+const DelegationDialog: React.FC<DelegationDialogProps> = ({
+  open,
+  onClose,
+  account,
+  validatos,
+}) => {
   const [stage, setStage, toPrevStage, isPrevStageAvailable] = useStateHistory(
     Stage.SelectAmountStage
   )
@@ -60,10 +66,9 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({ open, onClose, acco
         return {
           title: 'Delegate',
           content: (
-            // <SelectAmountStage
-            //   onChangeMoniker={() => setStage(Stage.ChangeMonikerStage)}
-            //   onShareAddress={() => setStage(Stage.ShareAddressStage)}
-            //   onRemove={() => setStage(Stage.RemoveAccountStage)}
+            // <SelectAmount
+            // account={account}
+            // onConfirm={confirmAmount}
             // />
             <></>
           ),

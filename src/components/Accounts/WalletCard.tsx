@@ -6,12 +6,14 @@ import { Loadable } from 'recoil'
 import chains from '../../misc/chains'
 import toast from 'react-hot-toast'
 import SendDialog from '../../components/TransactionDialogs/SendDialog'
+import DelegationDialog from '../../components/TransactionDialogs/DelegationDialog'
 
 type Props = {
   account: Loadable<AccountDetail>
+  validators?: Loadable<Validator[]>
 }
 
-const WalletCard = ({ account }: Props) => {
+const WalletCard = ({ account, validators }: Props) => {
   const [isCopySuccess, setIsCopySuccess] = React.useState(false)
   const [sendDialogOpen, setSendDialogOpen] = React.useState(false)
 
