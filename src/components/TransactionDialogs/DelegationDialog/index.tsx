@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import SelectAmount from './SelectAmount'
 import { ReactComponent as RemoveIcon } from '../../../assets/images/icons/icon_clear.svg'
 import useIconProps from '../../../misc/useIconProps'
 import Dialog from '../../Element/dialog'
@@ -14,7 +15,7 @@ interface Props {
   account: Account
 }
 
-export enum Stage {
+export enum DelegationStage {
   SelectAmountStage = 'select amount',
   SelectValidatorsStage = 'select validators',
 }
@@ -28,7 +29,8 @@ interface DelegationDialogProps {
   account: AccountDetail
   open: boolean
   onClose: (open: boolean) => void
-  validatos?: Loadable<Validator[]>
+  validatos: Loadable<Validator[]>
+  defaultValidator?: Validator
 }
 
 const DelegationDialog: React.FC<DelegationDialogProps> = ({
@@ -36,9 +38,15 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
   onClose,
   account,
   validatos,
+  defaultValidator,
 }) => {
+  const [amount, setAmount] = React.useState(0)
+  const [denom, setDenom] = React.useState('')
+  const [delegations, setDelegations] = React.useState<
+    Array<{ amount: number; validator: Validator }>
+  >([])
   const [stage, setStage, toPrevStage, isPrevStageAvailable] = useStateHistory(
-    Stage.SelectAmountStage
+    DelegationStage.SelectAmountStage
   )
   const {
     register,
@@ -56,22 +64,26 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
 
   useEffect(() => {
     if (!open) {
-      setStage(Stage.SelectAmountStage, true)
+      setStage(DelegationStage.SelectAmountStage, true)
     }
   }, [open])
 
+  const confirmAmount = React.useCallback(
+    (a: number, d: string) => {
+      setAmount(a)
+      setDenom(d)
+      setDelegations([{ amount: a, validator: (defaultValidator || {}) as Validator }])
+      setStage(DelegationStage.SelectValidatorsStage)
+    },
+    [setAmount, setStage, defaultValidator]
+  )
+
   const content: Content = React.useMemo(() => {
     switch (stage) {
-      case Stage.SelectAmountStage:
+      case DelegationStage.SelectAmountStage:
         return {
           title: 'Delegate',
-          content: (
-            // <SelectAmount
-            // account={account}
-            // onConfirm={confirmAmount}
-            // />
-            <></>
-          ),
+          content: <SelectAmount account={account} onConfirm={confirmAmount} />,
         }
     }
   }, [stage, account, onClose, setStage, toPrevStage])
@@ -80,7 +92,9 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
     <Dialog
       title={content.title}
       open={open}
-      onClose={onClose}
+      onClose={() => {
+        onClose(false)
+      }}
       toPrevStage={isPrevStageAvailable ? toPrevStage : null}
     >
       <>{content.content}</>
