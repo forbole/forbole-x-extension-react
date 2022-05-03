@@ -13,7 +13,7 @@ import { PubKey } from 'cosmjs-types/cosmos/crypto/secp256k1/keys'
 import Long from 'long'
 import { LedgerSigner } from '@cosmjs/ledger-amino'
 import { fromBase64 } from '@cosmjs/encoding'
-import cryptocurrencies from '../cryptocurrencies'
+import chains from '../chains'
 import { Bech32Address } from '../../desmos-proto/profiles/v1beta1/models_chain_links'
 import { aminoAdditions, registry } from './customTxTypes'
 
@@ -123,10 +123,10 @@ const signAndBroadcastCosmosTransaction = async (
   const signerOptions = {
     hdPaths: [
       stringToPath(
-        `m/44'/${cryptocurrencies[crypto].coinType}'/${account || 0}'/${change || 0}/${index || 0}`,
+        `m/44'/${chains[crypto].coinType}'/${account || 0}'/${change || 0}/${index || 0}`,
       ),
     ],
-    prefix: cryptocurrencies[crypto].prefix,
+    prefix: chains[crypto].prefix,
   }
   let signer
   if (!ledgerTransport) {
@@ -134,12 +134,12 @@ const signAndBroadcastCosmosTransaction = async (
   } else {
     signer = new LedgerSigner(ledgerTransport, {
       ...signerOptions,
-      ledgerAppName: cryptocurrencies[crypto].ledgerAppName,
+      ledgerAppName: chains[crypto].ledgerAppName,
     } as any)
   }
   const accounts = await signer.getAccounts()
   const client = await SigningStargateClient.connectWithSigner(
-    cryptocurrencies[crypto].rpcApiUrl,
+    chains[crypto].rpcApiUrl,
     signer,
     {
       registry,
