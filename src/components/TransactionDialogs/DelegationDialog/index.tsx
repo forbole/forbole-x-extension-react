@@ -29,7 +29,7 @@ interface DelegationDialogProps {
   account: AccountDetail
   open: boolean
   onClose: (open: boolean) => void
-  validatos: Loadable<Validator[]>
+  validators: Loadable<Validator[]>
   defaultValidator?: Validator
 }
 
@@ -37,7 +37,7 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
   open,
   onClose,
   account,
-  validatos,
+  validators,
   defaultValidator,
 }) => {
   const [amount, setAmount] = React.useState(0)
@@ -61,6 +61,7 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
     Array<{ amount: string; denom: string; address: string }>
   >([{ amount: '', denom: 'DSM', address: '' }])
   const [memo, setMemo] = React.useState('')
+  console.log('amount', amount)
 
   useEffect(() => {
     if (!open) {
@@ -84,6 +85,23 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
         return {
           title: 'Delegate',
           content: <SelectAmount account={account} onConfirm={confirmAmount} />,
+        }
+      case DelegationStage.SelectValidatorsStage:
+        return {
+          title: 'Delegate',
+          content: (
+            //   <SelectValidators
+            //   crypto={crypto}
+            //   delegations={delegations}
+            //   validators={validators}
+            //   amount={amount}
+            //   price={availableAmount[denom]?.price}
+            //   denom={denom}
+            //   onConfirm={confirmDelegations}
+            //   loading={loading}
+            // />
+            <></>
+          ),
         }
     }
   }, [stage, account, onClose, setStage, toPrevStage])

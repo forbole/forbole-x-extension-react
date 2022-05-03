@@ -73,7 +73,7 @@ const WalletCard = ({ account, validators }: Props) => {
         open={delegationDialogOpen}
         onClose={() => setDelegationDialogOpen(false)}
         account={account.contents}
-        validatos={validators}
+        validators={validators}
       />
     </>
   )
