@@ -182,10 +182,10 @@ const signAndBroadcastTransaction = async (
     // TODO: handle other ecosystem
     const result = await signAndBroadcastCosmosTransaction(
       mnemonic,
-      account.crypto,
-      account.account,
-      account.change,
-      account.index,
+      account.chain,
+      account.hdPath.account,
+      account.hdPath.change,
+      account.hdPath.index,
       transactionData,
       ledgerTransport,
       onSignEnd,
