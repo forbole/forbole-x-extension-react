@@ -2,7 +2,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Account from '../pages/account'
 import AddressBook from '../pages/address-book'
-import Setting from '../pages/setting'
+import Setting from '../pages/Settings'
 import Wallet from '../pages/wallet'
 
 interface Props {}
