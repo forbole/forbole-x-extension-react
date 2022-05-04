@@ -1,6 +1,7 @@
 import React from 'react';
 import useStyles from './useStyles';
 import {Tabs, Tab} from '@material-ui/core';
+import {useTranslation} from "react-i18next";
 
 const tabs = [
     {
@@ -18,6 +19,8 @@ const tabs = [
 ]
 
 const SettingsTabBar = () => {
+
+    const {t} = useTranslation();
 
     const {indicator, customTab} = useStyles()
 

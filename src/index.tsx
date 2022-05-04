@@ -10,6 +10,7 @@ import AppRoutes from './routes/routes'
 import { Helmet } from 'react-helmet'
 // @ts-ignore
 import nightwind from 'nightwind/helper'
+import '../src/assets/locales/i18n';
 
 ReactDOM.render(
   <React.StrictMode>
