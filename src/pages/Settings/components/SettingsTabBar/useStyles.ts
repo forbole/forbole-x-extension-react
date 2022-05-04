@@ -1,5 +1,5 @@
 import {useRecoilState} from "recoil";
-import {themeState} from "../../../recoil/general";
+import {themeState} from "../../../../recoil/general";
 import {makeStyles} from '@material-ui/styles'
 
 const useStyles = () => {

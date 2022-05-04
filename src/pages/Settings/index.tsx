@@ -1,6 +1,6 @@
 import React from 'react'
 import Layout from '../../components/Layout/layout'
-import SettingsTabBar from "./SettingsTabBar";
+import SettingsTabBar from "./components/SettingsTabBar";
 
 const Setting = () => {
     return (
