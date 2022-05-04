@@ -19,7 +19,7 @@ const tabs = [
 
 const SettingsTabBar = () => {
 
-    const {indicator, tab, customTab} = useStyles()
+    const {indicator, customTab} = useStyles()
 
     const [currentTab, setCurrentTab] = React.useState(0)
 
@@ -31,9 +31,9 @@ const SettingsTabBar = () => {
     return (
         <Tabs
             classes={{
-            indicator,
-        }}
-              value={currentTab} onChange={(e, v) => {
+                indicator,
+            }}
+            value={currentTab} onChange={(e, v) => {
             setCurrentTab(v)
         }}>
             {tabRender}

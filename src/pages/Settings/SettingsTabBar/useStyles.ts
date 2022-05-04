@@ -1,6 +1,6 @@
 import {useRecoilState} from "recoil";
 import {themeState} from "../../../recoil/general";
-import { makeStyles} from '@material-ui/styles'
+import {makeStyles} from '@material-ui/styles'
 
 const useStyles = () => {
     const [theme] = useRecoilState(themeState)
@@ -22,18 +22,15 @@ const useStyles = () => {
     }
 
     return makeStyles(
-        () => ({   indicator: {
+        () => ({
+            indicator: {
                 ...styleOverride[theme].indicator,
                 width: '8px' // mui uses 8px incremental spacing
             },
-            tab:{
-                '& .MUI-selected': {
-                    ...styleOverride[theme].indicator,
-                },
-            },
             customTab: {
                 minWidth: 80
-            }})
+            }
+        })
     )();
 };
 
