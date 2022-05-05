@@ -1,47 +1,58 @@
-import React from 'react';
-import useStyles from './useStyles';
-import {Tabs, Tab} from '@material-ui/core';
-import {useTranslation} from "react-i18next";
+import React from 'react'
+import { Tabs, Tab } from '@mui/material'
+import GeneralSettings from '../GeneralSettings'
 
-const tabs = [
-    {
-        label: 'general'
-    },
-    {
-        label: 'feedback'
-    },
-    {
-        label: 'follow us'
-    },
-    {
-        label: 'about'
-    }
-]
+type Props = {
+  // The tabs to be rendered
+  tabs: { label: string }[]
 
-const SettingsTabBar = () => {
+  // The current tab
+  currentTab: number
 
-    const {t} = useTranslation();
+  // When the user clicks on a different tab
+  onChange: (_value: number) => void
+}
 
-    const {indicator, customTab} = useStyles()
+const SettingsTabBar = ({ tabs, currentTab, onChange }: Props) => {
+  const tabRender = React.useMemo(() => {
+    return tabs.map((tab) => (
+      <Tab
+        sx={{
+          minWidth: 80,
+        }}
+        key={tab.label}
+        label={tab.label}
+      />
+    ))
+  }, [currentTab])
 
-    const [currentTab, setCurrentTab] = React.useState(0)
+  const tabContent = React.useMemo(
+    () => ({
+      0: <GeneralSettings />,
+    }),
+    []
+  )
 
-    const tabRender = React.useMemo(() => {
-        return tabs.map(tab => <Tab className={customTab} key={tab.label} label={tab.label}/>)
-    }, [currentTab])
+  return (
+    <>
+      <Tabs
+        sx={{
+          indicator: {
+            color: 'white',
+            width: '8px',
+          },
+        }}
+        value={currentTab}
+        onChange={(e, v) => {
+          onChange(v)
+        }}
+      >
+        {tabRender}
+      </Tabs>
 
+      {tabContent[currentTab]}
+    </>
+  )
+}
 
-    return (
-        <Tabs
-            classes={{
-                indicator,
-            }}
-            value={currentTab} onChange={(e, v) => {
-            setCurrentTab(v)
-        }}>
-            {tabRender}
-        </Tabs>
-    )
-};
-
-export default SettingsTabBar;
+export default SettingsTabBar

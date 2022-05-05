@@ -1,9 +1,13 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 import Account from '../pages/account'
 import AddressBook from '../pages/address-book'
 import Setting from '../pages/Settings'
 import Wallet from '../pages/wallet'
+import lightTheme from '../config/theme/lightTheme'
+import { themeState } from '../recoil/general'
+import darkTheme from '../config/theme/darkTheme'
 
 interface Props {}
 
