@@ -16,7 +16,16 @@ const SettingsDropdown = ({ label, selectedIndex, values, onChange }: Props) => 
   const [menuOpened, setMenuOpened] = React.useState(false)
   const anchorRef = React.useRef<any>()
   return (
-    <Box mx={2} my={2} display="flex" alignItems="center" justifyContent="space-between">
+    <Box
+      sx={(theme) => ({
+        padding: `0 ${theme.spacing(1)}`,
+      })}
+      mx={2}
+      my={2}
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+    >
       <Typography variant="subtitle1">{label}</Typography>
       <Button
         ref={anchorRef}
@@ -24,8 +33,7 @@ const SettingsDropdown = ({ label, selectedIndex, values, onChange }: Props) => 
         variant="outlined"
         sx={(theme) => ({
           borderColor: 'iconBorder',
-          width: theme.spacing(15),
-          margin: theme.spacing(1),
+          width: theme.spacing(20),
           padding: `${theme.spacing(0.5)} ${theme.spacing(1.5)}`,
           display: 'flex',
           alignItems: 'flex-start',
@@ -63,7 +71,7 @@ const SettingsDropdown = ({ label, selectedIndex, values, onChange }: Props) => 
             <>
               <MenuItem
                 sx={(theme) => ({
-                  width: theme.spacing(15),
+                  width: theme.spacing(20),
                 })}
                 onClick={() => {
                   onChange(i)

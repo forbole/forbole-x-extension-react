@@ -1,6 +1,5 @@
 import React from 'react'
 import { Tabs, Tab } from '@mui/material'
-import GeneralSettings from '../GeneralSettings'
 
 type Props = {
   // The tabs to be rendered
@@ -26,32 +25,21 @@ const SettingsTabBar = ({ tabs, currentTab, onChange }: Props) => {
     ))
   }, [currentTab])
 
-  const tabContent = React.useMemo(
-    () => ({
-      0: <GeneralSettings />,
-    }),
-    []
-  )
-
   return (
-    <>
-      <Tabs
-        sx={{
-          indicator: {
-            color: 'white',
-            width: '8px',
-          },
-        }}
-        value={currentTab}
-        onChange={(e, v) => {
-          onChange(v)
-        }}
-      >
-        {tabRender}
-      </Tabs>
-
-      {tabContent[currentTab]}
-    </>
+    <Tabs
+      sx={{
+        indicator: {
+          color: 'white',
+          width: '8px',
+        },
+      }}
+      value={currentTab}
+      onChange={(e, v) => {
+        onChange(v)
+      }}
+    >
+      {tabRender}
+    </Tabs>
   )
 }
 
