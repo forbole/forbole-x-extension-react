@@ -1,7 +1,7 @@
 import React from 'react'
 import Layout from '../../components/Layout/layout'
 import SettingsTabBar from './components/SettingsTabBar'
-import GeneralSettings from './components/GeneralSettings'
+import GeneralTab from './components/GeneralTab'
 
 const tabs = [
   {
@@ -23,7 +23,7 @@ const Setting = () => {
 
   const tabContent = React.useMemo(
     () => ({
-      0: <GeneralSettings />,
+      0: <GeneralTab />,
     }),
     []
   )

@@ -11,7 +11,7 @@ const currencies = ['EUR', 'GBP', 'JPY', 'KRK', 'HKD']
 
 const languages = ['English']
 
-const GeneralSettings = () => {
+const GeneralTab = () => {
   const { t } = useTranslation('settings')
 
   const setTheme = useSetTheme()
@@ -60,4 +60,4 @@ const GeneralSettings = () => {
   )
 }
 
-export default GeneralSettings
+export default GeneralTab
