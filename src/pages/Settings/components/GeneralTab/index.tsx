@@ -1,5 +1,5 @@
 import React from 'react'
-import { Divider } from '@mui/material'
+import { Divider, Paper } from '@mui/material'
 import { useRecoilState } from 'recoil'
 import { useTranslation } from 'react-i18next'
 import SettingsDropdown from '../SettingsDropdown'
@@ -28,7 +28,12 @@ const GeneralTab = () => {
   }, [])
 
   return (
-    <div>
+    <Paper
+      sx={(_theme) => ({
+        paddingTop: _theme.spacing(2),
+        paddingBottom: _theme.spacing(2),
+      })}
+    >
       <SettingsSwitch
         label={t('general.darkMode')}
         handleChange={() => {
@@ -56,7 +61,7 @@ const GeneralTab = () => {
         buttonLabel={t('general.passwordLock.changePw')}
         handleClick={handleChangePassword}
       />
-    </div>
+    </Paper>
   )
 }
 

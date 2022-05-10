@@ -42,5 +42,11 @@
     "privacyPolicy": "Privacy Policy",
     "toc": "Terms of Conditions",
     "version": "Version"
+  },
+  "followUs": {
+    "twitter": {
+      "site": "Twitter",
+      "name": "@forboleX"
+    }
   }
 }
