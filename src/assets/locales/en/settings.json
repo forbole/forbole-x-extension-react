@@ -1,4 +1,10 @@
 {
+  "tabs": {
+    "general": "General",
+    "feedback": "Feedback",
+    "followUs": "Follow Us",
+    "about": "About"
+  },
   "next": "Next",
   "general": {
     "darkMode": "Dark Mode",

@@ -12,11 +12,7 @@ type Props = {
 const SettingsSwitch = ({ label, handleChange, isChecked }: Props) => {
   return (
     <Box
-      sx={(theme) => ({
-        padding: `0 ${theme.spacing(1)}`,
-      })}
-      mx={2}
-      my={2}
+      padding={(theme) => theme.spacing(2)}
       display="flex"
       alignItems="center"
       justifyContent="space-between"

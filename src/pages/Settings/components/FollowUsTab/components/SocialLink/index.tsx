@@ -28,8 +28,7 @@ const SocialLink = ({ URL, Icon, label, siteName }: Props) => {
     <Link
       sx={(_theme) => ({
         color: _theme.palette.text.primary,
-        paddingLeft: _theme.spacing(2),
-        paddingRight: _theme.spacing(2),
+        padding: _theme.spacing(2),
         textDecoration: 'none',
         display: 'flex',
         flex: 1,

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import Layout from '../../components/Layout/layout'
 import SettingsTabBar from './components/SettingsTabBar'
 import GeneralTab from './components/GeneralTab'
@@ -6,23 +7,24 @@ import FeedbackTab from './components/FeedbackTab'
 import FollowUsTab from './components/FollowUsTab'
 import AboutUsTab from './components/AboutTab'
 
-const tabs = [
-  {
-    label: 'general',
-  },
-  {
-    label: 'feedback',
-  },
-  {
-    label: 'follow us',
-  },
-  {
-    label: 'about',
-  },
-]
-
 const Setting = () => {
   const [currentTab, setCurrentTab] = React.useState(0)
+  const { t } = useTranslation('settings')
+
+  const tabs = [
+    {
+      label: t('tabs.general'),
+    },
+    {
+      label: t('tabs.feedback'),
+    },
+    {
+      label: t('tabs.followUs'),
+    },
+    {
+      label: t('tabs.about'),
+    },
+  ]
 
   const tabContent = React.useMemo(
     () => ({

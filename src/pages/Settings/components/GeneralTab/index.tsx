@@ -28,12 +28,7 @@ const GeneralTab = () => {
   }, [])
 
   return (
-    <Paper
-      sx={(_theme) => ({
-        paddingTop: _theme.spacing(2),
-        paddingBottom: _theme.spacing(2),
-      })}
-    >
+    <Paper>
       <SettingsSwitch
         label={t('general.darkMode')}
         handleChange={() => {
