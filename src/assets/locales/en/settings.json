@@ -41,6 +41,10 @@
     "message": {
       "label": "Message",
       "placeholder": "Give as many details as possible..."
+    },
+    "successDialog": {
+      "title": "Thank you",
+      "content": "We successfully received your feedback and will get back to you as soon as possible."
     }
   },
   "about": {

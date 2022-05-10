@@ -1,23 +1,46 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Box, Button, Typography } from '@mui/material'
+import { useTheme, Box, Button, CircularProgress, Typography } from '@mui/material'
 import CustomInput from '../../../../components/CustomInput'
+import SuccessDialog from './components/SuccessDialog'
 
 const FeedbackTab = () => {
   const { t } = useTranslation('settings')
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, reset } = useForm()
+  const [loading, setLoading] = React.useState(false)
+  const [showSuccessDialog, setShowSuccessDialog] = React.useState(false)
+  const theme = useTheme()
 
-  const onSubmit = React.useCallback((args: any) => {
-    // to do: implementation
-    console.log(args)
-  }, [])
+  const onSubmit = React.useCallback(
+    async (args: { name: string; subject: string; message: string }) => {
+      try {
+        setLoading(true)
+
+        await fetch('/api/contact-us', {
+          method: 'POST',
+          body: JSON.stringify(args),
+        })
+
+        setLoading(false)
+        setShowSuccessDialog(true)
+        reset()
+
+        setLoading(false)
+      } catch (err) {
+        // Todo: improve error handling
+        setLoading(false)
+        console.log(err)
+      }
+    },
+    []
+  )
 
   return (
     <Box
-      sx={(theme) => ({
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
+      sx={(_theme) => ({
+        paddingLeft: _theme.spacing(2),
+        paddingRight: _theme.spacing(2),
       })}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -44,10 +67,15 @@ const FeedbackTab = () => {
           multiline
         />
 
-        <Button type="submit" variant="contained" fullWidth>
-          <Typography variant="subtitle2">{t('next')}</Typography>
+        <Button type="submit" variant="contained" fullWidth disabled={loading}>
+          {loading ? (
+            <CircularProgress size={theme.spacing(3.5)} />
+          ) : (
+            <Typography variant="subtitle2">{t('next')}</Typography>
+          )}
         </Button>
       </form>
+      <SuccessDialog isOpen={showSuccessDialog} onClose={() => setShowSuccessDialog(false)} />
     </Box>
   )
 }
