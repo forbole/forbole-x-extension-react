@@ -38,6 +38,7 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'no-undef': 0,
   },
   settings: {
     'import/resolver': {
