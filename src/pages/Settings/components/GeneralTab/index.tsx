@@ -2,10 +2,10 @@ import React from 'react'
 import { Divider, Paper } from '@mui/material'
 import { useRecoilState } from 'recoil'
 import { useTranslation } from 'react-i18next'
-import SettingsDropdown from '../SettingsDropdown'
-import SettingsSwitch from '../SettingsSwitch'
+import SettingsDropdown from './components/SettingsDropdown'
+import SettingsSwitch from './components/SettingsSwitch'
 import { themeState, useSetTheme } from '../../../../recoil/general'
-import SettingsButton from '../SettingsButton'
+import SettingsButton from './components/SettingsButton'
 
 const currencies = ['EUR', 'GBP', 'JPY', 'KRK', 'HKD']
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Button, Divider, Menu, MenuItem, Typography } from '@mui/material'
-import DropdownIcon from '../../../../components/svg/DropdownIcon'
+import DropdownIcon from '../../../../../../components/svg/DropdownIcon'
 
 type Props = {
   label: string
