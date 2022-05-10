@@ -1,5 +1,6 @@
 {
   "general": {
+    "darkMode": "Dark Mode",
     "currency": {
       "label": "Currency",
       "values": {
@@ -16,16 +17,10 @@
         "ENG": "ENG"
       }
     },
-    "displayMode": {
-      "label":  "Display Mode",
-      "values": {
-        "dark": "Dark Theme",
-        "light": "Light Theme"
-      }
-    },
-    "alwaysReqPw": "Always Require Password",
-    "reqPwAfter15": "Require Password after 15 Minutes",
-    "changeUnlockPw": "Change Unlock Password"
+    "passwordLock": {
+      "label": "Password Lock",
+      "changePw": "Change Password"
+    }
   },
   "feedback": {
     "email": {

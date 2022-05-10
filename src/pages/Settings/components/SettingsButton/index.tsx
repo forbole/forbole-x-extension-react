@@ -12,11 +12,9 @@ type Props = {
 const SettingsButton = ({ label, buttonLabel, handleClick }: Props) => {
   return (
     <Box
-      sx={(theme) => ({
-        padding: `0 ${theme.spacing(1)}`,
-      })}
       mx={2}
       my={2}
+      padding={(theme) => `0 ${theme.spacing(1)}`}
       display="flex"
       alignItems="center"
       justifyContent="space-between"

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Divider } from '@mui/material'
 import { useRecoilState } from 'recoil'
+import { useTranslation } from 'react-i18next'
 import SettingsDropdown from '../SettingsDropdown'
 import SettingsSwitch from '../SettingsSwitch'
 import { themeState, useSetTheme } from '../../../../recoil/general'
@@ -11,6 +12,8 @@ const currencies = ['EUR', 'GBP', 'JPY', 'KRK', 'HKD']
 const languages = ['English']
 
 const GeneralSettings = () => {
+  const { t } = useTranslation('settings')
+
   const setTheme = useSetTheme()
 
   const [theme] = useRecoilState(themeState)
@@ -27,7 +30,7 @@ const GeneralSettings = () => {
   return (
     <div>
       <SettingsSwitch
-        label="Dark Mode"
+        label={t('general.darkMode')}
         handleChange={() => {
           setTheme()
         }}
@@ -35,22 +38,22 @@ const GeneralSettings = () => {
       />
       <Divider />
       <SettingsDropdown
-        label="Currency"
+        label={t('general.currency.label')}
         selectedIndex={selectedCurrency}
         values={currencies}
         onChange={setSelectedCurrency}
       />
       <Divider />
       <SettingsDropdown
-        label="Language"
+        label={t('general.language.label')}
         selectedIndex={selectedLanguage}
         values={languages}
         onChange={setSelectedLanguage}
       />
       <Divider />
       <SettingsButton
-        label="Password Lock"
-        buttonLabel="Change Password"
+        label={t('general.passwordLock.label')}
+        buttonLabel={t('general.passwordLock.changePw')}
         handleClick={handleChangePassword}
       />
     </div>
