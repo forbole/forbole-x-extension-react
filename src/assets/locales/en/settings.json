@@ -1,4 +1,5 @@
 {
+  "next": "Next",
   "general": {
     "darkMode": "Dark Mode",
     "currency": {
@@ -32,7 +33,7 @@
       "placeholder": "Summary of your observation..."
     },
     "message": {
-      "label:": "Message",
+      "label": "Message",
       "placeholder": "Give as many details as possible..."
     }
   },

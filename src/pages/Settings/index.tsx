@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from '../../components/Layout/layout'
 import SettingsTabBar from './components/SettingsTabBar'
 import GeneralTab from './components/GeneralTab'
+import FeedbackTab from './components/FeedbackTab'
 
 const tabs = [
   {
@@ -24,6 +25,7 @@ const Setting = () => {
   const tabContent = React.useMemo(
     () => ({
       0: <GeneralTab />,
+      1: <FeedbackTab />,
     }),
     []
   )
