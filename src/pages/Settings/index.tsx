@@ -4,6 +4,7 @@ import SettingsTabBar from './components/SettingsTabBar'
 import GeneralTab from './components/GeneralTab'
 import FeedbackTab from './components/FeedbackTab'
 import FollowUsTab from './components/FollowUsTab'
+import AboutUsTab from './components/AboutTab'
 
 const tabs = [
   {
@@ -28,6 +29,7 @@ const Setting = () => {
       0: <GeneralTab />,
       1: <FeedbackTab />,
       2: <FollowUsTab />,
+      3: <AboutUsTab />,
     }),
     []
   )
