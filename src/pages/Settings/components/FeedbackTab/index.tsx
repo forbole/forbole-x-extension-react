@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useTheme, Box, Button, CircularProgress, Typography } from '@mui/material'
-import CustomInput from '../../../../components/CustomInput'
+import CustomInput from '../../../../components/inputs/CustomInput'
 import SuccessDialog from './components/SuccessDialog'
 
 const FeedbackTab = () => {

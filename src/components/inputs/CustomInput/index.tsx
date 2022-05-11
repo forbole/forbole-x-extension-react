@@ -46,8 +46,6 @@ const CustomInput = ({
         })}
         InputProps={{
           disableUnderline: true,
-          border: 'none',
-          autoComplete: false,
         }}
         fullWidth
         defaultValue={defaultValue}

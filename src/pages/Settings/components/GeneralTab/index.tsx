@@ -1,5 +1,5 @@
 import React from 'react'
-import { Divider, Paper } from '@mui/material'
+import { Divider, Paper, TextField } from '@mui/material'
 import { useRecoilState } from 'recoil'
 import { useTranslation } from 'react-i18next'
 import SettingsDropdown from './components/SettingsDropdown'
@@ -9,6 +9,7 @@ import SettingsButton from './components/SettingsButton'
 import currencies from '../../../../misc/currencies'
 import languages from '../../../../config/languages'
 import { currencyState, languageState } from '../../../../recoil/settings'
+import ChangePasswordDialog from './components/ChangePasswordDialog'
 
 const GeneralTab = () => {
   const { t } = useTranslation('settings')
@@ -26,46 +27,58 @@ const GeneralTab = () => {
 
   const [selectedLanguage, setSelectedLanguage] = React.useState(languages.indexOf(language))
 
-  const handleChangePassword = React.useCallback(() => {
-    // todo: implementation
-  }, [])
+  const [showPwChangeDialog, setShowPwChangeDialog] = React.useState(false)
 
   return (
-    <Paper>
-      <SettingsSwitch
-        label={t('general.darkMode')}
-        handleChange={() => {
-          setTheme()
+    <>
+      <Paper>
+        <SettingsSwitch
+          label={t('general.darkMode')}
+          handleChange={() => {
+            setTheme()
+          }}
+          isChecked={theme === 'dark'}
+        />
+        <Divider />
+        <SettingsDropdown
+          label={t('general.currency.label')}
+          selectedIndex={selectedCurrency}
+          values={currencies}
+          onChange={(_val) => {
+            setSelectedCurrency(_val)
+            setCurrency(currencies[_val])
+          }}
+        />
+        <Divider />
+        <SettingsDropdown
+          label={t('general.language.label')}
+          selectedIndex={selectedLanguage}
+          values={languages}
+          onChange={(_val) => {
+            setSelectedLanguage(_val)
+            setLanguage(languages[_val])
+          }}
+        />
+        <Divider />
+        <SettingsButton
+          label={t('general.passwordLock.label')}
+          buttonLabel={t('general.passwordLock.changePw')}
+          handleClick={() => setShowPwChangeDialog(true)}
+        />
+      </Paper>
+      <ChangePasswordDialog
+        isOpen={showPwChangeDialog}
+        onClose={() => setShowPwChangeDialog(false)}
+      />
+      <TextField
+        InputProps={{
+          disableUnderline: true,
         }}
-        isChecked={theme === 'dark'}
+        fullWidth
+        variant="filled"
+        rows={10}
       />
-      <Divider />
-      <SettingsDropdown
-        label={t('general.currency.label')}
-        selectedIndex={selectedCurrency}
-        values={currencies}
-        onChange={(_val) => {
-          setSelectedCurrency(_val)
-          setCurrency(currencies[_val])
-        }}
-      />
-      <Divider />
-      <SettingsDropdown
-        label={t('general.language.label')}
-        selectedIndex={selectedLanguage}
-        values={languages}
-        onChange={(_val) => {
-          setSelectedLanguage(_val)
-          setLanguage(languages[_val])
-        }}
-      />
-      <Divider />
-      <SettingsButton
-        label={t('general.passwordLock.label')}
-        buttonLabel={t('general.passwordLock.changePw')}
-        handleClick={handleChangePassword}
-      />
-    </Paper>
+    </>
   )
 }
 

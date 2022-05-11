@@ -27,6 +27,24 @@
     "passwordLock": {
       "label": "Password Lock",
       "changePw": "Change Password"
+    },
+    "changePwDialog": {
+      "errorIncorrect": "Incorrect password",
+      "error6Char": "Must be at least 6 characters",
+      "placeholder": "Password",
+      "stage1": {
+        "title": "Change Unlock Password",
+        "label": "Enter current unlock password"
+      },
+      "stage2": {
+        "title": "Change Unlock Password",
+          "label": "New Password",
+          "hint": "* at least 6 characters in length"
+      },
+      "stage3": {
+        "title": "Success",
+        "description": "The password has been changed"
+      }
     }
   },
   "feedback": {
