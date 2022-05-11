@@ -6,6 +6,7 @@
     "about": "About"
   },
   "next": "Next",
+  "save": "Save",
   "general": {
     "darkMode": "Dark Mode",
     "currency": {
@@ -31,15 +32,16 @@
     "changePwDialog": {
       "errorIncorrect": "Incorrect password",
       "error6Char": "Must be at least 6 characters",
-      "placeholder": "Password",
       "stage1": {
         "title": "Change Unlock Password",
-        "label": "Enter current unlock password"
+        "label": "Enter current unlock password",
+        "placeholder": "Password"
       },
       "stage2": {
         "title": "Change Unlock Password",
-          "label": "New Password",
-          "hint": "* at least 6 characters in length"
+        "label": "Enter new unlock password",
+        "hint": "* at least 6 characters in length",
+        "placeholder": "New Password"
       },
       "stage3": {
         "title": "Success",

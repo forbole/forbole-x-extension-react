@@ -67,15 +67,19 @@ const ChangePasswordDialog = ({ isOpen, onClose }: Props) => {
       try {
         await unlockWallet(oldPassword)
         setStage(DialogStages.ENTER_NEW_PW)
-      } catch {
+      } catch (err) {
         setError(t('general.changePwDialog.errorIncorrect'))
       }
     } else if (stage === DialogStages.ENTER_NEW_PW) {
       if (newPassword.length < 6) {
         setError(t('general.changePwDialog.error6Char'))
       } else {
-        await updatePassword(oldPassword, newPassword)
-        setStage(DialogStages.SUCCESS)
+        try {
+          await updatePassword(oldPassword, newPassword)
+          setStage(DialogStages.SUCCESS)
+        } catch (err) {
+          console.log(err)
+        }
       }
     }
   }, [stage, oldPassword, newPassword])
@@ -109,18 +113,24 @@ const ChangePasswordDialog = ({ isOpen, onClose }: Props) => {
                   : 'general.changePwDialog.stage2.label'
               )}
             </Typography>
-            <PasswordInput
-              value={stage === DialogStages.ENTER_NEW_PW ? newPassword : oldPassword}
-              onChange={(e) =>
-                stage === DialogStages.ENTER_NEW_PW
-                  ? setNewPassword(e.target.value)
-                  : setOldPassword(e.target.value)
-              }
-              placeholder={t('password')}
-              error={!!error}
-              helperText={error}
-              withSecurityLevel={stage === DialogStages.ENTER_NEW_PW}
-            />
+            {stage === DialogStages.ENTER_CURRENT_PW ? (
+              <PasswordInput
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                placeholder={t('general.changePwDialog.stage1.placeholder')}
+                error={!!error}
+                helperText={error}
+              />
+            ) : (
+              <PasswordInput
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder={t('general.changePwDialog.stage2.placeholder')}
+                error={!!error}
+                helperText={error}
+                withSecurityLevel
+              />
+            )}
           </Box>
         </DialogContent>
         <DialogActions>
