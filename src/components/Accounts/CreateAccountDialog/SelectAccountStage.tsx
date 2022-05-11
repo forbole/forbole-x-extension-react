@@ -184,19 +184,19 @@ const SelectAccountStage = ({
           <div className="flex items-center mt-2 mb-4">
             <p>m/44/{chain.coinType}'/</p>
             <input
-              className="bg-gray-200 p-1 rounded w-20 mx-2 text-center"
+              className="form-input bg-gray-200 p-1 rounded w-20 mx-2 text-center"
               value={hdPath.account}
               onChange={(e) => setHdPath((p) => ({ ...p, account: e.target.value }))}
             />
             <p>'/</p>
             <input
-              className="bg-gray-200 p-1 rounded w-20 mx-2 text-center"
+              className="form-input bg-gray-200 p-1 rounded w-20 mx-2 text-center"
               value={hdPath.change}
               onChange={(e) => setHdPath((p) => ({ ...p, change: e.target.value }))}
             />
             <p>'/</p>
             <input
-              className="bg-gray-200 p-1 rounded w-20 mx-2 text-center"
+              className="form-input bg-gray-200 p-1 rounded w-20 mx-2 text-center"
               value={hdPath.index}
               onChange={(e) => setHdPath((p) => ({ ...p, index: e.target.value }))}
             />
