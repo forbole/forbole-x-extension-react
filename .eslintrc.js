@@ -39,6 +39,7 @@ module.exports = {
       },
     ],
     'no-undef': 0,
+    'no-underscore-dangle': 0,
   },
   settings: {
     'import/resolver': {

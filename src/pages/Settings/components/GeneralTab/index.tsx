@@ -6,10 +6,9 @@ import SettingsDropdown from './components/SettingsDropdown'
 import SettingsSwitch from './components/SettingsSwitch'
 import { themeState, useSetTheme } from '../../../../recoil/general'
 import SettingsButton from './components/SettingsButton'
-
-const currencies = ['EUR', 'GBP', 'JPY', 'KRK', 'HKD']
-
-const languages = ['English']
+import currencies from '../../../../misc/currencies'
+import languages from '../../../../config/languages'
+import { currencyState, languageState } from '../../../../recoil/settings'
 
 const GeneralTab = () => {
   const { t } = useTranslation('settings')
@@ -18,10 +17,14 @@ const GeneralTab = () => {
 
   const [theme] = useRecoilState(themeState)
 
-  // hardcode default to hkd for now
-  const [selectedCurrency, setSelectedCurrency] = React.useState(4)
+  const [currency, setCurrency] = useRecoilState(currencyState)
 
-  const [selectedLanguage, setSelectedLanguage] = React.useState(0)
+  const [language, setLanguage] = useRecoilState(languageState)
+
+  // hardcode default to hkd for now
+  const [selectedCurrency, setSelectedCurrency] = React.useState(currencies.indexOf(currency))
+
+  const [selectedLanguage, setSelectedLanguage] = React.useState(languages.indexOf(language))
 
   const handleChangePassword = React.useCallback(() => {
     // todo: implementation
@@ -41,14 +44,20 @@ const GeneralTab = () => {
         label={t('general.currency.label')}
         selectedIndex={selectedCurrency}
         values={currencies}
-        onChange={setSelectedCurrency}
+        onChange={(_val) => {
+          setSelectedCurrency(_val)
+          setCurrency(currencies[_val])
+        }}
       />
       <Divider />
       <SettingsDropdown
         label={t('general.language.label')}
         selectedIndex={selectedLanguage}
         values={languages}
-        onChange={setSelectedLanguage}
+        onChange={(_val) => {
+          setSelectedLanguage(_val)
+          setLanguage(languages[_val])
+        }}
       />
       <Divider />
       <SettingsButton
