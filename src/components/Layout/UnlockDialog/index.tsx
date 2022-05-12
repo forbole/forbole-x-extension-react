@@ -38,7 +38,7 @@ const UnlockDialog = ({ open }: Props) => {
     <Dialog open={open} title="Unlock Password">
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <div className="flex flex-col items-center mt-5">
-          <p className="max-w-sm text-center">Enter password to unlock your application</p>
+          <p className="text-font-100 max-w-sm text-center">Enter password to unlock your application</p>
           <div className="w-full flex justify-center">
             <div className="w-full px-10 py-7">
               <input
@@ -48,7 +48,7 @@ const UnlockDialog = ({ open }: Props) => {
                 className="shadow-sm focus:ring-primary-100 focus:border-primary-100 block w-full text-sm border-gray-300 rounded-sm px-3 py-2 bg-popup-100"
               />
               {!!error && <p className="text-sm mt-2 text-red-500 nightwind-prevent">{error}</p>}
-              <p className="text-sm mt-2">* Require after 15 minutes</p>
+              <p className="text-font-100 text-sm mt-2">* Require after 15 minutes</p>
               <div className="mt-24">
                 <Button text="Next" type="submit" />
               </div>
