@@ -1,28 +1,27 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import './index.scss'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import reportWebVitals from './reportWebVitals'
-import { HashRouter } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
-import AppRoutes from './routes/routes'
 import { Helmet } from 'react-helmet'
 // @ts-ignore
 import nightwind from 'nightwind/helper'
+import { CircularProgress } from '@mui/material'
+import reportWebVitals from './reportWebVitals'
+import './assets/locales/i18n'
+import App from './App'
 
 ReactDOM.render(
   <React.StrictMode>
-    <>
+    <Suspense fallback={<CircularProgress />}>
       <Helmet>
         <script>{nightwind.init()}</script>
       </Helmet>
       <RecoilRoot>
-        <HashRouter>
-          <AppRoutes />
-        </HashRouter>
+        <App />
       </RecoilRoot>
-    </>
+    </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 )

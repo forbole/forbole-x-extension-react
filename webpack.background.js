@@ -2,7 +2,7 @@
 const path = require('path')
 
 module.exports = {
-  entry: './src/background/index.ts',
+  entry: './src/background/index.tsx',
   module: {
     rules: [
       {

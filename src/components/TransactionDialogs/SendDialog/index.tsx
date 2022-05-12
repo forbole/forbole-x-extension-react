@@ -83,7 +83,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account }) => {
             )}
             <div className="flex flex-row items-center justify-between w-full">
               <input
-                className="bg-gray-200 p-1 rounded w-1/2"
+                className="form-input bg-gray-200 p-1 rounded w-1/2"
                 value={v.address}
                 onChange={(e) =>
                   setRecipients((rs) =>
@@ -92,7 +92,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account }) => {
                 }
               />
               <input
-                className="bg-gray-200 p-1 rounded w-1/2 ml-2"
+                className="form-input bg-gray-200 p-1 rounded w-1/2 ml-2"
                 value={v.amount}
                 placeholder={v.denom}
                 onChange={(e) =>
@@ -117,7 +117,7 @@ const SendDialog: React.FC<SendDialogProps> = ({ open, onClose, account }) => {
             <p>Memo</p>
           </div>
           <input
-            className="bg-gray-200 p-2 rounded w-1/2 h-[10rem]"
+            className="form-input bg-gray-200 p-2 rounded w-1/2 h-[10rem]"
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             placeholder="Memo"
