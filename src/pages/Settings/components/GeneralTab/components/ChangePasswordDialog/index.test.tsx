@@ -9,7 +9,6 @@ jest.mock('../../../../../../recoil/general', () => ({
   useUnlockWallets: jest.fn(),
   useUpdatePassword: jest.fn(),
 }))
-// jest.mock('../../../../../../recoil/general/useUpdatePassword', () => true)
 
 describe('component: ChangePasswordDialog', () => {
   it('renders', () => {

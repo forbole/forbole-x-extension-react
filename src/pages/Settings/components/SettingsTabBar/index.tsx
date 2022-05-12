@@ -2,13 +2,20 @@ import React from 'react'
 import { Tabs, Tab } from '@mui/material'
 
 type Props = {
-  // The tabs to be rendered
+  /**
+   * The tabs to be rendered
+   */
   tabs: { label: string }[]
 
-  // The current tab
+  /**
+   * The currently selected tab
+   */
   currentTab: number
 
-  // When the user clicks on a different tab
+  /**
+   * What to do when the user selects a different tab
+   * @param _value
+   */
   onChange: (_value: number) => void
 }
 
