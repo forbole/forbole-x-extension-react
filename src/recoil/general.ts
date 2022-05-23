@@ -1,14 +1,25 @@
-import { atom, useSetRecoilState } from 'recoil'
+import { atom, useRecoilState, useSetRecoilState } from 'recoil'
 import { useCallback } from 'react'
 import nightwind from 'nightwind/helper'
-import { decryptChromeStorage, getStorage } from './utils/chromeStorageEncryption'
+import { decryptChromeStorage, getStorage, setStorage } from './utils/chromeStorageEncryption'
 import { walletsState } from './wallets'
 import { accountsState } from './accounts'
 
 export const themeState = atom<string>({
   key: 'theme',
+  effects: [
+    ({ onSet }) => {
+      onSet((theme) => {
+        setStorage({ theme })
+      })
+    },
+  ],
+  // it is important to note that nightwind stores light and dark under its own
+  // key: nightwind-mode, however it does not persist when the extension is built (see comment below)
   default: (async () => {
-    const theme = await getStorage('nightwind-mode')
+    const theme = await getStorage('theme')
+    // this is necessary for production, as nightwind doesn't persist its own stored theme value
+    if (theme === 'dark') nightwind.toggle()
     return theme ?? 'light'
   })(),
 })
@@ -27,13 +38,13 @@ export const isFirstTimeUserState = atom<boolean>({
 })
 
 export const useSetTheme = () => {
-  const setThemeState = useSetRecoilState(themeState)
+  const [theme, setThemeState] = useRecoilState(themeState)
 
   const setTheme = useCallback(async () => {
     nightwind.toggle()
-    const theme = await getStorage('nightwind-mode')
-    setThemeState(theme)
-  }, [setThemeState])
+    if (theme === 'light') setThemeState('dark')
+    else setThemeState('light')
+  }, [theme])
 
   return setTheme
 }

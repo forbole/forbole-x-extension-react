@@ -6,7 +6,7 @@
     "start": "react-app-rewired start",
     "build-background": "webpack --config webpack.background.js",
     "build-content-script": "webpack --config webpack.contentScript.js",
-    "build": "INLINE_RUNTIME_CHUNK=false react-app-rewired build && yarn build-background && yarn build-content-script",
+    "build": "DISABLE_ESLINT_PLUGIN=true INLINE_RUNTIME_CHUNK=false react-app-rewired build && yarn build-background && yarn build-content-script",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "postinstall": "patch-package",
@@ -114,5 +114,10 @@
   "resolutions": {
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.(ts|tsx|js|jsx)$": "babel-jest"
+    }
   }
 }
