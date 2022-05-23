@@ -13,5 +13,6 @@
   "amount": "Amount",
   "add validator": "Add Validator",
   "memo": "Note (Memo)",
-  "description optional": "Description (optional)"
+  "description optional": "Description (optional)",
+  "next": "Next"
 }

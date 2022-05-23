@@ -385,7 +385,7 @@ const SelectValidators = ({
             }
             type="submit"
           >
-            Next
+            {t('next')}
           </Button>
         </DialogActions>
       </Box>
