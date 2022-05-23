@@ -36,7 +36,7 @@ const Dialog = ({ open, onClose, title, children, toPrevStage }: Props) => {
             />
           )}
         </div>
-        <h2 className="text-center">{title}</h2>
+        <h2 className="text-font-100 text-center">{title}</h2>
         {children}
       </div>
     )

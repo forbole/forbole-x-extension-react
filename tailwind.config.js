@@ -76,5 +76,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('nightwind')],
+  plugins: [require('@tailwindcss/forms')({ strategy: 'class' }), require('nightwind')],
 }

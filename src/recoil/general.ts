@@ -1,9 +1,9 @@
-import { atom, useSetRecoilState, useRecoilState } from 'recoil'
+import { atom, useSetRecoilState } from 'recoil'
 import { useCallback } from 'react'
+import nightwind from 'nightwind/helper'
 import { decryptChromeStorage, getStorage } from './utils/chromeStorageEncryption'
 import { walletsState } from './wallets'
 import { accountsState } from './accounts'
-import nightwind from 'nightwind/helper'
 
 export const themeState = atom<string>({
   key: 'theme',
@@ -51,6 +51,26 @@ export const useCreatePassword = () => {
   return createPassword
 }
 
+export const useUpdatePassword = () => {
+  const setPassword = useSetRecoilState(passwordState)
+  const setWallets = useSetRecoilState(walletsState)
+  const setAccounts = useSetRecoilState(accountsState)
+
+  const updatePassword = useCallback(
+    async (oldPw: string, newPw: string) => {
+      const decryptedWallets = await decryptChromeStorage<Wallet[]>('wallets', oldPw)
+      const decryptedAccounts = await decryptChromeStorage<Account[]>('accounts', oldPw)
+
+      setPassword(newPw)
+      setWallets(decryptedWallets)
+      setAccounts(decryptedAccounts)
+    },
+    [setPassword, setWallets, setAccounts]
+  )
+
+  return updatePassword
+}
+
 export const useUnlockWallets = () => {
   const setPassword = useSetRecoilState(passwordState)
   const setWallets = useSetRecoilState(walletsState)
@@ -58,6 +78,7 @@ export const useUnlockWallets = () => {
 
   const unlockWallets = useCallback(
     async (pw: string) => {
+      console.log(pw)
       const decryptedWallets = await decryptChromeStorage<Wallet[]>('wallets', pw)
       const decryptedAccounts = await decryptChromeStorage<Account[]>('accounts', pw)
       setPassword(pw)

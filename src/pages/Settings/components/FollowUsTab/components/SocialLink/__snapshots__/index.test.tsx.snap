@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component: SocialLink renders 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <a
+        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-1htsk2q-MuiTypography-root-MuiLink-root"
+        href="https://www.forbole.hk"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <div
+          class="MuiBox-root css-k008qs"
+        >
+          <svg
+            fill="#8B8B8B"
+            height="24px"
+            width="24px"
+          >
+            icon_forbole.svg
+          </svg>
+          <h6
+            class="MuiTypography-root MuiTypography-subtitle1 css-3cy5hm-MuiTypography-root"
+          >
+            Forbole
+          </h6>
+        </div>
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-hi9igu-MuiTypography-root"
+        >
+          This is a label
+        </p>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <a
+      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-1htsk2q-MuiTypography-root-MuiLink-root"
+      href="https://www.forbole.hk"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <div
+        class="MuiBox-root css-k008qs"
+      >
+        <svg
+          fill="#8B8B8B"
+          height="24px"
+          width="24px"
+        >
+          icon_forbole.svg
+        </svg>
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle1 css-3cy5hm-MuiTypography-root"
+        >
+          Forbole
+        </h6>
+      </div>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-hi9igu-MuiTypography-root"
+      >
+        This is a label
+      </p>
+    </a>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
