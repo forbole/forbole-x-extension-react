@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import SelectAmount from './SelectAmount'
+import SelectValidators from './SelectValidators'
 import { ReactComponent as RemoveIcon } from '../../../assets/images/icons/icon_clear.svg'
 import useIconProps from '../../../misc/useIconProps'
 import Dialog from '../../Element/dialog'
@@ -56,7 +57,7 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
     formState: { errors },
   } = useForm()
   const iconProps = useIconProps()
-  const { balances } = account
+  const { balances, prices } = account
   const [recipients, setRecipients] = React.useState<
     Array<{ amount: string; denom: string; address: string }>
   >([{ amount: '', denom: 'DSM', address: '' }])
@@ -78,6 +79,52 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
     },
     [setAmount, setStage, defaultValidator]
   )
+  const [loading, setLoading] = React.useState(false)
+  // const confirmDelegations = React.useCallback(
+  //   async (d: Array<{ amount: number; validator: Validator }>, memo: string) => {
+  //     try {
+  //       setLoading(true)
+  //       const msgs: TransactionMsgDelegate[] = d.map((r) => {
+  //         // const coinsToSend = getEquivalentCoinToSend(
+  //         //   { amount: r.amount, denom },
+  //         //   amount.coins,
+  //         //   availableTokens.tokens_prices
+  //         // )
+  //         return {
+  //           typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+  //           value: {
+  //             delegatorAddress: account.address,
+  //             validatorAddress: r.validator.address,
+  //             amount: {
+  //               amount: Math.round(coinsToSend.amount).toString(),
+  //               denom: coinsToSend.denom,
+  //             },
+  //           },
+  //         }
+  //       })
+  //       await sendTransaction(password, account.address, {
+  //         msgs,
+  //         memo,
+  //       })
+  //       setLoading(false)
+  //       onClose()
+  //     } catch (err) {
+  //       setLoading(false)
+  //     }
+  //   },
+  //   [setStage, password, availableTokens, account, denom, sendTransaction]
+  // )
+
+  const confirmDelegations = React.useCallback(
+    async (d: Array<{ amount: number; validator: Validator }>, memo: string) => {
+      try {
+        console.log('delegation sent')
+      } catch (err) {
+        setLoading(false)
+      }
+    },
+    [setStage, account, denom]
+  )
 
   const content: Content = React.useMemo(() => {
     switch (stage) {
@@ -90,17 +137,17 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
         return {
           title: 'Delegate',
           content: (
-            //   <SelectValidators
-            //   crypto={crypto}
-            //   delegations={delegations}
-            //   validators={validators}
-            //   amount={amount}
-            //   price={availableAmount[denom]?.price}
-            //   denom={denom}
-            //   onConfirm={confirmDelegations}
-            //   loading={loading}
-            // />
-            <></>
+            <SelectValidators
+              // crypto={crypto}
+              account={account}
+              delegations={delegations}
+              validators={validators}
+              amount={amount}
+              // price={prices}
+              denom={denom}
+              onConfirm={confirmDelegations}
+              loading={loading}
+            />
           ),
         }
     }
