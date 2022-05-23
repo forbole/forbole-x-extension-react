@@ -3,6 +3,7 @@ import keyBy from 'lodash/keyBy'
 import groupBy from 'lodash/groupBy'
 import get from 'lodash/get'
 import chains from './chains'
+import { EnglishMnemonic } from '@cosmjs/crypto'
 
 export const sumCoins = (coins: Coin[]) =>
   Object.values(groupBy(coins, 'denom')).map((d) =>
@@ -71,3 +72,13 @@ export const formatPercentage = (percent: number): string =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(percent || 0)
+
+export const isValidMnemonic = (input) => {
+  try {
+    // eslint-disable-next-line no-new
+    new EnglishMnemonic(input)
+    return true
+  } catch (err) {
+    return false
+  }
+}

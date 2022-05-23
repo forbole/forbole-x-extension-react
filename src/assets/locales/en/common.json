@@ -3,5 +3,15 @@
   "pwLevel0": "Weak",
   "pwLevel1": "Medium",
   "pwLevel2": "Strong",
-  "pwCaption": "* at least 6 characters in length"
+  "pwCaption": "* at least 6 characters in length",
+  "memo warning": "Please do not enter your secret recovery phrase in this field!",
+  "memo warning consent": "I understand and the memo does not contain my secret recovery phrase",
+  "available amount": "Available amount",
+  "total delegation amount": "Total Delegation Amount",
+  "delegate to": "Delegate to",
+  "select validator": "Select validator",
+  "amount": "Amount",
+  "add validator": "Add Validator",
+  "memo": "Note (Memo)",
+  "description optional": "Description (optional)"
 }

@@ -1,13 +1,28 @@
-import React from 'react'
-import keyBy from 'lodash/keyBy'
-import shuffle from 'lodash/shuffle'
-import { Combobox, Transition } from '@headlessui/react'
-import { Loadable, useRecoilValueLoadable } from 'recoil'
 import {
-  validatorsState,
-  randomizedValidatorsState,
-  filteredValidatorsState,
-} from '../../../recoil/validators'
+  Autocomplete,
+  Button,
+  Box,
+  DialogActions,
+  DialogContent,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+  Grid,
+  CircularProgress,
+  useTheme,
+  Slider,
+  Card,
+} from '@mui/material'
+import React from 'react'
+import Avatar from '../../Element/avatar'
+import { useTranslation } from 'react-i18next'
+import useIconProps from '../../../misc/useIconProps'
+import DropdownIcon from '../../../components/svg/DropdownIcon'
+import { ReactComponent as RemoveIcon } from '../../../assets/images/icons/icon_clear.svg'
+import MemoInput from '../../../components/MemoInput'
+import { Loadable, useRecoilValueLoadable } from 'recoil'
+import { randomizedValidatorsState } from '../../../recoil/validators'
 
 interface SelectValidatorsProps {
   onConfirm(delegations: Array<{ amount: number; validator: Validator }>, memo: string): void
@@ -18,21 +33,23 @@ interface SelectValidatorsProps {
   denom: string
   loading: boolean
   account: AccountDetail
+  validatorsMap: { [name: string]: Validator }
 }
 
 const SelectValidators = ({
   account,
   onConfirm,
   delegations: defaultDelegations,
-  //   price,
   validators,
   amount,
   denom,
   loading,
+  validatorsMap,
 }: SelectValidatorsProps) => {
-  const [load, setLoading] = React.useState(true)
+  const { t } = useTranslation('common')
+  const iconProps = useIconProps()
+  const [consent, setConsent] = React.useState(true)
   const [memo, setMemo] = React.useState('')
-  // const [selectedPeople, setSelectedPeople] = useState([people[0], people[1]])
   const [delegations, setDelegations] = React.useState<
     Array<{ amount: string; validator: any; percentage: string; showSlider: boolean }>
   >(
@@ -45,34 +62,11 @@ const SelectValidators = ({
         }))
       : [{ amount: amount.toString(), validator: {}, percentage: '100', showSlider: false }]
   )
-  //   console.log(delegations)
-  const validatorsMap = keyBy(validators.contents, 'address')
-  const [query, setQuery] = React.useState('')
-  //   const randomizedValidators = React.useMemo(() => shuffle(validators), [])
-  //   const randomizedValidators = useRecoilValueLoadable(
-  //     randomizedValidatorsState({
-  //       chainId: account.state === 'hasValue' ? account.contents.chain : '',
-  //     })
-  //   )
+
   const randomizedValidators = useRecoilValueLoadable(
     randomizedValidatorsState({
       chainId: account.chain,
     })
-  )
-  //   const filteredValidators =
-  //     query === ''
-  //       ? validators
-  //       : validators.contents.filter((o) => {
-  //           return (validatorsMap[o].name || '').toLowerCase().includes(query.toLowerCase())
-  //         })
-
-  const filteredValidators = useRecoilValueLoadable(
-    query === ''
-      ? validatorsState({ chainId: account.chain })
-      : filteredValidatorsState({
-          chainId: account.chain,
-          query: query,
-        })
   )
 
   React.useMemo(() => {
@@ -96,8 +90,6 @@ const SelectValidators = ({
     )
   }, [delegations.length])
 
-  const [selectedPerson, setSelectedPerson] = React.useState(['test'])
-
   const totalAmount = React.useMemo(
     () => delegations.map((v) => Number(v.amount)).reduce((a, b) => a + b, 0),
     [delegations]
@@ -119,56 +111,284 @@ const SelectValidators = ({
         )
       }}
     >
-      <div className="px-5 flex flex-col items-start">
-        <div className="px-5 flex flex-row items-start">
-          <p>Target delegation amount</p>
+      <Box minHeight={360} maxHeight={600}>
+        <Box px={4} display="flex" sx={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+          <p>{t('total delegation amount')}</p>
           <p className="font-bold pl-2">{amount}</p>
-        </div>
-      </div>
-      {/* {delegations.map((v, i) => ( */}
-      {/* {load && ( */}
-      <Combobox
-        value={delegations}
-        onChange={
-          //   e.preventDefault
-          // setDelegations((d) =>
-          //   d.map((a, j) => (j === delegations.length ? { ...a, validator: delegations || {} } : a))
-          // )
-          setDelegations
-        }
-        // onChange={setSelectedPerson}
-        //   multiple
-      >
-        <>
-          {randomizedValidators.state === 'hasValue' && randomizedValidators.contents.length > 0 && (
-            <ul>
-              {randomizedValidators.contents.map((validator) => (
-                <li key={validator.address}>{validator.name}</li>
-              ))}
-            </ul>
-          )}
-          <Combobox.Input
-            onChange={(e) => {
-              setDelegations((d) =>
-                d.map((a, j) =>
-                  j === delegations.length ? { ...a, validator: e.target.value || {} } : a
-                )
-              )
-            }}
-            displayValue={(v: Validator) => v.name}
-          />
-          <Combobox.Options>
-            {filteredValidators.state === 'hasValue' &&
-              filteredValidators.contents.map((validator) => (
-                <Combobox.Option key={validator.address} value={validator}>
-                  {validator.name}
-                </Combobox.Option>
-              ))}
-          </Combobox.Options>
-        </>
-      </Combobox>
-      {/* )} */}
-      {/* ))} */}
+        </Box>
+        <Grid container spacing={4} padding={4}>
+          <Grid item xs={6}>
+            <Typography gutterBottom>{t('delegate to')}</Typography>
+            {delegations.map((v, i) => (
+              <Box
+                key={i.toString()}
+                display="flex"
+                alignItems="center"
+                ml={delegations.length <= 1 ? 0 : -5}
+                mt={i === 0 ? 0 : 1}
+              >
+                {delegations.length <= 1 ? null : (
+                  <IconButton
+                    onClick={() => {
+                      setDelegations((d) => d.filter((a, j) => j !== i))
+                    }}
+                  >
+                    <RemoveIcon className={`${iconProps} mr-2 flex items-center`} />
+                  </IconButton>
+                )}
+                {Array.isArray(randomizedValidators.contents) && validatorsMap !== null ? (
+                  <Autocomplete
+                    sx={(t) => ({
+                      '.MuiFilledInput-root': { padding: t.spacing(1), paddingRight: t.spacing(1) },
+                    })}
+                    options={randomizedValidators.contents.map((val) => val)}
+                    getOptionLabel={(option) => option.name}
+                    openOnFocus
+                    fullWidth
+                    filterOptions={(options: Validator[], { inputValue }: any) =>
+                      options.filter((o) =>
+                        (o.name || '').toLowerCase().includes(inputValue.toLowerCase())
+                      )
+                    }
+                    onChange={(_, value: Validator) => {
+                      setDelegations((d) =>
+                        d.map((a, j) => (j === i ? { ...a, validator: value || {} } : a))
+                      )
+                    }}
+                    renderOption={(props: any, option: any) => {
+                      const image = validatorsMap[props.key].image
+                      return (
+                        <Box
+                          {...props}
+                          display="flex"
+                          alignItems="center"
+                          flexDirection="row"
+                          width="100%"
+                        >
+                          <Avatar size={8} src={image || ''} />
+                          <Typography sx={{ marginLeft: '8px' }}>{props.key}</Typography>
+                        </Box>
+                      )
+                    }}
+                    renderInput={({ InputProps, inputProps, ...params }) => {
+                      return (
+                        <TextField
+                          {...params}
+                          variant="filled"
+                          placeholder={t('select validator')}
+                          inputProps={{
+                            ...inputProps,
+                            value: v.validator.name,
+                          }}
+                          // eslint-disable-next-line react/jsx-no-duplicate-props
+                          InputProps={{
+                            ...InputProps,
+                            className: '',
+                            disableUnderline: true,
+                            startAdornment: v.validator.name ? (
+                              <Box mr={1} padding={0}>
+                                <Avatar size={8} src={v.validator.image} />
+                              </Box>
+                            ) : null,
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <DropdownIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      )
+                    }}
+                  />
+                ) : (
+                  <div>Loading...</div>
+                )}
+              </Box>
+            ))}
+            <Box mt={1}>
+              <Button
+                variant="text"
+                color="secondary"
+                onClick={() =>
+                  setDelegations((d) => [
+                    ...d,
+                    { validator: '', amount: '', percentage: '', showSlider: false },
+                  ])
+                }
+              >
+                {t('add validator')}
+              </Button>
+            </Box>
+            <Box mt={2}>
+              <Typography gutterBottom>{t('memo')}</Typography>
+              <MemoInput
+                fullWidth
+                multiline
+                rows={3}
+                placeholder={t('description optional')}
+                InputProps={{
+                  disableUnderline: true,
+                }}
+                value={memo}
+                setValue={setMemo}
+                consent={consent}
+                setConsent={setConsent}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography gutterBottom>{t('amount')}</Typography>
+            {delegations.map((v, i) => (
+              <Box position="relative">
+                <Box key={i.toString()} display="flex" alignItems="center" mt={i === 0 ? 0 : 1}>
+                  <TextField
+                    sx={(t) => ({
+                      '.MuiInputBase-input': {
+                        padding: t.spacing(2),
+                      },
+                    })}
+                    fullWidth
+                    variant="filled"
+                    placeholder="0"
+                    type="number"
+                    InputProps={{
+                      disableUnderline: true,
+                      endAdornment: <InputAdornment position="end">{denom}</InputAdornment>,
+                    }}
+                    value={v.amount}
+                    onChange={(e) =>
+                      setDelegations((d) =>
+                        d.map((a, j) =>
+                          j === i
+                            ? {
+                                ...a,
+                                amount: e.target.value,
+                                percentage: ((100 * Number(e.target.value)) / amount).toFixed(2),
+                              }
+                            : a
+                        )
+                      )
+                    }
+                  />
+                  {/* isMobile condition: */}
+                  <TextField
+                    onFocus={() => {
+                      setDelegations((d) =>
+                        d.map((a, j) =>
+                          j === i
+                            ? {
+                                ...a,
+                                showSlider: true,
+                              }
+                            : a
+                        )
+                      )
+                      const closeSlider = (e) => {
+                        if (!e.target.className.includes('MuiSlider')) {
+                          window.removeEventListener('click', closeSlider)
+                          setDelegations((d) =>
+                            d.map((a, j) => ({
+                              ...a,
+                              showSlider: false,
+                            }))
+                          )
+                        }
+                      }
+                      setTimeout(() => window.addEventListener('click', closeSlider), 100)
+                    }}
+                    sx={(theme) => ({
+                      width: theme.spacing(16),
+                      marginLeft: theme.spacing(2),
+                      '.MuiInputBase-input': {
+                        padding: theme.spacing(2, 0.5, 2, 0),
+                      },
+                    })}
+                    variant="filled"
+                    placeholder="0"
+                    type="number"
+                    InputProps={{
+                      disableUnderline: true,
+                      endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                    }}
+                    // eslint-disable-next-line react/jsx-no-duplicate-props
+                    value={v.percentage}
+                    onChange={(e) =>
+                      setDelegations((d) =>
+                        d.map((a, j) =>
+                          j === i
+                            ? {
+                                ...a,
+                                percentage: e.target.value,
+                                amount: ((amount * Number(e.target.value)) / 100).toFixed(2),
+                              }
+                            : a
+                        )
+                      )
+                    }
+                  />
+                </Box>
+                {v.showSlider ? (
+                  <Card
+                    sx={(theme) => ({
+                      marginTop: theme.spacing(1),
+                      padding: theme.spacing(1, 2),
+                      boxShadow: theme.shadows[7],
+                      position: 'absolute',
+                      zIndex: 1000,
+                      left: 0,
+                      right: 0,
+                    })}
+                  >
+                    <Slider
+                      value={Number(v.percentage) / 100}
+                      defaultValue={0.25}
+                      aria-labelledby="input-slider"
+                      step={0.25}
+                      marks
+                      min={0}
+                      max={1}
+                      onChange={(_event, newValue) => {
+                        setDelegations((d) =>
+                          d.map((a, j) =>
+                            j === i
+                              ? {
+                                  ...a,
+                                  percentage: String(
+                                    typeof newValue === 'number' ? newValue * 100 : ''
+                                  ),
+                                  amount: String((amount * Number(newValue || '') * 100) / 100),
+                                }
+                              : a
+                          )
+                        )
+                      }}
+                    />
+                  </Card>
+                ) : null}
+              </Box>
+            ))}
+          </Grid>
+        </Grid>
+      </Box>
+      <Box pt={3} px={4}>
+        <DialogActions>
+          <Button
+            variant="contained"
+            sx={(theme) => ({
+              width: '100%',
+            })}
+            color="primary"
+            disabled={
+              !delegations.filter((v) => v.validator.name && Number(v.amount)).length ||
+              delegations.filter((v) => v.validator === '').length !== 0 ||
+              !consent
+            }
+            type="submit"
+          >
+            Next
+          </Button>
+        </DialogActions>
+      </Box>
     </form>
   )
 }

@@ -9,6 +9,7 @@ import Button from '../../Element/button'
 import useStateHistory from '../../../misc/useStateHistory'
 import { formatCoins } from '../../../misc/utils'
 import { Loadable } from 'recoil'
+import keyBy from 'lodash/keyBy'
 
 interface Props {
   open: boolean
@@ -43,6 +44,7 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
 }) => {
   const [amount, setAmount] = React.useState(0)
   const [denom, setDenom] = React.useState('')
+  const validatorsMap = React.useMemo(() => keyBy(validators.contents, 'name'), [validators])
   const [delegations, setDelegations] = React.useState<
     Array<{ amount: number; validator: Validator }>
   >([])
@@ -62,7 +64,6 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
     Array<{ amount: string; denom: string; address: string }>
   >([{ amount: '', denom: 'DSM', address: '' }])
   const [memo, setMemo] = React.useState('')
-  console.log('amount', amount)
 
   useEffect(() => {
     if (!open) {
@@ -147,6 +148,7 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
               denom={denom}
               onConfirm={confirmDelegations}
               loading={loading}
+              validatorsMap={validatorsMap}
             />
           ),
         }

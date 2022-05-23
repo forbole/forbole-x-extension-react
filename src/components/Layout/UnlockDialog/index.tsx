@@ -38,7 +38,9 @@ const UnlockDialog = ({ open }: Props) => {
     <Dialog open={open} title="Unlock Password">
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <div className="flex flex-col items-center mt-5">
-          <p className="text-font-100 max-w-sm text-center">Enter password to unlock your application</p>
+          <p className="text-font-100 max-w-sm text-center">
+            Enter password to unlock your application
+          </p>
           <div className="w-full flex justify-center">
             <div className="w-full px-10 py-7">
               <input

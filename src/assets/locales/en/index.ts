@@ -1,9 +1,9 @@
-import common from './common.json';
-import settings from './settings.json';
+import common from './common.json'
+import settings from './settings.json'
 
 const en = {
-    common,
-    settings,
-};
+  common,
+  settings,
+}
 
-export default en;
+export default en

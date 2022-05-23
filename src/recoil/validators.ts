@@ -26,23 +26,7 @@ export const randomizedValidatorsState = selectorFamily<Validator[], { chainId: 
         return []
       }
       const validators = await fetchValidators(chainId)
-      const randomizedValidators =  shuffle(validators)
+      const randomizedValidators = shuffle(validators)
       return randomizedValidators
-    },
-})
-
-export const filteredValidatorsState = selectorFamily<Validator[], { chainId: string, query: any }>({
-  key: 'validators',
-  get:
-    ({ chainId, query }) =>
-    async ({ get }) => {
-      if (!chains[chainId]) {
-        return []
-      }
-      const validators = await fetchValidators(chainId)
-      const validatorsMap = keyBy(validators, 'address')
-      return validators.filter((o) => {
-        return (validatorsMap[o].name || '').toLowerCase().includes(query.toLowerCase())
-      })
     },
 })
