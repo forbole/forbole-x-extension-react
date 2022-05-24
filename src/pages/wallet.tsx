@@ -5,10 +5,11 @@ import Dropdown from '../components/Element/dropdown'
 import { ReactComponent as WalletIcon } from '../assets/images/icons/icon_wallet_manage.svg'
 import { ReactComponent as ArrowDownIcon } from '../assets/images/icons/icon_arrow_down.svg'
 import CreateWalletDialog from '../components/Wallets/CreateWalletDialog'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DeleteWalletDialog from '../components/Wallets/DeleteWalletDialog'
 import UpdateWalletNameDialog from '../components/Wallets/UpdateWalletNameDialog'
 import UpdateWalletPasswordDialog from '../components/Wallets/UpdateWalletPasswordDialog'
+import ViewRecoveryPhraseDialog from '../components/Wallets/ViewRecoveryPhraseDialog'
 import AccountList from '../components/Accounts/AccountList'
 
 const Wallet = () => {
@@ -18,6 +19,7 @@ const Wallet = () => {
 
   const [isCreateWalletDialogOpen, setIsCreateWalletDialogOpen] = useState(false)
   const [isDeleteWalletDialogOpen, setIsDeleteWalletDialogOpen] = useState(false)
+  const [isViewRecoveryPhraseDialogOpen, setIsViewRecoveryPhraseDialogOpen] = useState(false)
   const [isUpdateWalletNameDialogOpen, setIsUpdateWalletNameDialogOpen] = useState(false)
   const [isUpdateWalletPasswordDialogOpen, setIsUpdateWalletPasswordDialogOpen] = useState(false)
 
@@ -49,7 +51,10 @@ const Wallet = () => {
                 title: 'Change Wallet Security Password',
                 onClick: () => setIsUpdateWalletPasswordDialogOpen(true),
               },
-              { title: 'View Secret Recovery Phrase' },
+              {
+                title: 'View Secret Recovery Phrase',
+                onClick: () => setIsViewRecoveryPhraseDialogOpen(true),
+              },
               { title: 'Delete Wallet', onClick: () => setIsDeleteWalletDialogOpen(true) },
             ]}
           >
@@ -76,6 +81,11 @@ const Wallet = () => {
       <UpdateWalletPasswordDialog
         open={isUpdateWalletPasswordDialogOpen}
         onClose={() => setIsUpdateWalletPasswordDialogOpen(false)}
+        wallet={wallet.contents}
+      />
+      <ViewRecoveryPhraseDialog
+        open={isViewRecoveryPhraseDialogOpen}
+        onClose={() => setIsViewRecoveryPhraseDialogOpen(false)}
         wallet={wallet.contents}
       />
     </Layout>

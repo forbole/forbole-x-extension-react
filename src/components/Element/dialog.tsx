@@ -9,10 +9,11 @@ interface Props {
   toPrevStage?: () => void
 
   title?: string
+  description?: React.ReactNode
   children: React.ReactNode
 }
 
-const Dialog = ({ open, onClose, title, children, toPrevStage }: Props) => {
+const Dialog = ({ open, onClose, title, children, toPrevStage, description }: Props) => {
   const iconProps = useIconProps()
 
   return (
@@ -36,7 +37,10 @@ const Dialog = ({ open, onClose, title, children, toPrevStage }: Props) => {
             />
           )}
         </div>
-        <h2 className="text-font-100 text-center">{title}</h2>
+        <div className="space-y-2">
+          <h2 className="text-font-100 text-center">{title}</h2>
+          <p className="text-font-200 text-center px-4">{description}</p>
+        </div>
         {children}
       </div>
     )
