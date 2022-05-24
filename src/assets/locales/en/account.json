@@ -1,0 +1,12 @@
+{
+  "transactions": {
+    "tabs": {
+      "all": "All Activities ({{count}})",
+      "transfer": "Transfer ({{count}})",
+      "staking": "Staking ({{count}})",
+      "distribution": "Distribution ({{count}})",
+      "governance": "Governance ({{count}})",
+      "slashing": "Slashing ({{count}})"
+    }
+  }
+}

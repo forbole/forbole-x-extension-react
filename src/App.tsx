@@ -6,6 +6,9 @@ import AppRoutes from './routes/routes'
 import lightTheme from './config/theme/lightTheme'
 import darkTheme from './config/theme/darkTheme'
 import { themeState } from './recoil/general'
+import client, { endpoints } from './services/graphql/client'
+
+console.log(endpoints)
 
 const App = () => {
   const [theme] = useRecoilState(themeState)

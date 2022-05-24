@@ -12,6 +12,11 @@ import reportWebVitals from './reportWebVitals'
 import './assets/locales/i18n'
 import App from './App'
 
+
+try {
+  const browser = require('webextension-polyfill')
+} catch (err) {}
+
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<CircularProgress />}>

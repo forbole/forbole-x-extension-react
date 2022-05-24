@@ -12,10 +12,16 @@ module.exports = function override(config, env) {
   config.plugins = [
     ...config.plugins,
     new webpack.ProvidePlugin({
-      process: "process/browser",
+      process: "process/browser.js",
       Buffer: ["buffer", "Buffer"],
     }),
   ];
 
+  config.module.rules.push({
+    test: /\.m?js/,
+    resolve: {
+      fullySpecified: false
+    }
+  })
   return config;
 };
