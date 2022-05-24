@@ -6,6 +6,7 @@ import { Loadable } from 'recoil'
 import chains from '../../misc/chains'
 import toast from 'react-hot-toast'
 import SendDialog from '../../components/TransactionDialogs/SendDialog'
+import QRCodeDialog from '../Common/QRCodeDialog'
 
 type Props = {
   account: Loadable<AccountDetail>
@@ -14,6 +15,7 @@ type Props = {
 const WalletCard = ({ account }: Props) => {
   const [isCopySuccess, setIsCopySuccess] = React.useState(false)
   const [sendDialogOpen, setSendDialogOpen] = React.useState(false)
+  const [qrDialogOpen, setQRDialogOpen] = React.useState(false)
 
   const copyText = React.useCallback(
     (e) => {
@@ -38,7 +40,7 @@ const WalletCard = ({ account }: Props) => {
             <div className="flex items-center space-x-1">
               <span className="text-font-200 text-xs leading-none">{account.contents.address}</span>
               <IconCopy onClick={copyText} className="cursor-pointer" />
-              <IconQrcode className="cursor-pointer" />
+              <IconQrcode onClick={() => setQRDialogOpen(true)} className="cursor-pointer" />
             </div>
           </div>
           <IconMore className="cursor-pointer" />
@@ -58,6 +60,11 @@ const WalletCard = ({ account }: Props) => {
           </button>
         </div>
       </div>
+      <QRCodeDialog
+        open={qrDialogOpen}
+        onClose={() => setQRDialogOpen(false)}
+        address={account.contents.address}
+      />
       <SendDialog
         open={sendDialogOpen}
         onClose={() => setSendDialogOpen(false)}
