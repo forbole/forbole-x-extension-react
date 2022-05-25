@@ -1,12 +1,13 @@
 import React from 'react'
-import { Card, Tab, Tabs } from '@mui/material'
+import { Box, Card } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import TabButton from './components/TabButton'
 
 const TransactionsCard = () => {
-  const [currentTab, setCurrentTab] = React.useState(0)
+  const [filterType, setFilterType] = React.useState(0)
   const { t } = useTranslation('account')
 
-  const tabs = React.useMemo(
+  const filters = React.useMemo(
     () => [
       {
         label: t('transactions.tabs.all', {
@@ -14,19 +15,29 @@ const TransactionsCard = () => {
         }),
       },
       {
-        label: t('transactions.tabs.transfer'),
+        label: t('transactions.tabs.transfer', {
+          count: 1,
+        }),
       },
       {
-        label: t('transactions.tabs.staking'),
+        label: t('transactions.tabs.staking', {
+          count: 1,
+        }),
       },
       {
-        label: t('transactions.tabs.distribution'),
+        label: t('transactions.tabs.distribution', {
+          count: 1,
+        }),
       },
       {
-        label: t('transactions.tabs.governance'),
+        label: t('transactions.tabs.governance', {
+          count: 1,
+        }),
       },
       {
-        label: t('transactions.tabs.slashing'),
+        label: t('transactions.tabs.slashing', {
+          count: 1,
+        }),
       },
     ],
     []
@@ -39,21 +50,15 @@ const TransactionsCard = () => {
         borderRadius: 2,
       })}
     >
-      <Tabs
-        value={currentTab}
-        sx={{
-          indicator: {
-            color: 'white',
-            width: '8px',
-          },
-        }}
-        onChange={(e, v) => setCurrentTab(v)}
-        variant="scrollable"
-      >
-        {tabs.map((tab) => (
-          <Tab key={tab.label} label={tab.label} />
+      <Box>
+        {filters.map((x, idx) => (
+          <TabButton
+            isSelected={idx === filterType}
+            label={x.label}
+            onClick={() => setFilterType(idx)}
+          />
         ))}
-      </Tabs>
+      </Box>
       {/* <TablePagination */}
       {/*  page={page} */}
       {/*  rowsPerPage={rowsPerPage} */}
