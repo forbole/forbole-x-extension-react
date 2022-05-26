@@ -1,13 +1,9 @@
 import React from 'react';
-import { Box, Card, CircularProgress } from '@mui/material';
+import { Box, Card } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { gql, useQuery } from '@apollo/client';
 import { Loadable } from 'recoil';
 import _ from 'lodash';
 import TabButton from './components/TabButton';
-import chains from '../../../../misc/chains';
-import getTransactions from '../../../../services/graphql/queries/getTransactionsForAccount';
-import FormatUtils from '../../../../lib/FormatUtils';
 
 type Props = {
   /**
@@ -25,29 +21,13 @@ const TransactionsCard = ({ account, validators }: Props) => {
   const [filterType, setFilterType] = React.useState(0);
   const { t } = useTranslation('account');
 
-  const { data, loading } = useQuery(
-    gql`
-      ${getTransactions(account.state === 'hasValue' ? chains[account.contents.chain].symbol : '')}
-    `,
-    {
-      variables: {
-        address: account.state === 'hasValue' ? `{${account.contents.address}}` : '{}',
-      },
-    }
-  );
-
   const validatorsMap = React.useMemo(() => {
     return _.keyBy(validators, 'address');
   }, [validators]);
 
-  const activities = React.useMemo(() => {
-    if (account.state !== 'hasValue') return [];
-    return FormatUtils.transformTransactions(data, validatorsMap, account.contents.chain);
-  }, [data, validatorsMap, account.state]);
+  const activities = [];
 
   const filters = React.useMemo(() => {
-    if (!data) return [];
-
     return [
       {
         label: t('transactions.tabs.all', {
@@ -80,22 +60,22 @@ const TransactionsCard = ({ account, validators }: Props) => {
         }),
       },
     ];
-  }, [data]);
+  }, []);
 
-  if (loading) {
-    return (
-      <Card
-        sx={(theme) => ({
-          margin: `${theme.spacing(1)} ${theme.spacing(2.5)}`,
-          borderRadius: 2,
-          display: 'flex',
-          alignItems: 'center',
-        })}
-      >
-        <CircularProgress />
-      </Card>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Card
+  //       sx={(theme) => ({
+  //         margin: `${theme.spacing(1)} ${theme.spacing(2.5)}`,
+  //         borderRadius: 2,
+  //         display: 'flex',
+  //         alignItems: 'center',
+  //       })}
+  //     >
+  //       <CircularProgress />
+  //     </Card>
+  //   );
+  // }
 
   return (
     <Card
