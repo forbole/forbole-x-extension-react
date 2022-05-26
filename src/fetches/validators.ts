@@ -1,25 +1,25 @@
-import get from 'lodash/get'
-import { fetchKeybase, fetchLcd } from '.'
-import chains from '../misc/chains'
-import { fetchAccount } from './accounts'
-import { Bech32 } from '@cosmjs/encoding'
-import batchPromises from 'batch-promises'
+import get from 'lodash/get';
+import { Bech32 } from '@cosmjs/encoding';
+import batchPromises from 'batch-promises';
+import { fetchKeybase, fetchLcd } from '.';
+import chains from '../misc/chains';
+import { fetchAccount } from './accounts';
 
 export const fetchValidators = async (chainId: string) => {
-  let validators = []
-  let nextKey
-  const chain = chains[chainId]
+  let validators = [];
+  let nextKey;
+  const chain = chains[chainId];
   if (!chain) {
-    throw new Error('chain does not exist')
+    throw new Error('chain does not exist');
   }
   do {
     const response = await fetchLcd(
       chainId,
       `/cosmos/staking/v1beta1/validators${nextKey ? `?pagination.key=${nextKey}` : ''}`
-    )
+    );
     if (!response.validators) {
-      nextKey = undefined
-      break
+      nextKey = undefined;
+      break;
     }
     const profiles = await Promise.all(
       response.validators.map((v) =>
@@ -28,7 +28,7 @@ export const fetchValidators = async (chainId: string) => {
           Bech32.encode(chain.prefix, Bech32.decode(v.operator_address).data)
         ).catch(() => Promise.resolve(undefined))
       )
-    )
+    );
     // Too many concurrent Keybase request will return error 429
     const keybasePics = await batchPromises(10, response.validators, (v) =>
       get(v, ['description', 'identity'])
@@ -36,7 +36,7 @@ export const fetchValidators = async (chainId: string) => {
             `/user/lookup.json?fields=pictures&key_suffix=${get(v, ['description', 'identity'])}`
           ).catch(() => Promise.resolve(undefined))
         : Promise.resolve()
-    )
+    );
     validators = [
       ...validators,
       ...response.validators.map((v, i) => ({
@@ -53,8 +53,8 @@ export const fetchValidators = async (chainId: string) => {
         status: v.status,
         jailed: v.jailed,
       })),
-    ]
-    nextKey = get(response, ['pagination', 'next_key'])
-  } while (nextKey)
-  return validators
-}
+    ];
+    nextKey = get(response, ['pagination', 'next_key']);
+  } while (nextKey);
+  return validators;
+};

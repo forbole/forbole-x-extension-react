@@ -1,23 +1,23 @@
-import React from 'react'
-import Fab from '@mui/material/Fab'
-import { Typography } from '@mui/material'
+import React from 'react';
+import Fab from '@mui/material/Fab';
+import { Typography } from '@mui/material';
 
 type Props = {
   /**
    * The button label.
    */
-  label: string
+  label: string;
 
   /**
    * What to do when the button is clicked.
    */
-  onClick: () => void
+  onClick: () => void;
 
   /**
    * Is the button selected?
    */
-  isSelected?: boolean
-}
+  isSelected?: boolean;
+};
 
 /**
  * A tab button, for use in the TransactionCard component
@@ -26,8 +26,8 @@ const TabButton = ({ label, onClick, isSelected }: Props) => {
   return (
     <Fab
       sx={{
-        width: '29%',
-        margin: 1,
+        width: '30%',
+        margin: 0.5,
         color: isSelected ? 'text.primary' : 'text.secondary',
         backgroundColor: isSelected ? 'primary.main' : 'grey.200',
         '&:hover': {
@@ -40,9 +40,9 @@ const TabButton = ({ label, onClick, isSelected }: Props) => {
       arial-label={label}
       onClick={onClick}
     >
-      <Typography>{label}</Typography>
+      <Typography sx={{ fontSize: 'small' }}>{label}</Typography>
     </Fab>
-  )
-}
+  );
+};
 
-export default TabButton
+export default TabButton;

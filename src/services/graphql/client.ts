@@ -1,21 +1,15 @@
-import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache } from '@apollo/client'
-import { MultiAPILink } from '@habx/apollo-multi-endpoint-link'
-import { concatPagination } from '@apollo/client/utilities'
-import chains from '../../misc/chains'
-
-//
-// Object.values(chains).forEach((c) => {
-//   endpoints[`${c.symbol}bdjuno`] = c.graphqlHttpUrl
-//   endpoints[`${c.symbol}djuno`] = c.djunoUrl
-// })
+import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache } from '@apollo/client';
+import { MultiAPILink } from '@habx/apollo-multi-endpoint-link';
+import { concatPagination } from '@apollo/client/utilities';
+import chains from '../../misc/chains';
 
 export const endpoints = Object.values(chains).reduce((acc, c) => {
   return {
     ...acc,
     [`${c.symbol}bdjuno`]: c.graphqlHttpUrl,
     [`${c.symbol}djuna`]: c.djunoUrl,
-  }
-}, {})
+  };
+}, {});
 
 const client = new ApolloClient({
   ssrMode: typeof window === 'undefined',
@@ -34,6 +28,6 @@ const client = new ApolloClient({
       },
     },
   }),
-})
+});
 
-export default client
+export default client;

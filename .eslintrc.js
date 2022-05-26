@@ -41,10 +41,11 @@ module.exports = {
     'no-undef': 0,
     'no-underscore-dangle': 0,
     'import/no-extraneous-dependencies': 0,
+    camelcase: 0,
   },
   settings: {
     'import/resolver': {
       typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
     },
   },
-}
+};
