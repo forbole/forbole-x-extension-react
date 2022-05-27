@@ -2,17 +2,6 @@ import _ from 'lodash';
 
 const formatTx = (transactions: any[]) => {
   const reformattedTransactions = transactions.map((transaction) => {
-    /**
-     * MsgSend
-     * MsgMultiSend
-     * MsgBeginRedelegate
-     * MsgUndelegate
-     * MsgDeposit
-     * MsgVote
-     * MsgSubmitProposal
-     * MsgSetWithdrawAddress
-     */
-
     const {
       tx: {
         body: { messages },
@@ -21,6 +10,8 @@ const formatTx = (transactions: any[]) => {
       txhash,
       height,
       timestamp,
+      code, // 0 = success, 1 = fail
+      // note that lcd queries do not return failed transactions yet, this is for future proofing
     } = transaction;
 
     const txType = messages[0]['@type'];
@@ -31,17 +22,28 @@ const formatTx = (transactions: any[]) => {
       timestamp,
       type: txType,
       memo,
+      code,
     };
 
     if (
       txType.includes('MsgVote') ||
       txType.includes('MsgBeginRedelegate') ||
-      txType.includes('MsgSend')
+      txType.includes('MsgSend') ||
+      txType.includes('MsgSetWithdrawAddress') ||
+      txType.includes('MsgUndelegate') ||
+      txType.includes('MsgUnjail') ||
+      txType.includes('MsgJail')
     ) {
       return {
         ...baseTxData,
         type: txType,
         detail: messages[0],
+      };
+    }
+    if (txType.includes('MsgDeposit')) {
+      return {
+        ...baseTxData,
+        ...formatDepositTx(transaction),
       };
     }
     if (txType.includes('MsgMultiSend')) {
@@ -75,6 +77,26 @@ const formatTx = (transactions: any[]) => {
     return null;
   });
   return _.flatten(reformattedTransactions);
+};
+
+const formatDepositTx = (transaction: any) => {
+  const {
+    logs,
+    tx: {
+      body: { messages },
+    },
+  } = transaction;
+
+  const proposalNum = logs[0].events
+    .find((event) => event.type === 'proposal_deposit')
+    .attributes.find((attribute) => attribute.key === 'proposal_id').value;
+
+  return {
+    detail: {
+      proposalNum,
+      ...messages[0],
+    },
+  };
 };
 
 const formatSubmitProposalTx = (transaction: any) => {
