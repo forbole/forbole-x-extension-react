@@ -2,15 +2,6 @@ import _ from 'lodash';
 
 const formatTx = (transactions: any[]) => {
   const reformattedTransactions = transactions.map((transaction) => {
-    // Format the transaction according to type
-    const {
-      tx: {
-        body: { messages },
-      },
-    } = transaction;
-    const [firstMsg] = messages;
-    const txType = firstMsg['@type'];
-
     /**
      * MsgSend
      * MsgMultiSend
@@ -21,20 +12,90 @@ const formatTx = (transactions: any[]) => {
      * MsgSubmitProposal
      * MsgSetWithdrawAddress
      */
-    if (txType.includes('MsgWithdrawDelegatorReward')) {
-      return formatWithdrawRewardsTx(transaction);
-    }
-    if (txType.includes('MsgDelegate')) {
-      return formatDelegationTx(transaction);
-    }
-    if (txType.includes('MsgSend')) {
-      return formatSendTx(transaction);
+
+    const {
+      tx: {
+        body: { messages },
+        memo,
+      },
+      txhash,
+      height,
+      timestamp,
+    } = transaction;
+
+    const txType = messages[0]['@type'];
+
+    const baseTxData = {
+      txhash,
+      height,
+      timestamp,
+      type: txType,
+      memo,
+    };
+
+    if (
+      txType.includes('MsgVote') ||
+      txType.includes('MsgBeginRedelegate') ||
+      txType.includes('MsgSend')
+    ) {
+      return {
+        ...baseTxData,
+        type: txType,
+        detail: messages[0],
+      };
     }
     if (txType.includes('MsgMultiSend')) {
-      return formatMultiSendTx(transaction);
+      return {
+        ...baseTxData,
+        ...formatMultiSendTx(transaction),
+      };
     }
+    if (txType.includes('MsgWithdrawDelegatorReward')) {
+      // returns an array[], so we need to append base data to each element
+      const formattedWithdrawRewardTx = formatWithdrawRewardsTx(transaction);
+      return formattedWithdrawRewardTx.map((tx) => ({
+        ...baseTxData,
+        ...tx,
+      }));
+    }
+    if (txType.includes('MsgDelegate')) {
+      // returns an array[], so we need to append base data to each element
+      const formattedDelegationTx = formatDelegationTx(transaction);
+      return formattedDelegationTx.map((tx) => ({
+        ...baseTxData,
+        ...tx,
+      }));
+    }
+    if (txType.includes('MsgSubmitProposal')) {
+      return {
+        ...baseTxData,
+        ...formatSubmitProposalTx(transaction),
+      };
+    }
+    return null;
   });
   return _.flatten(reformattedTransactions);
+};
+
+const formatSubmitProposalTx = (transaction: any) => {
+  const {
+    logs,
+    tx: {
+      body: { messages },
+    },
+  } = transaction;
+
+  // get proposal #
+  const proposalNum = logs[0].events
+    .find((event) => event.type === 'proposal_deposit')
+    .attributes.find((attribute) => attribute.key === 'proposal_id').value;
+
+  return {
+    detail: {
+      proposalNum,
+      ...messages[0],
+    },
+  };
 };
 
 const formatMultiSendTx = (transaction: any) => {
@@ -42,52 +103,10 @@ const formatMultiSendTx = (transaction: any) => {
     tx: {
       body: { messages },
     },
-    txhash,
-    height,
-    timestamp,
   } = transaction;
 
-  const [firstMessage] = messages;
-  const { inputs, outputs } = firstMessage;
-
-  // format is slightly different, note recipients instead of recipient
   return {
-    height,
-    detail: {
-      sender: inputs[0].address,
-      recipients: outputs,
-      amount: inputs[0].coins,
-    },
-    txhash,
-    type: firstMessage['@type'],
-    timestamp,
-  };
-};
-
-const formatSendTx = (transaction: any) => {
-  const {
-    tx: {
-      body: { messages },
-    },
-    txhash,
-    height,
-    timestamp,
-  } = transaction;
-
-  const [firstMessage] = messages;
-
-  const { from_address, to_address, amount } = firstMessage;
-
-  return {
-    height,
-    detail: {
-      recipient: to_address,
-      sender: from_address,
-      amount: amount[0],
-    },
-    timestamp,
-    type: firstMessage['@type'],
-    txhash,
+    details: messages[0],
   };
 };
 
@@ -96,21 +115,14 @@ const formatDelegationTx = (transaction: any) => {
     tx: {
       body: { messages },
     },
-    txhash,
-    height,
-    timestamp,
   } = transaction;
 
   return messages.map((message) => ({
-    height,
     detail: {
       amount: message.amount,
       recipient: message.validator_address,
       sender: message.delegator_address,
     },
-    timestamp,
-    type: message['@type'],
-    txhash,
   }));
 };
 
@@ -124,9 +136,6 @@ const formatWithdrawRewardsTx = (transaction: any) => {
     tx: {
       body: { messages },
     },
-    txhash,
-    height,
-    timestamp,
   } = transaction;
 
   return logs.map((log, x) => {
@@ -150,7 +159,6 @@ const formatWithdrawRewardsTx = (transaction: any) => {
     const message = messages[x];
 
     return {
-      height,
       detail: {
         recipient: message.delegator_address,
         sender: message.validator_address,
@@ -159,9 +167,6 @@ const formatWithdrawRewardsTx = (transaction: any) => {
           denom,
         },
       },
-      timestamp,
-      type: message['@type'],
-      txhash,
     };
   });
 };
