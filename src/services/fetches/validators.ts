@@ -1,8 +1,8 @@
 import get from 'lodash/get';
 import { Bech32 } from '@cosmjs/encoding';
 import batchPromises from 'batch-promises';
-import { fetchKeybase, fetchLcd } from '.';
-import chains from '../misc/chains';
+import chains from 'misc/chains';
+import { fetchKeybase, fetchLcd } from './index';
 import { fetchAccount } from './accounts';
 
 export const fetchValidators = async (chainId: string) => {

@@ -2,11 +2,12 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValueLoadable } from 'recoil';
 import get from 'lodash/get';
-import Layout from '../../components/Layout/layout';
-import BalanceCard from '../../components/Accounts/BalanceCard';
-import ProfileCard from '../../components/Accounts/ProfileCard';
-import StakingCard from '../../components/Accounts/StakingCard';
-import WalletCard from '../../components/Accounts/WalletCard';
+import BalanceCard from 'components/Accounts/BalanceCard';
+import ProfileCard from 'components/Accounts/ProfileCard';
+import StakingCard from 'components/Accounts/StakingCard';
+import Layout from 'components/Layout/layout';
+import WalletCard from 'components/Accounts/WalletCard';
+import { CircularProgress } from '@mui/material';
 import { accountDetailState } from '../../recoil/accounts';
 import { currentWalletState } from '../../recoil/wallets';
 import { validatorsState } from '../../recoil/validators';
@@ -31,7 +32,11 @@ const Account = () => {
         {account.state === 'hasValue' && <WalletCard account={account} />}
         <BalanceCard account={account} />
         <StakingCard account={account} validators={validators} />
-        <TransactionsCard account={account} validators={validators} />
+        {account.state === 'hasValue' && validators.state === 'hasValue' ? (
+          <TransactionsCard account={account.contents} />
+        ) : (
+          <CircularProgress />
+        )}
       </div>
     </Layout>
   );

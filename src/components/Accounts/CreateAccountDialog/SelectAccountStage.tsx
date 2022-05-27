@@ -1,24 +1,24 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useRecoilValue } from 'recoil'
-import { fetchAvailableAccountBalance } from '../../../fetches/accounts'
-import getWalletAddress from '../../../misc/getWalletAddress'
-import { formatCoins } from '../../../misc/utils'
-import { accountsState } from '../../../recoil/accounts'
-import { useDecryptWallet } from '../../../recoil/wallets'
-import Button from '../../Element/button'
-import Checkbox from '../../Element/checkbox'
-import Table from '../../Element/table'
-import { ReactComponent as Loading } from '../../../assets/images/icons/loading.svg'
+import React, { useCallback, useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { fetchAvailableAccountBalance } from '../../../services/fetches/accounts';
+import getWalletAddress from '../../../misc/getWalletAddress';
+import { formatCoins } from '../../../misc/utils';
+import { accountsState } from '../../../recoil/accounts';
+import { useDecryptWallet } from '../../../recoil/wallets';
+import Button from '../../Element/button';
+import Checkbox from '../../Element/checkbox';
+import Table from '../../Element/table';
+import { ReactComponent as Loading } from '../../../assets/images/icons/loading.svg';
 
-const NO_OF_ADDRESSES = 10
+const NO_OF_ADDRESSES = 10;
 
 type Props = {
-  onSubmit: (accounts: { address: string; hdPath: HdPath }[]) => void
-  wallet: Wallet
-  chain: Chain
-  securityPassword?: string
-  ledgerTransport?: string
-}
+  onSubmit: (accounts: { address: string; hdPath: HdPath }[]) => void;
+  wallet: Wallet;
+  chain: Chain;
+  securityPassword?: string;
+  ledgerTransport?: string;
+};
 
 const SelectAccountStage = ({
   onSubmit,
@@ -27,30 +27,30 @@ const SelectAccountStage = ({
   securityPassword,
   ledgerTransport,
 }: Props) => {
-  const accounts = useRecoilValue(accountsState)
+  const accounts = useRecoilValue(accountsState);
   const [addresses, setAddresses] = useState<
     { address: string; balance: Coin[]; hdPath: HdPath }[]
-  >([])
-  const [loading, setLoading] = useState(false)
-  const [isEnteringHdPath, setIsEnteringHdPath] = useState(false)
+  >([]);
+  const [loading, setLoading] = useState(false);
+  const [isEnteringHdPath, setIsEnteringHdPath] = useState(false);
   const [selectedAddresses, setSelectedAddresses] = useState<{ address: string; hdPath: HdPath }[]>(
     []
-  )
-  const decryptWallet = useDecryptWallet()
+  );
+  const decryptWallet = useDecryptWallet();
 
-  const [hdPath, setHdPath] = useState({ account: '0', index: '0', change: '0' })
-  const [hdAddress, setHdAddress] = useState('')
-  const [hdBalance, setHdBalance] = useState([{ amount: '0', denom: chain.stakingDenom }])
+  const [hdPath, setHdPath] = useState({ account: '0', index: '0', change: '0' });
+  const [hdAddress, setHdAddress] = useState('');
+  const [hdBalance, setHdBalance] = useState([{ amount: '0', denom: chain.stakingDenom }]);
 
   const loadAddresses = useCallback(async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const { mnemonic, privateKey } =
         wallet.type === 'ledger'
           ? { mnemonic: '', privateKey: '' }
-          : decryptWallet(wallet.id, securityPassword)
-      const noOfAddresses = wallet.type === 'private key' ? 1 : NO_OF_ADDRESSES
-      const addressesResult = []
+          : decryptWallet(wallet.id, securityPassword);
+      const noOfAddresses = wallet.type === 'private key' ? 1 : NO_OF_ADDRESSES;
+      const addressesResult = [];
       for (let i = 0; i < noOfAddresses; i += 1) {
         const address = await getWalletAddress({
           prefix: chain.prefix,
@@ -64,41 +64,41 @@ const SelectAccountStage = ({
             index: 0,
           },
           ledgerAppName: chain.ledgerAppName,
-        })
-        addressesResult.push(address)
+        });
+        addressesResult.push(address);
       }
 
       const balances = await Promise.all(
         addressesResult.map((a) => fetchAvailableAccountBalance(chain.chainId, a))
-      )
+      );
       setAddresses(
         addressesResult.map((a, i) => ({
           address: a,
           balance: balances[i],
           hdPath: { account: i, change: 0, index: 0 },
         }))
-      )
-      setHdAddress(addressesResult[0])
-      setHdBalance(balances[0])
-      setLoading(false)
+      );
+      setHdAddress(addressesResult[0]);
+      setHdBalance(balances[0]);
+      setLoading(false);
     } catch (err) {
-      setLoading(false)
-      console.log(err)
+      setLoading(false);
+      console.log(err);
     }
-  }, [wallet, securityPassword, ledgerTransport, chain, decryptWallet])
+  }, [wallet, securityPassword, ledgerTransport, chain, decryptWallet]);
 
   useEffect(() => {
-    loadAddresses()
-  }, [loadAddresses])
+    loadAddresses();
+  }, [loadAddresses]);
 
   const loadHdAddress = useCallback(async () => {
     if (!hdPath.account || !hdPath.change || !hdPath.index) {
-      return
+      return;
     }
     const { mnemonic, privateKey } =
       wallet.type === 'ledger'
         ? { mnemonic: '', privateKey: '' }
-        : decryptWallet(wallet.id, securityPassword)
+        : decryptWallet(wallet.id, securityPassword);
     const address = await getWalletAddress({
       prefix: chain.prefix,
       mnemonic,
@@ -111,17 +111,17 @@ const SelectAccountStage = ({
         index: Number(hdPath.index),
       },
       ledgerAppName: chain.ledgerAppName,
-    })
-    setHdAddress(address)
-    const balance = await fetchAvailableAccountBalance(chain.chainId, address)
-    setHdBalance(balance)
-  }, [wallet, securityPassword, ledgerTransport, chain, decryptWallet, hdPath])
+    });
+    setHdAddress(address);
+    const balance = await fetchAvailableAccountBalance(chain.chainId, address);
+    setHdBalance(balance);
+  }, [wallet, securityPassword, ledgerTransport, chain, decryptWallet, hdPath]);
 
   useEffect(() => {
     if (isEnteringHdPath) {
-      loadHdAddress()
+      loadHdAddress();
     }
-  }, [loadHdAddress, isEnteringHdPath])
+  }, [loadHdAddress, isEnteringHdPath]);
 
   return (
     <div className="p-5">
@@ -132,7 +132,7 @@ const SelectAccountStage = ({
             <Table
               head={['', '#', 'Address', <p className="text-right">Balance</p>]}
               rows={addresses.map((a, i) => {
-                const isAddressExist = accounts.find((aa) => a.address === aa.address)
+                const isAddressExist = accounts.find((aa) => a.address === aa.address);
                 return [
                   <Checkbox
                     disabled={isAddressExist}
@@ -147,12 +147,12 @@ const SelectAccountStage = ({
                   />,
                   <p className={isAddressExist ? 'opacity-50' : ''}>{i}</p>,
                   <p className={isAddressExist ? 'opacity-50' : ''}>
-                    {a.address.slice(0, 10) + '......' + a.address.slice(-10)}
+                    {`${a.address.slice(0, 10)}......${a.address.slice(-10)}`}
                   </p>,
                   <p className={isAddressExist ? 'opacity-50 text-right' : 'text-right'}>
                     {formatCoins(chain.chainId, a.balance)}
                   </p>,
-                ]
+                ];
               })}
             />
             {loading && (
@@ -232,12 +232,12 @@ const SelectAccountStage = ({
                     },
                   ]
                 : selectedAddresses
-            )
+            );
           }}
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SelectAccountStage
+export default SelectAccountStage;

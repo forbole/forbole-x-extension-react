@@ -42,6 +42,7 @@ module.exports = {
     'no-underscore-dangle': 0,
     'import/no-extraneous-dependencies': 0,
     camelcase: 0,
+    'no-use-before-define': 0,
   },
   settings: {
     'import/resolver': {

@@ -133,9 +133,6 @@ interface Chain {
   image: string;
   coinType: number;
   blockExplorerBaseUrl: string;
-  graphqlHttpUrl: string;
-  graphqlWsUrl: string;
-  djunoUrl: string;
   rpcApiUrl: string;
   lcdApiUrl: string;
   ledgerAppName: string;

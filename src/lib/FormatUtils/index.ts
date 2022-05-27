@@ -1,229 +1,173 @@
-import { format } from 'date-fns';
-import { get } from 'lodash';
-import defaultDenoms from '../../config/defaultDenoms';
+import _ from 'lodash';
 
-const getTokenAmountFromDenoms = (
-  coins: Array<{ denom: string; amount: string }>,
-  denoms: TokenPrice[]
-): TokenAmount => {
-  const result = {};
-  (coins || []).forEach((coin) => {
-    const denomsToUse = denoms.length ? denoms : defaultDenoms;
-    denomsToUse.some((d) => {
-      const unit = get(d, 'token_unit.token.token_units', []).find(
-        (t) => t && coin && t.denom === coin.denom
-      );
-      if (unit) {
-        const base = get(d, 'token_unit.token.token_units', []).find(
-          (t) => t.denom === d.unit_name
-        );
-        const denom = base.denom.toUpperCase();
-        if (result[denom]) {
-          result[denom].amount += Number(
-            (Number(coin.amount) * 10 ** (unit.exponent - base.exponent)).toFixed(6)
-          );
-        } else {
-          result[denom] = {
-            amount: Number(
-              (Number(coin.amount) * 10 ** (unit.exponent - base.exponent)).toFixed(6)
-            ),
-            price: d.price,
-          };
-        }
-        return true;
-      }
-      return false;
-    });
+const formatTx = (transactions: any[]) => {
+  const reformattedTransactions = transactions.map((transaction) => {
+    // Format the transaction according to type
+    const {
+      tx: {
+        body: { messages },
+      },
+    } = transaction;
+    const [firstMsg] = messages;
+    const txType = firstMsg['@type'];
+
+    /**
+     * MsgSend
+     * MsgMultiSend
+     * MsgBeginRedelegate
+     * MsgUndelegate
+     * MsgDeposit
+     * MsgVote
+     * MsgSubmitProposal
+     * MsgSetWithdrawAddress
+     */
+    if (txType.includes('MsgWithdrawDelegatorReward')) {
+      return formatWithdrawRewardsTx(transaction);
+    }
+    if (txType.includes('MsgDelegate')) {
+      return formatDelegationTx(transaction);
+    }
+    if (txType.includes('MsgSend')) {
+      return formatSendTx(transaction);
+    }
+    if (txType.includes('MsgMultiSend')) {
+      return formatMultiSendTx(transaction);
+    }
   });
-  return result;
+  return _.flatten(reformattedTransactions);
 };
 
-const transformTransactions = (
-  data: any,
-  validatorsMap: { [address: string]: Validator },
-  chain: string
-): Activity[] => {
-  return get(data, 'messages_by_address', [])
-    .map((t) => {
-      if (t.type.includes('MsgSend')) {
-        return {
-          ref: `#${get(t, 'transaction_hash', '')}`,
-          tab: 'transfer',
-          tag: 'send',
-          date: `${format(
-            new Date(get(t, 'transaction.block.timestamp')),
-            'dd MMM yyyy HH:mm'
-          )} UTC`,
-          detail: {
-            fromAddress: get(t, 'value.from_address', ''),
-            toAddress: get(t, 'value.to_address', ''),
-          },
-          amount: get(t, 'value.amount[0]', {}),
-          success: get(t, 'transaction.success', false),
-        };
-      }
-      if (t.type.includes('MsgMultiSend')) {
-        return {
-          ref: `#${get(t, 'transaction_hash', '')}`,
-          tab: 'transfer',
-          tag: 'multisend',
-          date: `${format(
-            new Date(get(t, 'transaction.block.timestamp')),
-            'dd MMM yyyy HH:mm'
-          )} UTC`,
-          detail: {
-            inputs: get(t, 'value.inputs', []).map((input) => ({
-              ...input,
-              amount: input.coins[0],
-            })),
-            outputs: get(t, 'value.outputs', []).map((output) => ({
-              ...output,
-              amount: output.coins[0],
-            })),
-          },
-          amount: get(t, 'value.amount[0]', {}),
-          success: get(t, 'transaction.success', false),
-        };
-      }
-      if (t.type.includes('MsgDelegate')) {
-        return {
-          ref: `#${get(t, 'transaction_hash', '')}`,
-          tab: 'staking',
-          tag: 'delegate',
-          date: `${format(
-            new Date(get(t, 'transaction.block.timestamp')),
-            'dd MMM yyyy HH:mm'
-          )} UTC`,
-          detail: {
-            validator: get(validatorsMap, `${get(t, 'value.validator_address', '')}`, {}),
-          },
-          amount: get(t, 'value.amount[0]', {}),
-          success: get(t, 'transaction.success', false),
-        };
-      }
-      if (t.type.includes('MsgBeginRedelegate')) {
-        return {
-          ref: `#${get(t, 'transaction_hash', '')}`,
-          tab: 'staking',
-          tag: 'redelegate',
-          date: `${format(
-            new Date(get(t, 'transaction.block.timestamp')),
-            'dd MMM yyyy HH:mm'
-          )} UTC`,
-          detail: {
-            srcValidator: get(validatorsMap, `${get(t, 'value.validator_src_address', '')}`, {}),
-            dstValidator: get(validatorsMap, `${get(t, 'value.validator_dst_address', '')}`, {}),
-          },
-          amount: get(t, 'value.amount[0]', {}),
-          success: get(t, 'transaction.success', false),
-        };
-      }
-      if (t.type.includes('MsgUndelegate')) {
-        return {
-          ref: `#${get(t, 'transaction_hash', '')}`,
-          tab: 'staking',
-          tag: 'undelegate',
-          date: `${format(
-            new Date(get(t, 'transaction.block.timestamp')),
-            'dd MMM yyyy HH:mm'
-          )} UTC`,
-          detail: {
-            validator: get(validatorsMap, `${get(t, 'value.validator_address', '')}`, {}),
-          },
-          amount: get(t, 'value.amount[0]', {}),
-          success: get(t, 'transaction.success', false),
-        };
-      }
-      if (t.type.includes('MsgWithdrawDelegatorReward')) {
-        return {
-          ref: `#${get(t, 'transaction_hash', '')}`,
-          tab: 'distribution',
-          tag: 'withdrawReward',
-          date: `${format(
-            new Date(get(t, 'transaction.block.timestamp')),
-            'dd MMM yyyy HH:mm'
-          )} UTC`,
-          detail: {
-            validator: get(validatorsMap, `${get(t, 'value.validator_address', '')}`, {}),
-          },
-          amount: get(t, 'value.amount[0]', {}),
-          success: get(t, 'transaction.success', false),
-        };
-      }
-      if (t.type.includes('MsgDeposit')) {
-        return {
-          ref: `#${get(t, 'transaction_hash', '')}`,
-          tab: 'governance',
-          tag: 'deposit',
-          date: `${format(
-            new Date(get(t, 'transaction.block.timestamp')),
-            'dd MMM yyyy HH:mm'
-          )} UTC`,
-          detail: {
-            proposalId: get(t, 'value.proposal_id', ''),
-          },
-          amount: get(t, 'value.amount[0]', {}),
-          success: get(t, 'transaction.success', false),
-        };
-      }
-      if (t.type.includes('MsgVote')) {
-        return {
-          ref: `#${get(t, 'transaction_hash', '')}`,
-          tab: 'governance',
-          tag: 'vote',
-          date: `${format(
-            new Date(get(t, 'transaction.block.timestamp')),
-            'dd MMM yyyy HH:mm'
-          )} UTC`,
-          detail: {
-            proposalId: get(t, 'value.proposal_id', ''),
-            ans: get(t, 'value.option', ''),
-          },
-          amount: get(t, 'value.amount[0]', {}),
-          success: get(t, 'transaction.success', false),
-        };
-      }
-      if (t.type.includes('MsgSubmitProposal')) {
-        return {
-          ref: `#${get(t, 'transaction_hash', '')}`,
-          tab: 'governance',
-          tag: 'submitProposal',
-          date: `${format(
-            new Date(get(t, 'transaction.block.timestamp')),
-            'dd MMM yyyy HH:mm'
-          )} UTC`,
-          detail: {
-            proposalTitle: get(t, 'value.content.title', ''),
-          },
-          amount: get(t, 'value.amount[0]', {}),
-          success: get(t, 'transaction.success', false),
-        };
-      }
-      if (t.type.includes('MsgSetWithdrawAddress')) {
-        return {
-          ref: `#${get(t, 'transaction_hash', '')}`,
-          tab: 'distribution',
-          tag: 'setRewardAddress',
-          date: `${format(
-            new Date(get(t, 'transaction.block.timestamp')),
-            'dd MMM yyyy HH:mm'
-          )} UTC`,
-          detail: {
-            delegatorAddress: get(t, 'value.delegator_address', ''),
-            withdrawAddress: get(t, 'value.withdraw_address', ''),
-          },
-          amount: get(t, 'value.amount[0]', {}),
-          success: get(t, 'transaction.success', false),
-        };
-      }
-      return null;
-    })
-    .filter((a) => !!a);
+const formatMultiSendTx = (transaction: any) => {
+  const {
+    tx: {
+      body: { messages },
+    },
+    txhash,
+    height,
+    timestamp,
+  } = transaction;
+
+  const [firstMessage] = messages;
+  const { inputs, outputs } = firstMessage;
+
+  // format is slightly different, note recipients instead of recipient
+  return {
+    height,
+    detail: {
+      sender: inputs[0].address,
+      recipients: outputs,
+      amount: inputs[0].coins,
+    },
+    txhash,
+    type: firstMessage['@type'],
+    timestamp,
+  };
+};
+
+const formatSendTx = (transaction: any) => {
+  const {
+    tx: {
+      body: { messages },
+    },
+    txhash,
+    height,
+    timestamp,
+  } = transaction;
+
+  const [firstMessage] = messages;
+
+  const { from_address, to_address, amount } = firstMessage;
+
+  return {
+    height,
+    detail: {
+      recipient: to_address,
+      sender: from_address,
+      amount: amount[0],
+    },
+    timestamp,
+    type: firstMessage['@type'],
+    txhash,
+  };
+};
+
+const formatDelegationTx = (transaction: any) => {
+  const {
+    tx: {
+      body: { messages },
+    },
+    txhash,
+    height,
+    timestamp,
+  } = transaction;
+
+  return messages.map((message) => ({
+    height,
+    detail: {
+      amount: message.amount,
+      recipient: message.validator_address,
+      sender: message.delegator_address,
+    },
+    timestamp,
+    type: message['@type'],
+    txhash,
+  }));
+};
+
+const formatWithdrawRewardsTx = (transaction: any) => {
+  // MsgWithdrawDelegatorReward
+  // Multiple reward withdrawals are stored as one transaction, however
+  // forbole x represents them as individual "transactions",
+  // so we need to format the source data
+  const {
+    logs,
+    tx: {
+      body: { messages },
+    },
+    txhash,
+    height,
+    timestamp,
+  } = transaction;
+
+  return logs.map((log, x) => {
+    // Get the reward amount
+    const amount = log.events
+      .find((event) => event.type === 'coin_received')
+      .attributes.find((event) => event.key === 'amount');
+
+    // amount is stored as a alphanumeric string (eg 1000udsm)
+    // , separate into denom and amount
+
+    // regex split may generate empty strings in the final array, use
+    // _.compact to remove those falsy values
+    const formattedAmount = _.compact(amount.value.split(/^(\d+)/));
+
+    // use _amount as amount is already declared in upper scope
+    const [_amount, denom] = formattedAmount;
+
+    // tx type, delegator and validator address is stored in the
+    // message
+    const message = messages[x];
+
+    return {
+      height,
+      detail: {
+        recipient: message.delegator_address,
+        sender: message.validator_address,
+        amount: {
+          amount: _amount,
+          denom,
+        },
+      },
+      timestamp,
+      type: message['@type'],
+      txhash,
+    };
+  });
 };
 
 const FormatUtils = {
-  getTokenAmountFromDenoms,
-  transformTransactions,
+  formatTx,
 };
 
 export default FormatUtils;

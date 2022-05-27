@@ -1,5 +1,5 @@
 import { selectorFamily } from 'recoil';
-import { fetchValidators } from '../fetches/validators';
+import { fetchValidators } from '../services/fetches/validators';
 import chains from '../misc/chains';
 
 export const validatorsState = selectorFamily<Validator[], { chainId: string }>({

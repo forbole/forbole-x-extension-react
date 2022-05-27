@@ -71,8 +71,6 @@ const ProfileCard = ({ profile }: ProfileCardProps) => {
           </button>
         </div>
       </div>
-
-      <div>Hello world</div>
     </div>
   ) : null;
 };

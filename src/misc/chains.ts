@@ -11,8 +11,10 @@ const chains: { [key: string]: Chain } = {
     image: '/images/cryptocurrencies/dsm.svg',
     coinType: 852,
     blockExplorerBaseUrl: 'https://explorer.desmos.network',
-    lcdApiUrl: 'https://api.mainnet.desmos.network',
-    rpcApiUrl: 'https://rpc.mainnet.desmos.network',
+    lcdApiUrl: 'https://api.desmos.forbole.com',
+    rpcApiUrl: 'https://rpc.desmos.forbole.com',
+    // lcdApiUrl: 'https://api.mainnet.desmos.network',
+    // rpcApiUrl: 'https://rpc.mainnet.desmos.network',
     ibcChains: [],
     gasAdjustment: 1.5,
     gasFee: {
@@ -35,6 +37,6 @@ const chains: { [key: string]: Chain } = {
       '/desmos.profiles.v1beta1.MsgUnlinkChainAccount': 400000,
     },
   },
-}
+};
 
-export default chains
+export default chains;
