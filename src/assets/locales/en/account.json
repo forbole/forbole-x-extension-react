@@ -7,6 +7,16 @@
       "distribution": "Distribution ({{count}})",
       "governance": "Governance ({{count}})",
       "slashing": "Slashing ({{count}})"
+    },
+    "rows": {
+      "toUser": "To {{user}}",
+      "fromUser": "From {{user}}",
+      "undelegate": "Undelegate {{amount}}",
+      "send": "Send {{amount}}",
+      "voteProposal": "Vote proposal #{{proposalNum}} with {{choice}}",
+      "proposeBy": "Propose by {{user}}",
+      "VOTE_OPTION_YES": "Yes",
+      "VOTE_OPTION_NO": "No"
     }
   }
 }

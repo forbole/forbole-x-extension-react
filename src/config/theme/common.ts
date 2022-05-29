@@ -44,6 +44,10 @@ const common = {
     body2: {
       fontSize: '0.875rem',
     },
+    body6: {
+      fontFamily: '"Hind Madurai", sans-serif',
+      fontSize: '0.750rem',
+    },
     overline: {
       fontFamily: '"Hind Madurai Medium", sans-serif',
       fontSize: '0.875rem',
@@ -60,6 +64,6 @@ const common = {
     },
   },
   shadows: [...Array(7).fill('none'), ...Array(18).fill('0px 3px 16px #00000029')],
-}
+};
 
-export default common
+export default common;

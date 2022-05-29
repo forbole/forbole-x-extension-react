@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Card, CircularProgress, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import _ from 'lodash';
 import useTxForAddress from 'hooks/useTxForAddress';
 import FormatUtils from 'lib/FormatUtils';
 import TabButton from './components/TabButton';
@@ -16,24 +15,19 @@ type Props = {
 const TransactionsCard = ({ account }: Props) => {
   const [filterType, setFilterType] = React.useState(0);
 
-  const { txData } = useTxForAddress({
+  const { txData, error, loading } = useTxForAddress({
     address: account.address,
     chain: account.chain,
   });
 
-  const data = [];
-  const error = null;
-
-  const reformattedData = React.useMemo(() => {
+  const activities = React.useMemo(() => {
     if (txData.length > 0) return FormatUtils.formatTx(txData);
     return [];
   }, [txData]);
 
-  console.log(reformattedData);
+  console.log(activities);
 
   const { t } = useTranslation('account');
-
-  const activities = [];
 
   const filters = React.useMemo(() => {
     return [
@@ -44,22 +38,22 @@ const TransactionsCard = ({ account }: Props) => {
       },
       {
         label: t('transactions.tabs.transfer', {
-          count: activities.filter((x) => x.tab === 'transfer').length,
+          count: activities.filter((x) => x.type.contains('bank')).length,
         }),
       },
       {
         label: t('transactions.tabs.staking', {
-          count: activities.filter((x) => x.tab === 'staking').length,
+          count: activities.filter((x) => x.type.contains('staking')).length,
         }),
       },
       {
         label: t('transactions.tabs.distribution', {
-          count: activities.filter((x) => x.tab === 'distribution').length,
+          count: activities.filter((x) => x.type.contains('distribution')).length,
         }),
       },
       {
         label: t('transactions.tabs.governance', {
-          count: activities.filter((x) => x.tab === 'governance').length,
+          count: activities.filter((x) => x.type.contains('bank')).length,
         }),
       },
       {
@@ -82,7 +76,7 @@ const TransactionsCard = ({ account }: Props) => {
       </Card>
     );
 
-  if (!data) {
+  if (loading) {
     return (
       <Card
         sx={(theme) => ({
