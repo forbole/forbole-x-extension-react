@@ -6,8 +6,8 @@ import Dialog from '../Element/dialog'
 import CryptoJS from 'crypto-js'
 import MnemonicPhraseInput from '../CreateWallet/MnemonicPhraseInput'
 import Textarea from '../Element/textarea'
-import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { Alert, Snackbar } from '@mui/material'
 
 interface Props {
   wallet: Wallet
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
-  const { t } = useTranslation('settings')
+  const { t } = useTranslation(['settings', 'common'])
 
   const stageDetails: Record<string, any> = {
     password: {
@@ -40,6 +40,8 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
       heading: t('general.viewRecoveryPhraseDialog.exportStage.heading'),
     },
   }
+
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
 
   const [error, setError] = useState('')
   const { register, handleSubmit, watch, reset } =
@@ -69,7 +71,7 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
       case 'mnemonic':
         setStage('encryption')
         break
-      
+
       case 'encryption':
         const encryptedPhraseBackup = CryptoJS.AES.encrypt(
           mnemonic,
@@ -131,7 +133,7 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
                 secondary
                 onClick={() => {
                   navigator.clipboard.writeText(mnemonicPhraseBackup)
-                  toast.success('Copied to Clipboard!', { position: 'top-center' })
+                  setSnackbarOpen(true)
                 }}
               />
               <Button text={t('share')} type="submit" />
@@ -141,6 +143,22 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
           )}
         </div>
       </form>
+      <Snackbar
+        open={snackbarOpen}
+        onClose={() => {
+          setSnackbarOpen(false)
+        }}
+        autoHideDuration={2500}
+      >
+        <Alert
+          onClose={() => {
+            setSnackbarOpen(false)
+          }}
+          severity="success"
+        >
+          {t('common:snackbar.copied')}
+        </Alert>
+      </Snackbar>
     </Dialog>
   )
 }

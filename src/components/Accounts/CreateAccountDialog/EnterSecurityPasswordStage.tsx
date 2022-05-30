@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDecryptWallet } from '../../../recoil/wallets'
 import Button from '../../Element/button'
