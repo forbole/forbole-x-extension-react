@@ -1,13 +1,13 @@
-import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useUpdateWallet, useDecryptWallet } from '../../recoil/wallets'
+import { useDecryptWallet } from '../../recoil/wallets'
 import Button from '../Element/button'
 import Dialog from '../Element/dialog'
 import CryptoJS from 'crypto-js'
 import MnemonicPhraseInput from '../CreateWallet/MnemonicPhraseInput'
 import Textarea from '../Element/textarea'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   wallet: Wallet
@@ -16,8 +16,34 @@ interface Props {
 }
 
 const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
+  const { t } = useTranslation('settings')
+
+  const stageDetails: Record<string, any> = {
+    password: {
+      title: t('general.viewRecoveryPhraseDialog.passwordStage.title'),
+      description: t('general.viewRecoveryPhraseDialog.passwordStage.description'),
+      heading: t('general.viewRecoveryPhraseDialog.passwordStage.heading'),
+    },
+    mnemonic: {
+      title: t('general.viewRecoveryPhraseDialog.mnemonicStage.title'),
+      description: t('general.viewRecoveryPhraseDialog.mnemonicStage.description'),
+      heading: t('general.viewRecoveryPhraseDialog.mnemonicStage.heading'),
+    },
+    encryption: {
+      title: t('general.viewRecoveryPhraseDialog.encryptionStage.title'),
+      description: t('general.viewRecoveryPhraseDialog.encryptionStage.description'),
+      heading: t('general.viewRecoveryPhraseDialog.encryptionStage.heading'),
+    },
+    export: {
+      title: t('general.viewRecoveryPhraseDialog.exportStage.title'),
+      description: t('general.viewRecoveryPhraseDialog.exportStage.description'),
+      heading: t('general.viewRecoveryPhraseDialog.exportStage.heading'),
+    },
+  }
+
   const [error, setError] = useState('')
-  const { register, handleSubmit, watch, reset } = useForm<{ password: string }>()
+  const { register, handleSubmit, watch, reset } =
+    useForm<{ password: string; encryptedPassword: string }>()
 
   const [stage, setStage] = useState<'password' | 'mnemonic' | 'encryption' | 'export'>('password')
 
@@ -43,6 +69,7 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
       case 'mnemonic':
         setStage('encryption')
         break
+      
       case 'encryption':
         const encryptedPhraseBackup = CryptoJS.AES.encrypt(
           mnemonic,
@@ -65,41 +92,14 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
 
   return (
     <Dialog
-      title={
-        stage === 'password'
-          ? 'Wallet Security Password'
-          : stage === 'mnemonic'
-          ? 'Mnemonic phrase'
-          : 'Export mnemonic'
-      }
-      description={
-        stage === 'mnemonic' ? (
-          <p>
-            Please write down and safe your mnemonic phrase <br /> It’s the ONLY WAY to restore your
-            account
-          </p>
-        ) : stage === 'encryption' ? (
-          'In oder to export your mnemonic properly, we need a password with it will be encrypted for security reasons. Please insert below passwords that you will also be required later when importing it.'
-        ) : stage === 'export' ? (
-          'You can export this data whenever you want, even sending it to a friend of yours for backup, if you have used a strong enough password.'
-        ) : (
-          ''
-        )
-      }
+      title={stageDetails[stage].title}
+      description={stageDetails[stage].description}
       open={open}
       onClose={onClose}
     >
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <div className="flex flex-col mt-5 px-4">
-          <p className="max-w-sm mb-2">
-            {stage === 'password'
-              ? 'Enter current wallet security password'
-              : stage === 'mnemonic'
-              ? ''
-              : stage === 'encryption'
-              ? 'Set encryption password'
-              : 'Mnemonic phrase backup'}
-          </p>
+          <p className="max-w-sm mb-2">{stageDetails[stage].heading}</p>
           {stage === 'password' && (
             <input
               key="password"
@@ -134,10 +134,10 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
                   toast.success('Copied to Clipboard!', { position: 'top-center' })
                 }}
               />
-              <Button text={'Share'} type="submit" />
+              <Button text={t('share')} type="submit" />
             </div>
           ) : (
-            <Button disabled={!watch('password')} text={'Next'} type="submit" />
+            <Button disabled={!watch('password')} text={t('next')} type="submit" />
           )}
         </div>
       </form>
