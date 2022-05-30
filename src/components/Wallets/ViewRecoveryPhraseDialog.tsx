@@ -54,10 +54,6 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
   const { register, handleSubmit, watch, reset } =
     useForm<{ password: string; encryptedPassword: string }>()
 
-  // const [stage, setStage] = useState<'password' | 'mnemonic' | 'encryption' | 'export' | 'share'>(
-  //   'password'
-  // )
-
   const [stage, setStage, toPrevStage, isPrevStageAvailable] = useStateHistory<
     'password' | 'mnemonic' | 'encryption' | 'export' | 'share'
   >('password')
