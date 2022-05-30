@@ -4,12 +4,12 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import TransactionRow from './index';
 
-type ComponentType = typeof TransactionRow;
+type CompType = typeof TransactionRow;
 
 export default {
   title: 'Account/TransactionRow',
   component: TransactionRow,
-} as ComponentMeta<ComponentType>;
+} as ComponentMeta<CompType>;
 
 const baseTx = {
   txhash: '096162610A295AC06567C0B615CFC66155D2D8D1C14432AC641FD97FDF506B52',
@@ -37,7 +37,7 @@ const sendTx = {
   ],
 };
 
-export const MsgSend: ComponentStory<ComponentType> = () => <TransactionRow {...sendTx} />;
+export const MsgSend: ComponentStory<CompType> = () => <TransactionRow {...sendTx} />;
 
 const unDelegateTx = {
   ...baseTx,
@@ -55,9 +55,7 @@ const unDelegateTx = {
   ],
 };
 
-export const MsgUndelegate: ComponentStory<ComponentType> = () => (
-  <TransactionRow {...unDelegateTx} />
-);
+export const MsgUndelegate: ComponentStory<CompType> = () => <TransactionRow {...unDelegateTx} />;
 
 const voteYesTx = {
   ...baseTx,
@@ -72,7 +70,7 @@ const voteYesTx = {
   ],
 };
 
-export const MsgVote: ComponentStory<ComponentType> = () => <TransactionRow {...voteYesTx} />;
+export const MsgVote: ComponentStory<CompType> = () => <TransactionRow {...voteYesTx} />;
 
 const changeWithdrawAddrTx = {
   ...baseTx,
@@ -86,7 +84,7 @@ const changeWithdrawAddrTx = {
   ],
 };
 
-export const MsgChangeWithdrawAddr: ComponentStory<ComponentType> = () => (
+export const MsgChangeWithdrawAddr: ComponentStory<CompType> = () => (
   <TransactionRow {...changeWithdrawAddrTx} />
 );
 
@@ -107,7 +105,7 @@ const beginRedelegateTx = {
   ],
 };
 
-export const MsgBeginRedelegate: ComponentStory<ComponentType> = () => (
+export const MsgBeginRedelegate: ComponentStory<CompType> = () => (
   <TransactionRow {...beginRedelegateTx} />
 );
 
@@ -125,7 +123,7 @@ const withdrawDelegatorRewardTx = {
   },
 };
 
-export const MsgWithdrawDelegatorReward: ComponentStory<ComponentType> = () => (
+export const MsgWithdrawDelegatorReward: ComponentStory<CompType> = () => (
   <TransactionRow {...withdrawDelegatorRewardTx} />
 );
 
@@ -143,4 +141,4 @@ const delegateTx = {
   },
 };
 
-export const MsgDelegate: ComponentStory<ComponentType> = () => <TransactionRow {...delegateTx} />;
+export const MsgDelegate: ComponentStory<CompType> = () => <TransactionRow {...delegateTx} />;
