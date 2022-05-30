@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import useTxForAddress from 'hooks/useTxForAddress';
 import FormatUtils from 'lib/FormatUtils';
 import TransactionRow from 'pages/Account/components/TransactionsCard/components/TransactionRow';
+import TransactionDateSeparator from 'pages/Account/components/TransactionsCard/components/TransactionDateSeparator';
 import TabButton from './components/TabButton';
 
 type Props = {
@@ -23,7 +24,7 @@ const TransactionsCard = ({ account }: Props) => {
     chain: account.chain,
   });
 
-  const activities = React.useMemo(() => {
+  const transactions = React.useMemo(() => {
     if (txData.length > 0) return FormatUtils.formatTx(txData);
     return [];
   }, [txData]);
@@ -32,36 +33,47 @@ const TransactionsCard = ({ account }: Props) => {
     return [
       {
         label: t('transactions.tabs.all', {
-          count: activities.length,
+          count: transactions.length,
         }),
       },
       {
         label: t('transactions.tabs.transfer', {
-          count: activities.filter((x) => x?.type.includes('bank')).length,
+          count: transactions.filter((x) => x?.type.includes('bank')).length,
         }),
       },
       {
         label: t('transactions.tabs.staking', {
-          count: activities.filter((x) => x?.type.includes('staking')).length,
+          count: transactions.filter((x) => x?.type.includes('staking')).length,
         }),
       },
       {
         label: t('transactions.tabs.distribution', {
-          count: activities.filter((x) => x?.type.includes('distribution')).length,
+          count: transactions.filter((x) => x?.type.includes('distribution')).length,
         }),
       },
       {
         label: t('transactions.tabs.governance', {
-          count: activities.filter((x) => x?.type.includes('gov')).length,
+          count: transactions.filter((x) => x?.type.includes('gov')).length,
         }),
       },
       {
         label: t('transactions.tabs.slashing', {
-          count: activities.filter((x) => x?.type.includes('slashing')).length,
+          count: transactions.filter((x) => x?.type.includes('slashing')).length,
         }),
       },
     ];
-  }, [activities]);
+  }, [transactions]);
+
+  const filteredAndOrganizedTx = React.useMemo(() => {
+    const filterArr = ['', 'bank', 'staking', 'distribution', 'gov', 'slashing'];
+
+    if (filterType === 0) {
+      return FormatUtils.organizeIntoDates(transactions);
+    }
+    return FormatUtils.organizeIntoDates(
+      transactions.filter((tx) => tx.type.includes(filterArr[filterType]))
+    );
+  }, [transactions, filterType]);
 
   if (error)
     return (
@@ -106,6 +118,7 @@ const TransactionsCard = ({ account }: Props) => {
       >
         {filters.map((x, idx) => (
           <TabButton
+            key={x.label}
             isSelected={idx === filterType}
             label={x.label}
             onClick={() => setFilterType(idx)}
@@ -113,8 +126,13 @@ const TransactionsCard = ({ account }: Props) => {
         ))}
       </Box>
       <Box>
-        {activities.map((activity) => (
-          <TransactionRow {...activity} chainID={account.chain} />
+        {Object.keys(filteredAndOrganizedTx).map((key) => (
+          <>
+            <TransactionDateSeparator daysFromPresent={Number(key)} />
+            {filteredAndOrganizedTx[key].map((tx) => (
+              <TransactionRow key={tx.uuid} {...tx} chainID={account.chain} />
+            ))}
+          </>
         ))}
       </Box>
     </Card>

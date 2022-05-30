@@ -27,7 +27,6 @@ const TransactionRow = ({ timestamp, type, detail, chainID }: Props) => {
   const { t } = useTranslation('account');
 
   const content = React.useMemo(() => {
-    console.log('type', type, detail);
     if (type.includes('MsgVote')) {
       return {
         title: t('transactions.rows.voteProposal', {
@@ -70,7 +69,6 @@ const TransactionRow = ({ timestamp, type, detail, chainID }: Props) => {
       };
     }
     if (type.includes('MsgUndelegate')) {
-      console.log(detail[0].amount);
       return {
         title: t('transactions.rows.undelegate', {
           amount: formatCoin(chainID, detail[0].amount),

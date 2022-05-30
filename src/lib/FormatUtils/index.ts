@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { differenceInCalendarDays } from 'date-fns';
 
 const formatTx = (transactions: any[]) => {
   const reformattedTransactions = transactions.map((transaction) => {
@@ -23,6 +24,11 @@ const formatTx = (transactions: any[]) => {
       type: txType,
       memo,
       code,
+      // uuid necessary for rendering mapped components
+      // this value gets overwritten in the following tx types:
+      // MsgDelegate
+      // MsgWithdrawDelegatorReward
+      uuid: txhash,
     };
 
     if (
@@ -78,6 +84,22 @@ const formatTx = (transactions: any[]) => {
     return null;
   });
   return _.compact(_.flatten(reformattedTransactions));
+};
+
+const organizeIntoDates = (formattedTransactions: any[]) => {
+  const currentDate = new Date();
+  const txWithDateDifference = formattedTransactions.map((tx) => ({
+    ...tx,
+    dateDiff: differenceInCalendarDays(currentDate, new Date(tx.timestamp)),
+  }));
+
+  // organize transactions into appropriate date groups
+  return txWithDateDifference.reduce((acc, c) => {
+    return {
+      ...acc,
+      [c.dateDiff]: _.concat(acc[c.dateDiff] || [], c),
+    };
+  }, {});
 };
 
 const formatDepositTx = (transaction: any) => {
@@ -138,9 +160,11 @@ const formatDelegationTx = (transaction: any) => {
     tx: {
       body: { messages },
     },
+    txhash,
   } = transaction;
 
-  return messages.map((message) => ({
+  return messages.map((message, idx) => ({
+    uuid: `${txhash}-${idx}`,
     detail: message,
   }));
 };
@@ -155,9 +179,10 @@ const formatWithdrawRewardsTx = (transaction: any) => {
     tx: {
       body: { messages },
     },
+    txhash,
   } = transaction;
 
-  return logs.map((log, x) => {
+  return logs.map((log, idx) => {
     // Get the reward amount
     const amount = log.events
       .find((event) => event.type === 'coin_received')
@@ -175,9 +200,10 @@ const formatWithdrawRewardsTx = (transaction: any) => {
 
     // tx type, delegator and validator address is stored in the
     // message
-    const message = messages[x];
+    const message = messages[idx];
 
     return {
+      uuid: `${txhash}-${idx}`,
       detail: {
         delegator_address: message.delegator_address,
         validator_address: message.validator_address,
@@ -192,6 +218,7 @@ const formatWithdrawRewardsTx = (transaction: any) => {
 
 const FormatUtils = {
   formatTx,
+  organizeIntoDates,
 };
 
 export default FormatUtils;

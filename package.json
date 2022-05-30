@@ -86,6 +86,7 @@
     "slick-carousel": "^1.8.1",
     "stream-browserify": "^3.0.0",
     "usehooks-ts": "^2.5.3",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {

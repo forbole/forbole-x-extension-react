@@ -25,7 +25,11 @@
       "userUnjailed": "{{user}} unjailed",
       "unjailed": "Unjailed",
       "withdrawAmount": "Withdraw {{amount}}",
-      "delegateAmount": "Delegate {{amount}}"
+      "delegateAmount": "Delegate {{amount}}",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "xDaysAgo": "{{days}} days ago",
+      "aWeekAgo": "A week ago"
     }
   }
 }
