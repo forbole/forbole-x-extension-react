@@ -3,15 +3,16 @@ import { Box, Card, CircularProgress, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import useTxForAddress from 'hooks/useTxForAddress';
 import FormatUtils from 'lib/FormatUtils';
-import TransactionRow from 'pages/Account/components/TransactionsCard/components/TransactionRow';
-import TransactionDateSeparator from 'pages/Account/components/TransactionsCard/components/TransactionDateSeparator';
+import { Loadable } from 'recoil';
+import TransactionRow from './components/TransactionRow';
+import TransactionDateSeparator from './components/TransactionDateSeparator';
 import TabButton from './components/TabButton';
 
 type Props = {
   /**
    * The current account
    */
-  account: Account;
+  account: Loadable<Account>;
 };
 
 const TransactionsCard = ({ account }: Props) => {
@@ -20,8 +21,8 @@ const TransactionsCard = ({ account }: Props) => {
   const [filterType, setFilterType] = React.useState(0);
 
   const { txData, error, loading } = useTxForAddress({
-    address: account.address,
-    chain: account.chain,
+    address: account?.contents?.address,
+    chain: account?.contents?.chain,
   });
 
   const transactions = React.useMemo(() => {
@@ -87,14 +88,14 @@ const TransactionsCard = ({ account }: Props) => {
       </Card>
     );
 
-  if (loading) {
+  if (loading || account.state !== 'hasValue') {
     return (
       <Card
         sx={(theme) => ({
           margin: `${theme.spacing(1)} ${theme.spacing(2.5)}`,
           borderRadius: 2,
           display: 'flex',
-          alignItems: 'center',
+          justifyContent: 'center',
         })}
       >
         <CircularProgress />
@@ -130,7 +131,7 @@ const TransactionsCard = ({ account }: Props) => {
           <>
             <TransactionDateSeparator daysFromPresent={Number(key)} />
             {filteredAndOrganizedTx[key].map((tx) => (
-              <TransactionRow key={tx.uuid} {...tx} chainID={account.chain} />
+              <TransactionRow key={tx.uuid} {...tx} chainID={account.contents.chain} />
             ))}
           </>
         ))}

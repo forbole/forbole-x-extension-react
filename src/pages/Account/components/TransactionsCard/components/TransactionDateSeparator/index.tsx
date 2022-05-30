@@ -7,6 +7,10 @@ type Props = {
   daysFromPresent: number;
 };
 
+/**
+ * A separator component that is used to separate transaction histories by date.
+ * Transaction histories are ordered in the steps outlined below.
+ */
 const TransactionDateSeparator = ({ daysFromPresent }: Props) => {
   const { t } = useTranslation('account');
 

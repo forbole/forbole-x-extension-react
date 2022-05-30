@@ -9,8 +9,9 @@ const useTxForAddress = ({ address, chain }: { address: string; chain: string })
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
+    if (!address) return;
     fetchTx();
-  }, []);
+  }, [address]);
 
   const fetchTx = React.useCallback(async () => {
     setLoading(true);
@@ -35,7 +36,7 @@ const useTxForAddress = ({ address, chain }: { address: string; chain: string })
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [address]);
 
   return {
     txData,

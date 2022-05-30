@@ -23,6 +23,11 @@ type Props = {
   chainID: string;
 };
 
+/**
+ * A component that renders an individual transaction from a user's transaction history.
+ * Due note that each message for transactions (such as delegation and reward withdrawal), is treated
+ * as a individual transaction in forbole x.
+ */
 const TransactionRow = ({ timestamp, type, detail, chainID }: Props) => {
   const { t } = useTranslation('account');
 

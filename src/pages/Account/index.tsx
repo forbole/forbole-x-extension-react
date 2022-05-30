@@ -32,19 +32,8 @@ const Account = () => {
         {account.state === 'hasValue' && <WalletCard account={account} />}
         <BalanceCard account={account} />
         <StakingCard account={account} validators={validators} />
-        {account.state === 'hasValue' && validators.state === 'hasValue' ? (
-          <TransactionsCard account={account.contents} />
-        ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        )}
+
+        <TransactionsCard account={account} />
       </div>
     </Layout>
   );
