@@ -7,7 +7,7 @@ import ProfileCard from 'components/Accounts/ProfileCard';
 import StakingCard from 'components/Accounts/StakingCard';
 import Layout from 'components/Layout/layout';
 import WalletCard from 'components/Accounts/WalletCard';
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { accountDetailState } from '../../recoil/accounts';
 import { currentWalletState } from '../../recoil/wallets';
 import { validatorsState } from '../../recoil/validators';
@@ -35,7 +35,15 @@ const Account = () => {
         {account.state === 'hasValue' && validators.state === 'hasValue' ? (
           <TransactionsCard account={account.contents} />
         ) : (
-          <CircularProgress />
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CircularProgress />
+          </Box>
         )}
       </div>
     </Layout>

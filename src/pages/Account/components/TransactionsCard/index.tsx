@@ -3,6 +3,7 @@ import { Box, Card, CircularProgress, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import useTxForAddress from 'hooks/useTxForAddress';
 import FormatUtils from 'lib/FormatUtils';
+import TransactionRow from 'pages/Account/components/TransactionsCard/components/TransactionRow';
 import TabButton from './components/TabButton';
 
 type Props = {
@@ -13,6 +14,8 @@ type Props = {
 };
 
 const TransactionsCard = ({ account }: Props) => {
+  const { t } = useTranslation('account');
+
   const [filterType, setFilterType] = React.useState(0);
 
   const { txData, error, loading } = useTxForAddress({
@@ -25,10 +28,6 @@ const TransactionsCard = ({ account }: Props) => {
     return [];
   }, [txData]);
 
-  console.log(activities);
-
-  const { t } = useTranslation('account');
-
   const filters = React.useMemo(() => {
     return [
       {
@@ -38,31 +37,31 @@ const TransactionsCard = ({ account }: Props) => {
       },
       {
         label: t('transactions.tabs.transfer', {
-          count: activities.filter((x) => x.type.contains('bank')).length,
+          count: activities.filter((x) => x?.type.includes('bank')).length,
         }),
       },
       {
         label: t('transactions.tabs.staking', {
-          count: activities.filter((x) => x.type.contains('staking')).length,
+          count: activities.filter((x) => x?.type.includes('staking')).length,
         }),
       },
       {
         label: t('transactions.tabs.distribution', {
-          count: activities.filter((x) => x.type.contains('distribution')).length,
+          count: activities.filter((x) => x?.type.includes('distribution')).length,
         }),
       },
       {
         label: t('transactions.tabs.governance', {
-          count: activities.filter((x) => x.type.contains('bank')).length,
+          count: activities.filter((x) => x?.type.includes('gov')).length,
         }),
       },
       {
         label: t('transactions.tabs.slashing', {
-          count: activities.filter((x) => x.tab === 'slashing').length,
+          count: activities.filter((x) => x?.type.includes('slashing')).length,
         }),
       },
     ];
-  }, []);
+  }, [activities]);
 
   if (error)
     return (
@@ -113,13 +112,11 @@ const TransactionsCard = ({ account }: Props) => {
           />
         ))}
       </Box>
-      {/* <TablePagination */}
-      {/*  page={page} */}
-      {/*  rowsPerPage={rowsPerPage} */}
-      {/*  rowsCount={tabs[currentTab].rows.length} */}
-      {/*  onPageChange={setPage} */}
-      {/*  onRowsPerPageChange={setRowsPerPage} */}
-      {/* /> */}
+      <Box>
+        {activities.map((activity) => (
+          <TransactionRow {...activity} chainID={account.chain} />
+        ))}
+      </Box>
     </Card>
   );
 };

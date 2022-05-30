@@ -15,8 +15,17 @@
       "send": "Send {{amount}}",
       "voteProposal": "Vote proposal #{{proposalNum}} with {{choice}}",
       "proposeBy": "Propose by {{user}}",
+      "redelegate": "Redelegate {{amount}}",
+      "fromToUser": "From {{userA}} to {{userB}}",
+      "setWithdrawAddr": "Set withdraw address",
+      "toAddr": "To {{addr}}",
       "VOTE_OPTION_YES": "Yes",
-      "VOTE_OPTION_NO": "No"
+      "VOTE_OPTION_NO": "No",
+      "userJailed": "{{user}} jailed",
+      "userUnjailed": "{{user}} unjailed",
+      "unjailed": "Unjailed",
+      "withdrawAmount": "Withdraw {{amount}}",
+      "delegateAmount": "Delegate {{amount}}"
     }
   }
 }

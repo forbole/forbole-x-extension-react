@@ -18,8 +18,8 @@ export const decorators = [
     <ThemeProvider theme={darkTheme}>
       <div
       style={{
-        maxWidth: '800px',
-        maxHeight: '600px'
+        width: '600px',
+        height: '800px'
       }}>
         <Story/>
 

@@ -32,26 +32,27 @@ const formatTx = (transactions: any[]) => {
       txType.includes('MsgSetWithdrawAddress') ||
       txType.includes('MsgUndelegate') ||
       txType.includes('MsgUnjail') ||
-      txType.includes('MsgJail')
+      txType.includes('MsgJail') // this actually isn't a valid msg type
     ) {
       return {
         ...baseTxData,
         type: txType,
-        detail: messages[0],
+        detail: messages,
       };
     }
-    if (txType.includes('MsgDeposit')) {
-      return {
-        ...baseTxData,
-        ...formatDepositTx(transaction),
-      };
-    }
-    if (txType.includes('MsgMultiSend')) {
-      return {
-        ...baseTxData,
-        ...formatMultiSendTx(transaction),
-      };
-    }
+    // deposit transactions aren't handled by forbole x
+    // if (txType.includes('MsgDeposit')) {
+    //   return {
+    //     ...baseTxData,
+    //     ...formatDepositTx(transaction),
+    //   };
+    // }
+    // if (txType.includes('MsgMultiSend')) {
+    //   return {
+    //     ...baseTxData,
+    //     ...formatMultiSendTx(transaction),
+    //   };
+    // }
     if (txType.includes('MsgWithdrawDelegatorReward')) {
       // returns an array[], so we need to append base data to each element
       const formattedWithdrawRewardTx = formatWithdrawRewardsTx(transaction);
@@ -76,7 +77,7 @@ const formatTx = (transactions: any[]) => {
     }
     return null;
   });
-  return _.flatten(reformattedTransactions);
+  return _.compact(_.flatten(reformattedTransactions));
 };
 
 const formatDepositTx = (transaction: any) => {
@@ -94,7 +95,7 @@ const formatDepositTx = (transaction: any) => {
   return {
     detail: {
       proposalNum,
-      ...messages[0],
+      messages,
     },
   };
 };
@@ -115,7 +116,7 @@ const formatSubmitProposalTx = (transaction: any) => {
   return {
     detail: {
       proposalNum,
-      ...messages[0],
+      messages,
     },
   };
 };
@@ -128,7 +129,7 @@ const formatMultiSendTx = (transaction: any) => {
   } = transaction;
 
   return {
-    details: messages[0],
+    details: messages,
   };
 };
 
@@ -140,11 +141,7 @@ const formatDelegationTx = (transaction: any) => {
   } = transaction;
 
   return messages.map((message) => ({
-    detail: {
-      amount: message.amount,
-      recipient: message.validator_address,
-      sender: message.delegator_address,
-    },
+    detail: message,
   }));
 };
 
@@ -182,8 +179,8 @@ const formatWithdrawRewardsTx = (transaction: any) => {
 
     return {
       detail: {
-        recipient: message.delegator_address,
-        sender: message.validator_address,
+        delegator_address: message.delegator_address,
+        validator_address: message.validator_address,
         amount: {
           amount: _amount,
           denom,
