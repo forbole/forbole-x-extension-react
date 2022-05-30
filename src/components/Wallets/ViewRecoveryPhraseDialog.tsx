@@ -8,6 +8,8 @@ import MnemonicPhraseInput from '../CreateWallet/MnemonicPhraseInput'
 import Textarea from '../Element/textarea'
 import { useTranslation } from 'react-i18next'
 import { Alert, Snackbar } from '@mui/material'
+import ShareList from './ShareList'
+import useStateHistory from '../../misc/useStateHistory'
 
 interface Props {
   wallet: Wallet
@@ -39,6 +41,11 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
       description: t('general.viewRecoveryPhraseDialog.exportStage.description'),
       heading: t('general.viewRecoveryPhraseDialog.exportStage.heading'),
     },
+    share: {
+      title: t('general.viewRecoveryPhraseDialog.shareStage.title'),
+      description: t('general.viewRecoveryPhraseDialog.shareStage.description'),
+      heading: t('general.viewRecoveryPhraseDialog.shareStage.heading'),
+    },
   }
 
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
@@ -47,7 +54,13 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
   const { register, handleSubmit, watch, reset } =
     useForm<{ password: string; encryptedPassword: string }>()
 
-  const [stage, setStage] = useState<'password' | 'mnemonic' | 'encryption' | 'export'>('password')
+  // const [stage, setStage] = useState<'password' | 'mnemonic' | 'encryption' | 'export' | 'share'>(
+  //   'password'
+  // )
+
+  const [stage, setStage, toPrevStage, isPrevStageAvailable] = useStateHistory<
+    'password' | 'mnemonic' | 'encryption' | 'export' | 'share'
+  >('password')
 
   const [mnemonic, setMnemonic] = useState<string>('')
   const [mnemonicPhraseBackup, setMnemonicPhraseBackup] = useState<string>('')
@@ -81,6 +94,10 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
         setStage('export')
         break
 
+      case 'export':
+        setStage('share')
+        break
+
       default:
         break
     }
@@ -98,6 +115,14 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
       description={stageDetails[stage].description}
       open={open}
       onClose={onClose}
+      toPrevStage={
+        isPrevStageAvailable
+          ? () => {
+              reset()
+              toPrevStage()
+            }
+          : null
+      }
     >
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <div className="flex flex-col mt-5 px-4">
@@ -122,13 +147,17 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
           {stage === 'export' && (
             <Textarea rows={6} value={mnemonicPhraseBackup} disabled={true} className="text-base" />
           )}
+          {stage === 'share' && <ShareList mnemonicPhraseBackup={mnemonicPhraseBackup} />}
 
           {!!error && <p className="text-sm mt-2 text-red-500 nightwind-prevent">{error}</p>}
         </div>
         <div className="absolute bottom-4 left-4 right-4">
-          {stage === 'export' ? (
+          {stage === 'share' ? (
+            ''
+          ) : stage === 'export' ? (
             <div className="space-y-5">
               <Button
+                type="button"
                 text="Copy"
                 secondary
                 onClick={() => {
@@ -149,6 +178,7 @@ const UpdateWalletPasswordDialog = ({ wallet, open, onClose }: Props) => {
           setSnackbarOpen(false)
         }}
         autoHideDuration={2500}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert
           onClose={() => {

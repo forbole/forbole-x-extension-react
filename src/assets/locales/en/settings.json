@@ -69,6 +69,11 @@
         "title": "Export mnemonic",
         "description": "You can export this data whenever you want, even sending it to a friend of yours for backup, if you have used a strong enough password.",
         "heading": "Mnemonic phrase backup"
+      },
+      "shareStage": {
+        "title": "Share via",
+        "description": "",
+        "heading": ""
       }
     }
   },
