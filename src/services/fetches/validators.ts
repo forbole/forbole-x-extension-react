@@ -15,7 +15,9 @@ export const fetchValidators = async (chainId: string) => {
   do {
     const response = await fetchLcd(
       chainId,
-      `/cosmos/staking/v1beta1/validators${nextKey ? `?pagination.key=${nextKey}` : ''}`
+      `/cosmos/staking/v1beta1/validators${
+        nextKey ? `?pagination.key=${encodeURIComponent(nextKey)}` : ''
+      }`
     );
     if (!response.validators) {
       nextKey = undefined;
@@ -56,5 +58,7 @@ export const fetchValidators = async (chainId: string) => {
     ];
     nextKey = get(response, ['pagination', 'next_key']);
   } while (nextKey);
+
+  console.log('num validators', validators.length, validators);
   return validators;
 };
