@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import useTxForAddress from 'hooks/useTxForAddress';
 import FormatUtils from 'lib/FormatUtils';
 import { Loadable } from 'recoil';
-import BlockExplorerUtils from 'lib/BlockExplorerUtils';
 import TransactionRow from './components/TransactionRow';
 import TransactionDateSeparator from './components/TransactionDateSeparator';
 import TabButton from './components/TabButton';
@@ -14,22 +13,30 @@ type Props = {
    * The current account
    */
   account: Loadable<Account>;
+
+  /**
+   * Validators
+   */
+  validators: Loadable<Validator[]>;
 };
 
-const TransactionsCard = ({ account }: Props) => {
+const TransactionsCard = ({ account, validators }: Props) => {
   const { t } = useTranslation('account');
 
   const [filterType, setFilterType] = React.useState(0);
 
+  // TODO: REWRITE INTO RECOIL
   const { txData, error, loading } = useTxForAddress({
     address: account?.contents?.address,
     chain: account?.contents?.chain,
   });
 
   const transactions = React.useMemo(() => {
-    if (txData.length > 0) return FormatUtils.formatTx(txData);
+    if (txData.length > 0 && validators.state === 'hasValue') {
+      return FormatUtils.formatTx(txData, validators.contents);
+    }
     return [];
-  }, [txData]);
+  }, [txData, validators.state]);
 
   const filters = React.useMemo(() => {
     return [

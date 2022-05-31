@@ -7,7 +7,6 @@ import ProfileCard from 'components/Accounts/ProfileCard';
 import StakingCard from 'components/Accounts/StakingCard';
 import Layout from 'components/Layout/layout';
 import WalletCard from 'components/Accounts/WalletCard';
-import { Box, CircularProgress } from '@mui/material';
 import { accountDetailState } from '../../recoil/accounts';
 import { currentWalletState } from '../../recoil/wallets';
 import { validatorsState } from '../../recoil/validators';
@@ -33,7 +32,7 @@ const Account = () => {
         <BalanceCard account={account} />
         <StakingCard account={account} validators={validators} />
 
-        <TransactionsCard account={account} />
+        <TransactionsCard account={account} validators={validators} />
       </div>
     </Layout>
   );

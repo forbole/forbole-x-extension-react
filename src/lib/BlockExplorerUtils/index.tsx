@@ -3,12 +3,13 @@ import chains from 'misc/chains';
 
 const getBlockExplorerURL = ({
   chainID,
+  // for future implementation
+  /* eslint-disable */
   explorerIdx,
 }: {
   chainID: string;
   explorerIdx: number;
 }): string => {
-  console.log('placeholder', explorerIdx);
   return _.get(chains, `${chainID}.blockExplorerBaseUrl`, '') as string;
 };
 

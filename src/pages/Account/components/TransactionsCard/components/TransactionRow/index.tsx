@@ -17,6 +17,8 @@ type Props = {
   detail: any;
 
   chainID: string;
+
+  extraData: any;
 };
 
 /**
@@ -24,12 +26,13 @@ type Props = {
  * Due note that each message for transactions (such as delegation and reward withdrawal), is treated
  * as a individual transaction in forbole x.
  */
-const TransactionRow = ({ txhash, timestamp, detail, chainID, type }: Props) => {
+const TransactionRow = ({ txhash, timestamp, detail, chainID, type, extraData }: Props) => {
   const { content } = useHooks({
     txhash,
     detail,
     chainID,
     type,
+    extraData,
   });
 
   return (

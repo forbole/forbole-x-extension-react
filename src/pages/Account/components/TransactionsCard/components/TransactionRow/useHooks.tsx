@@ -4,10 +4,9 @@ import IconDelegateTx from 'components/svg/IconDelegateTx';
 import { formatCoin } from 'misc/utils';
 import IconTx from 'components/svg/IconTx';
 import IconSendTx from 'components/svg/IconSendTx';
-import { useRecoilValueLoadable } from 'recoil';
 import _ from 'lodash';
+import FormatUtils from 'lib/FormatUtils';
 import RowDescription from './RowDescription';
-import { validatorsState } from '../../../../../../recoil/validators';
 import RowTitle from './RowTitle';
 import DescriptionLink from './DescriptionLink';
 
@@ -17,6 +16,7 @@ import DescriptionLink from './DescriptionLink';
 const useHooks = ({
   txhash,
   detail,
+  extraData,
   chainID,
   type,
 }: {
@@ -24,27 +24,11 @@ const useHooks = ({
   detail: any;
   chainID: string;
   type: string;
+  extraData: any;
 }) => {
   const { t } = useTranslation('account');
 
-  const validators = useRecoilValueLoadable(validatorsState({ chainId: chainID }));
-
-  const findValidator = React.useCallback(
-    (validatorAddr: string) => {
-      if (validators.state !== 'hasValue')
-        return {
-          name: '',
-          address: '',
-        };
-
-      return validators.contents.find((validator) => validator.address === validatorAddr);
-    },
-    [validators]
-  );
-
   const content = React.useMemo(() => {
-    if (validators.state !== 'hasValue') return {};
-
     if (type.includes('MsgVote')) {
       return {
         title: t('transactions.rows.voteProposal', {
@@ -58,14 +42,7 @@ const useHooks = ({
       };
     }
     if (type.includes('MsgBeginRedelegate')) {
-      // map src and dst validator data
-
-      const [first] = detail;
-      const { validator_src_address, validator_dst_address } = first;
-
-      const srcValidator = findValidator(validator_src_address);
-      const dstValidator = findValidator(validator_dst_address);
-
+      const { validatorA, validatorB } = extraData;
       return {
         title: (
           <RowTitle txhash={txhash} chainID={chainID}>
@@ -81,22 +58,22 @@ const useHooks = ({
               components={{
                 linkA: (
                   <DescriptionLink
-                    hashOrAddr={_.get(srcValidator, 'address')}
+                    hashOrAddr={_.get(validatorA, 'address')}
                     type="validator"
                     chainID={chainID}
                   />
                 ),
                 linkB: (
                   <DescriptionLink
-                    hashOrAddr={_.get(dstValidator, 'address')}
+                    hashOrAddr={_.get(validatorB, 'address')}
                     type="validator"
                     chainID={chainID}
                   />
                 ),
               }}
               values={{
-                userA: _.get(srcValidator, 'name', srcValidator?.address),
-                userB: _.get(dstValidator, 'name', dstValidator?.address),
+                userA: FormatUtils.getNameOrAddress(validatorA),
+                userB: FormatUtils.getNameOrAddress(validatorB),
               }}
             />
           </RowDescription>
@@ -134,19 +111,52 @@ const useHooks = ({
       };
     if (type.includes('MsgSetWithdrawAddress')) {
       return {
-        title: t('transactions.rows.setWithdrawAddr'),
-        description: t('transactions.rows.toAddr', { addr: detail[0].withdraw_address }),
+        title: (
+          <RowTitle txhash={txhash} chainID={chainID}>
+            {t('transactions.rows.setWithdrawAddr')}
+          </RowTitle>
+        ),
+        description: (
+          <RowDescription>
+            <Trans
+              i18nKey="account:transactions.rows.toAddr"
+              values={{
+                addr: detail[0].withdraw_address,
+              }}
+            />
+          </RowDescription>
+        ),
         icon: <IconDelegateTx />,
       };
     }
     if (type.includes('MsgUndelegate')) {
+      const { validator } = extraData;
+
       return {
-        title: t('transactions.rows.undelegate', {
-          amount: formatCoin(chainID, detail[0].amount),
-        }),
-        description: t('transactions.rows.fromUser', {
-          user: detail[0].validator_address,
-        }),
+        title: (
+          <RowTitle txhash={txhash} chainID={chainID}>
+            {t('transactions.rows.undelegate', {
+              amount: formatCoin(chainID, detail[0].amount),
+            })}
+          </RowTitle>
+        ),
+        description: (
+          <RowDescription>
+            <Trans
+              i18nKey="account:transactions.rows.fromUser"
+              components={{
+                linkA: (
+                  <DescriptionLink
+                    hashOrAddr={detail[0].to_address}
+                    type="account"
+                    chainID={chainID}
+                  />
+                ),
+              }}
+              values={{ user: FormatUtils.getNameOrAddress(validator) }}
+            />
+          </RowDescription>
+        ),
         icon: <IconDelegateTx />,
       };
     }
@@ -161,32 +171,80 @@ const useHooks = ({
         icon: <IconDelegateTx />,
       };
     // The format of these transactions is different in that detail is not an array
-    if (type.includes('MsgWithdrawDelegatorReward'))
+    if (type.includes('MsgWithdrawDelegatorReward')) {
+      const { validator } = extraData;
+
       return {
-        title: t('transactions.rows.withdrawAmount', {
-          amount: formatCoin(chainID, detail.amount),
-        }),
-        description: t('transactions.rows.fromUser', {
-          user: detail.validator_address,
-        }),
+        title: (
+          <RowTitle txhash={txhash} chainID={chainID}>
+            {t('transactions.rows.withdrawAmount', {
+              amount: formatCoin(chainID, detail.amount),
+            })}
+          </RowTitle>
+        ),
+        description: (
+          <RowDescription>
+            <Trans
+              i18nKey="account:transactions.rows.fromUser"
+              components={{
+                linkA: (
+                  <DescriptionLink
+                    hashOrAddr={detail.validator_address}
+                    type="validator"
+                    chainID={chainID}
+                  />
+                ),
+              }}
+              values={{
+                user: FormatUtils.getNameOrAddress(validator),
+              }}
+            />
+          </RowDescription>
+        ),
         icon: <IconTx />,
       };
-    if (type.includes('MsgDelegate'))
+    }
+    if (type.includes('MsgDelegate')) {
+      const { validator } = extraData;
       return {
-        title: t('transactions.rows.delegateAmount', {
-          amount: formatCoin(chainID, detail.amount),
-        }),
-        description: t('transactions.rows.toUser', {
-          user: detail.validator_address,
-        }),
+        title: (
+          <RowTitle txhash={txhash} chainID={chainID}>
+            {t('transactions.rows.delegateAmount', {
+              amount: formatCoin(chainID, detail.amount),
+            })}
+          </RowTitle>
+        ),
+        description: (
+          <RowDescription>
+            <Trans
+              i18nKey="account:transactions.rows.toUser"
+              components={{
+                linkA: (
+                  <DescriptionLink
+                    hashOrAddr={detail.delegator_address}
+                    type="validator"
+                    chainID={chainID}
+                  />
+                ),
+              }}
+              values={{
+                user: FormatUtils.getNameOrAddress(validator),
+              }}
+            />
+          </RowDescription>
+        ),
+        // description: t('transactions.rows.toUser', {
+        //   user: detail.validator_address,
+        // }),
         icon: <IconTx />,
       };
+    }
     return {
       title: '',
       description: '',
       icon: <IconSendTx />,
     };
-  }, [detail, validators.state]);
+  }, [detail]);
 
   return {
     content,

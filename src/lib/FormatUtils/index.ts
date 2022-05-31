@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { differenceInCalendarDays } from 'date-fns';
 
-const formatTx = (transactions: any[]) => {
+const formatTx = (transactions: any[], validators: Validator[]) => {
   const reformattedTransactions = transactions.map((transaction) => {
     const {
       tx: {
@@ -29,14 +29,13 @@ const formatTx = (transactions: any[]) => {
       // MsgDelegate
       // MsgWithdrawDelegatorReward
       uuid: txhash,
+      extraData: {},
     };
 
     if (
       txType.includes('MsgVote') ||
-      txType.includes('MsgBeginRedelegate') ||
       txType.includes('MsgSend') ||
       txType.includes('MsgSetWithdrawAddress') ||
-      txType.includes('MsgUndelegate') ||
       txType.includes('MsgUnjail') ||
       txType.includes('MsgJail') // this actually isn't a valid msg type
     ) {
@@ -44,6 +43,27 @@ const formatTx = (transactions: any[]) => {
         ...baseTxData,
         type: txType,
         detail: messages,
+      };
+    }
+    if (txType.includes('MsgBeginRedelegate')) {
+      return {
+        ...baseTxData,
+        type: txType,
+        detail: messages,
+        extraData: {
+          validatorA: validators.find((v) => v.address === messages[0].validator_src_address),
+          validatorB: validators.find((v) => v.address === messages[0].validator_dst_address),
+        },
+      };
+    }
+    if (txType.includes('MsgUndelegate')) {
+      return {
+        ...baseTxData,
+        type: txType,
+        detail: messages,
+        extraData: {
+          validator: validators.find((v) => v.address === messages[0].validator_address),
+        },
       };
     }
     // deposit transactions aren't handled by forbole x
@@ -103,25 +123,25 @@ const organizeIntoDates = (formattedTransactions: any[]) => {
   }, {});
 };
 
-const formatDepositTx = (transaction: any) => {
-  const {
-    logs,
-    tx: {
-      body: { messages },
-    },
-  } = transaction;
-
-  const proposalNum = logs[0].events
-    .find((event) => event.type === 'proposal_deposit')
-    .attributes.find((attribute) => attribute.key === 'proposal_id').value;
-
-  return {
-    detail: {
-      proposalNum,
-      messages,
-    },
-  };
-};
+// const formatDepositTx = (transaction: any) => {
+//   const {
+//     logs,
+//     tx: {
+//       body: { messages },
+//     },
+//   } = transaction;
+//
+//   const proposalNum = logs[0].events
+//     .find((event) => event.type === 'proposal_deposit')
+//     .attributes.find((attribute) => attribute.key === 'proposal_id').value;
+//
+//   return {
+//     detail: {
+//       proposalNum,
+//       messages,
+//     },
+//   };
+// };
 
 const formatSubmitProposalTx = (transaction: any) => {
   const {
@@ -144,17 +164,17 @@ const formatSubmitProposalTx = (transaction: any) => {
   };
 };
 
-const formatMultiSendTx = (transaction: any) => {
-  const {
-    tx: {
-      body: { messages },
-    },
-  } = transaction;
-
-  return {
-    details: messages,
-  };
-};
+// const formatMultiSendTx = (transaction: any) => {
+//   const {
+//     tx: {
+//       body: { messages },
+//     },
+//   } = transaction;
+//
+//   return {
+//     details: messages,
+//   };
+// };
 
 const formatDelegationTx = (transaction: any) => {
   const {
@@ -217,9 +237,12 @@ const formatWithdrawRewardsTx = (transaction: any) => {
   });
 };
 
+const getNameOrAddress = (validator: Validator) => _.get(validator, 'name', validator?.address);
+
 const FormatUtils = {
   formatTx,
   organizeIntoDates,
+  getNameOrAddress,
 };
 
 export default FormatUtils;

@@ -10,7 +10,7 @@
     },
     "rows": {
       "toUser": "To <linkA>{{user}}</linkA>",
-      "fromUser": "From {{user}}",
+      "fromUser": "From <linkA>{{user}}</linkA>",
       "undelegate": "Undelegate {{amount}}",
       "send": "Send {{amount}}",
       "voteProposal": "Vote proposal #{{proposalNum}} with {{choice}}",

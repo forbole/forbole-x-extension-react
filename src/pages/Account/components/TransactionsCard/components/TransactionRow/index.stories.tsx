@@ -11,23 +11,22 @@ export default {
   component: TransactionRow,
 } as ComponentMeta<CompType>;
 
+const dummyValidator = {
+  name: 'validatorman',
+  address: '1231231231223',
+};
+
 const baseTx = {
   txhash: '096162610A295AC06567C0B615CFC66155D2D8D1C14432AC641FD97FDF506B52',
   height: '3680717',
   timestamp: '2022-05-27T08:07:30Z',
   code: 0,
   chainID: 'desmos-mainnet-1',
-  validators: [
-    {
-      address: '',
-      image: '',
-      name: '',
-      commission: 1,
-      votingPower: 1,
-      status: '',
-      jailed: false,
-    },
-  ],
+  extraData: {
+    validatorA: dummyValidator,
+    validatorB: dummyValidator,
+    validator: dummyValidator,
+  },
 };
 
 const sendTx = {
