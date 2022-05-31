@@ -86,6 +86,8 @@ const formatTx = (transactions: any[]) => {
   return _.compact(_.flatten(reformattedTransactions));
 };
 
+// Organize tx into groups based on days from present so it will be easier to render
+// the different timegroups (See TransactionDateSeparator component for more information)
 const organizeIntoDates = (formattedTransactions: any[]) => {
   const currentDate = new Date();
   const txWithDateDifference = formattedTransactions.map((tx) => ({
@@ -93,7 +95,6 @@ const organizeIntoDates = (formattedTransactions: any[]) => {
     dateDiff: differenceInCalendarDays(currentDate, new Date(tx.timestamp)),
   }));
 
-  // organize transactions into appropriate date groups
   return txWithDateDifference.reduce((acc, c) => {
     return {
       ...acc,
