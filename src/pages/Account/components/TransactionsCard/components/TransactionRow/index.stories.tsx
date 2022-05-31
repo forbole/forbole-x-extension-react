@@ -17,6 +17,17 @@ const baseTx = {
   timestamp: '2022-05-27T08:07:30Z',
   code: 0,
   chainID: 'desmos-mainnet-1',
+  validators: [
+    {
+      address: '',
+      image: '',
+      name: '',
+      commission: 1,
+      votingPower: 1,
+      status: '',
+      jailed: false,
+    },
+  ],
 };
 
 const sendTx = {

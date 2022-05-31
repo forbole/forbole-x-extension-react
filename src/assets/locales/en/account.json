@@ -9,14 +9,14 @@
       "slashing": "Slashing ({{count}})"
     },
     "rows": {
-      "toUser": "To {{user}}",
+      "toUser": "To <linkA>{{user}}</linkA>",
       "fromUser": "From {{user}}",
       "undelegate": "Undelegate {{amount}}",
       "send": "Send {{amount}}",
       "voteProposal": "Vote proposal #{{proposalNum}} with {{choice}}",
       "proposeBy": "Propose by {{user}}",
       "redelegate": "Redelegate {{amount}}",
-      "fromToUser": "From {{userA}} to {{userB}}",
+      "fromToUser": "From <linkA>{{userA}}</linkA> to <linkB>{{userB}}</linkB>",
       "setWithdrawAddr": "Set withdraw address",
       "toAddr": "To {{addr}}",
       "VOTE_OPTION_YES": "Yes",

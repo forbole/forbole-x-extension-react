@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import useTxForAddress from 'hooks/useTxForAddress';
 import FormatUtils from 'lib/FormatUtils';
 import { Loadable } from 'recoil';
+import BlockExplorerUtils from 'lib/BlockExplorerUtils';
 import TransactionRow from './components/TransactionRow';
 import TransactionDateSeparator from './components/TransactionDateSeparator';
 import TabButton from './components/TabButton';
