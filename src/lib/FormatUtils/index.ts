@@ -85,6 +85,9 @@ const formatTx = (transactions: any[], validators: Validator[]) => {
       return formattedWithdrawRewardTx.map((tx) => ({
         ...baseTxData,
         ...tx,
+        extraData: {
+          validator: validators.find((v) => v.address === tx.detail.validator_address),
+        },
       }));
     }
     if (txType.includes('MsgDelegate')) {
@@ -93,6 +96,9 @@ const formatTx = (transactions: any[], validators: Validator[]) => {
       return formattedDelegationTx.map((tx) => ({
         ...baseTxData,
         ...tx,
+        extraData: {
+          validator: validators.find((v) => v.address === tx.detail.validator_address),
+        },
       }));
     }
     if (txType.includes('MsgSubmitProposal')) {

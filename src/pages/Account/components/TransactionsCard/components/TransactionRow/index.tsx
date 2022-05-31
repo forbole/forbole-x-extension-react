@@ -56,6 +56,7 @@ const TransactionRow = ({ txhash, timestamp, detail, chainID, type, extraData }:
             <Typography
               variant="body6"
               sx={{
+                marginTop: 2,
                 color: 'text.secondary',
               }}
             >

@@ -4,7 +4,7 @@ import chains from 'misc/chains';
 const getBlockExplorerURL = ({
   chainID,
   // for future implementation
-  /* eslint-disable */
+  /* eslint-disable no-unused-vars */
   explorerIdx,
 }: {
   chainID: string;
@@ -61,10 +61,25 @@ const createAccountURL = ({
   return `${blockExplorerURL}/accounts/${accountAddr}`;
 };
 
+const createProposalsURL = ({
+  chainID,
+  proposalID,
+  explorerIdx = 0,
+}: {
+  chainID: string;
+  proposalID: string;
+  explorerIdx?: number;
+}) => {
+  const blockExplorerURL = getBlockExplorerURL({ chainID, explorerIdx });
+
+  return `${blockExplorerURL}/proposals/${proposalID}`;
+};
+
 const BlockExplorerUtils = {
   createTxHistoryURL,
   createAccountURL,
   createValidatorURL,
+  createProposalsURL,
 };
 
 export default BlockExplorerUtils;

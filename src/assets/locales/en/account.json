@@ -14,7 +14,6 @@
       "undelegate": "Undelegate {{amount}}",
       "send": "Send {{amount}}",
       "voteProposal": "Vote proposal #{{proposalNum}} with {{choice}}",
-      "proposeBy": "Propose by {{user}}",
       "redelegate": "Redelegate {{amount}}",
       "fromToUser": "From <linkA>{{userA}}</linkA> to <linkB>{{userB}}</linkB>",
       "setWithdrawAddr": "Set withdraw address",

@@ -1,21 +1,16 @@
-import React, { Suspense } from 'react'
-import ReactDOM from 'react-dom'
-import './index.scss'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-import { RecoilRoot } from 'recoil'
-import { Helmet } from 'react-helmet'
+import React, { Suspense } from 'react';
+import ReactDOM from 'react-dom';
+import './index.scss';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { RecoilRoot } from 'recoil';
+import { Helmet } from 'react-helmet';
 // @ts-ignore
-import nightwind from 'nightwind/helper'
-import { CircularProgress } from '@mui/material'
-import reportWebVitals from './reportWebVitals'
-import './assets/locales/i18n'
-import App from './App'
-
-
-try {
-  const browser = require('webextension-polyfill')
-} catch (err) {}
+import nightwind from 'nightwind/helper';
+import { CircularProgress } from '@mui/material';
+import reportWebVitals from './reportWebVitals';
+import './assets/locales/i18n';
+import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -29,9 +24,9 @@ ReactDOM.render(
     </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
-)
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals()
+reportWebVitals();

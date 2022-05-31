@@ -6,9 +6,12 @@ import IconTx from 'components/svg/IconTx';
 import IconSendTx from 'components/svg/IconSendTx';
 import _ from 'lodash';
 import FormatUtils from 'lib/FormatUtils';
+import { useRecoilValueLoadable } from 'recoil';
+import { CircularProgress } from '@mui/material';
 import RowDescription from './RowDescription';
 import RowTitle from './RowTitle';
 import DescriptionLink from './DescriptionLink';
+import { proposalQueryState } from '../../../../../../recoil/proposal';
 
 /**
  * Hooks for the TransactionRow component
@@ -26,18 +29,47 @@ const useHooks = ({
   type: string;
   extraData: any;
 }) => {
+  const proposalData = useRecoilValueLoadable(
+    proposalQueryState({
+      chainID,
+      proposalID: type.includes('MsgVote') ? detail[0].proposal_id : -1,
+    })
+  );
+
   const { t } = useTranslation('account');
 
   const content = React.useMemo(() => {
     if (type.includes('MsgVote')) {
+      if (proposalData.state !== 'hasValue') {
+        return {
+          title: (
+            <RowTitle txhash={txhash} chainID={chainID}>
+              {t('transactions.rows.voteProposal', {
+                proposalNum: detail[0].proposal_id,
+                choice: t(`transactions.rows.${detail[0].option}`),
+              })}
+            </RowTitle>
+          ),
+          description: <CircularProgress size={16} />,
+          icon: <IconDelegateTx />,
+        };
+      }
       return {
-        title: t('transactions.rows.voteProposal', {
-          proposalNum: detail[0].proposal_id,
-          choice: t(`transactions.rows.${detail[0].option}`),
-        }),
-        description: t('transactions.rows.proposeBy', {
-          user: 'TODO',
-        }),
+        title: (
+          <RowTitle txhash={txhash} chainID={chainID}>
+            {t('transactions.rows.voteProposal', {
+              proposalNum: detail[0].proposal_id,
+              choice: t(`transactions.rows.${detail[0].option}`),
+            })}
+          </RowTitle>
+        ),
+        description: (
+          <RowDescription>
+            <DescriptionLink hashOrAddr={detail[0].proposal_id} type="proposal" chainID={chainID}>
+              {proposalData.contents.content.title}
+            </DescriptionLink>
+          </RowDescription>
+        ),
         icon: <IconDelegateTx />,
       };
     }
@@ -147,7 +179,7 @@ const useHooks = ({
               components={{
                 linkA: (
                   <DescriptionLink
-                    hashOrAddr={detail[0].to_address}
+                    hashOrAddr={detail[0].validator_address}
                     type="account"
                     chainID={chainID}
                   />
@@ -221,7 +253,7 @@ const useHooks = ({
               components={{
                 linkA: (
                   <DescriptionLink
-                    hashOrAddr={detail.delegator_address}
+                    hashOrAddr={detail.validator_address}
                     type="validator"
                     chainID={chainID}
                   />

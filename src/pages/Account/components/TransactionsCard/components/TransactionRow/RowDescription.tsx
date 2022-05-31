@@ -8,7 +8,6 @@ const RowDescription: React.FC = ({ children }) => {
   return (
     <Typography
       sx={{
-        marginBottom: 2,
         color: 'text.secondary',
       }}
       variant="body6"

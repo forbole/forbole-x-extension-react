@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link } from '@mui/material';
 import BlockExplorerUtils from 'lib/BlockExplorerUtils';
-import _ from 'lodash';
 
 type Props = {
   hashOrAddr: string;
 
-  type: 'account' | 'validator' | 'tx';
+  type: 'account' | 'validator' | 'tx' | 'proposal';
 
   chainID: string;
 };
@@ -22,6 +21,8 @@ const DescriptionLink: React.FC<Props> = ({ children, hashOrAddr, type, chainID 
       return BlockExplorerUtils.createValidatorURL({ chainID, validatorAddr: hashOrAddr });
     if (type === 'tx')
       return BlockExplorerUtils.createTxHistoryURL({ chainID, txhash: hashOrAddr });
+    if (type === 'proposal')
+      return BlockExplorerUtils.createProposalsURL({ chainID, proposalID: hashOrAddr });
 
     return '';
   };
