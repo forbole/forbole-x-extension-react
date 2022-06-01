@@ -59,6 +59,5 @@ export const fetchValidators = async (chainId: string) => {
     nextKey = get(response, ['pagination', 'next_key']);
   } while (nextKey);
 
-  console.log('num validators', validators.length, validators);
   return validators;
 };

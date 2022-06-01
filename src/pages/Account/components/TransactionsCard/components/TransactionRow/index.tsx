@@ -1,11 +1,11 @@
 import React from 'react';
-import { Box, Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import useHooks from './useHooks';
 
 type Props = {
   txhash: string;
-  //
+
   // height: string;
 
   timestamp: string;
@@ -44,25 +44,24 @@ const TransactionRow = ({ txhash, timestamp, detail, chainID, type, extraData }:
         container
       >
         <Grid xs={1.5}>{content?.icon}</Grid>
-        <Grid xs={10.5}>
-          <Box
+        <Grid
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+          xs={10.5}
+        >
+          {content?.title}
+          {content?.description}
+          <Typography
+            variant="body6"
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
+              marginTop: 2,
+              color: 'text.secondary',
             }}
           >
-            {content?.title}
-            {content?.description}
-            <Typography
-              variant="body6"
-              sx={{
-                marginTop: 2,
-                color: 'text.secondary',
-              }}
-            >
-              {format(new Date(timestamp), 'dd MMM, HH:mm')}
-            </Typography>
-          </Box>
+            {format(new Date(timestamp), 'dd MMM, HH:mm')}
+          </Typography>
         </Grid>
       </Grid>
     </Paper>

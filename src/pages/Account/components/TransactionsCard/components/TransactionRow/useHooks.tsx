@@ -7,7 +7,7 @@ import IconSendTx from 'components/svg/IconSendTx';
 import _ from 'lodash';
 import FormatUtils from 'lib/FormatUtils';
 import { useRecoilValueLoadable } from 'recoil';
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import RowDescription from './RowDescription';
 import RowTitle from './RowTitle';
 import DescriptionLink from './DescriptionLink';
@@ -37,8 +37,99 @@ const useHooks = ({
   );
 
   const { t } = useTranslation('account');
-
   const content = React.useMemo(() => {
+    if (type.includes('MsgUnjail')) {
+      const { validator } = extraData;
+      return {
+        title: (
+          <RowTitle txhash={txhash} chainID={chainID}>
+            <Trans
+              i18nKey="account:transactions.rows.userUnjailed"
+              components={{
+                linkA: (
+                  <DescriptionLink
+                    hashOrAddr={detail[0].validator_addr}
+                    type="validator"
+                    chainID={chainID}
+                  />
+                ),
+              }}
+              values={{
+                validator: FormatUtils.getNameOrAddress(validator),
+              }}
+            />
+          </RowTitle>
+        ),
+        description: <RowDescription>{t('transactions.rows.unjailed')}</RowDescription>,
+      };
+    }
+    if (type.includes('MsgMultiSend')) {
+      return {
+        title: (
+          <RowTitle txhash={txhash} chainID={chainID}>
+            {t('transactions.rows.multisend')}
+          </RowTitle>
+        ),
+        description: (
+          <RowDescription>
+            <Trans
+              i18nKey="account:transactions.rows.sendAmtToAddr"
+              components={{
+                linkA: (
+                  <DescriptionLink
+                    hashOrAddr={detail[0].inputs[0].address}
+                    type="account"
+                    chainID={chainID}
+                  />
+                ),
+                wrapper: (
+                  <Typography
+                    sx={{
+                      color: 'primary.main',
+                    }}
+                    variant="body6"
+                  />
+                ),
+              }}
+              values={{
+                addr: detail[0].inputs[0].address,
+                amount: formatCoin(chainID, detail[0].inputs[0].coins[0]),
+              }}
+            />
+            {detail[0].outputs.map((output) => (
+              <>
+                <Box sx={{ marginTop: 1 }} />
+                <Trans
+                  i18nKey="account:transactions.rows.addrAmtReceived"
+                  components={{
+                    linkA: (
+                      <DescriptionLink
+                        hashOrAddr={output.address}
+                        type="account"
+                        chainID={chainID}
+                      />
+                    ),
+                    wrapper: (
+                      <Typography
+                        sx={{
+                          color: 'primary.main',
+                        }}
+                        variant="body6"
+                      />
+                    ),
+                  }}
+                  values={{
+                    addr: output.address,
+                    amount: formatCoin(chainID, output.coins[0]),
+                  }}
+                />
+              </>
+            ))}
+          </RowDescription>
+        ),
+        icon: <IconTx />,
+      };
+    }
     if (type.includes('MsgVote')) {
       if (proposalData.state !== 'hasValue') {
         return {
@@ -154,6 +245,15 @@ const useHooks = ({
               i18nKey="account:transactions.rows.toAddr"
               values={{
                 addr: detail[0].withdraw_address,
+              }}
+              components={{
+                linkA: (
+                  <DescriptionLink
+                    hashOrAddr={detail[0].withdraw_address}
+                    type="account"
+                    chainID={chainID}
+                  />
+                ),
               }}
             />
           </RowDescription>

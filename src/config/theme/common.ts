@@ -46,7 +46,7 @@ const common = {
     },
     body6: {
       fontFamily: '"Hind Madurai", sans-serif',
-      fontSize: '0.750rem',
+      fontSize: '0.800rem',
     },
     overline: {
       fontFamily: '"Hind Madurai Medium", sans-serif',

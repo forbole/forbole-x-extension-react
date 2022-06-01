@@ -30,10 +30,12 @@ const DescriptionLink: React.FC<Props> = ({ children, hashOrAddr, type, chainID 
   return (
     <Link
       sx={{
-        color: 'inherit',
+        color: 'primary.main',
         textDecoration: 'none',
+        textDecorationColor: 'text.primary',
         '&:hover': {
           textDecoration: 'underline',
+          textDecorationColor: 'text.primary',
         },
       }}
       href={link()}

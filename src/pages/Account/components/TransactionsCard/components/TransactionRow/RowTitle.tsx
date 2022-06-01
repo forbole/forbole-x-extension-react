@@ -16,9 +16,10 @@ const RowTitle: React.FC<Props> = ({ txhash, chainID, children }) => {
     <DescriptionLink hashOrAddr={txhash} type="tx" chainID={chainID}>
       <Typography
         sx={{
-          color: 'text.primary',
+          color: 'primary.main',
+          marginBottom: 2,
         }}
-        variant="body1"
+        variant="body6"
       >
         {children}
       </Typography>

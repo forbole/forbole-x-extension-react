@@ -152,3 +152,59 @@ const delegateTx = {
 };
 
 export const MsgDelegate: ComponentStory<CompType> = () => <TransactionRow {...delegateTx} />;
+
+const multiSendTx = {
+  ...baseTx,
+  type: '/cosmos.bank.v1beta1.MsgMultiSend',
+  detail: [
+    {
+      '@type': '/cosmos.bank.v1beta1.MsgMultiSend',
+      inputs: [
+        {
+          address: 'desmos177pzpz63y8x4p6k6day4qhk6qjqm7q7zevlx2z',
+          coins: [
+            {
+              denom: 'udsm',
+              amount: '200000000',
+            },
+          ],
+        },
+      ],
+      outputs: [
+        {
+          address: 'desmos1a7kkr92a55259hzacpdee4nhxurmyvwt7jnp5h',
+          coins: [
+            {
+              denom: 'udsm',
+              amount: '100000000',
+            },
+          ],
+        },
+        {
+          address: 'desmos18tug2x5uwkgnh7qgadezvdntpwgjc88c98zuck',
+          coins: [
+            {
+              denom: 'udsm',
+              amount: '100000000',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const MsgMultiSend: ComponentStory<CompType> = () => <TransactionRow {...multiSendTx} />;
+
+const unjailTx = {
+  ...baseTx,
+  type: '/cosmos.slashing.v1beta1.MsgUnjail',
+  detail: [
+    {
+      '@type': '/cosmos.slashing.v1beta1.MsgUnjail',
+      validator_addr: '1231231231223',
+    },
+  ],
+};
+
+export const MsgUnjail: ComponentStory<CompType> = () => <TransactionRow {...unjailTx} />;

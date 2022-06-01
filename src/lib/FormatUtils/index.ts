@@ -36,19 +36,25 @@ const formatTx = (transactions: any[], validators: Validator[]) => {
       txType.includes('MsgVote') ||
       txType.includes('MsgSend') ||
       txType.includes('MsgSetWithdrawAddress') ||
-      txType.includes('MsgUnjail') ||
       txType.includes('MsgJail') // this actually isn't a valid msg type
     ) {
       return {
         ...baseTxData,
-        type: txType,
         detail: messages,
+      };
+    }
+    if (txType.includes('MsgUnjail')) {
+      return {
+        ...baseTxData,
+        detail: messages,
+        extraData: {
+          validator: validators.find((v) => v.address === messages[0].validator_addr),
+        },
       };
     }
     if (txType.includes('MsgBeginRedelegate')) {
       return {
         ...baseTxData,
-        type: txType,
         detail: messages,
         extraData: {
           validatorA: validators.find((v) => v.address === messages[0].validator_src_address),
@@ -59,7 +65,6 @@ const formatTx = (transactions: any[], validators: Validator[]) => {
     if (txType.includes('MsgUndelegate')) {
       return {
         ...baseTxData,
-        type: txType,
         detail: messages,
         extraData: {
           validator: validators.find((v) => v.address === messages[0].validator_address),
@@ -73,12 +78,12 @@ const formatTx = (transactions: any[], validators: Validator[]) => {
     //     ...formatDepositTx(transaction),
     //   };
     // }
-    // if (txType.includes('MsgMultiSend')) {
-    //   return {
-    //     ...baseTxData,
-    //     ...formatMultiSendTx(transaction),
-    //   };
-    // }
+    if (txType.includes('MsgMultiSend')) {
+      return {
+        ...baseTxData,
+        ...formatMultiSendTx(transaction),
+      };
+    }
     if (txType.includes('MsgWithdrawDelegatorReward')) {
       // returns an array[], so we need to append base data to each element
       const formattedWithdrawRewardTx = formatWithdrawRewardsTx(transaction);
@@ -170,17 +175,17 @@ const formatSubmitProposalTx = (transaction: any) => {
   };
 };
 
-// const formatMultiSendTx = (transaction: any) => {
-//   const {
-//     tx: {
-//       body: { messages },
-//     },
-//   } = transaction;
-//
-//   return {
-//     details: messages,
-//   };
-// };
+const formatMultiSendTx = (transaction: any) => {
+  const {
+    tx: {
+      body: { messages },
+    },
+  } = transaction;
+
+  return {
+    detail: messages,
+  };
+};
 
 const formatDelegationTx = (transaction: any) => {
   const {
