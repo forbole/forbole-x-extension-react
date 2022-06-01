@@ -27,6 +27,7 @@ const useHooks = ({
 }) => {
   const { chain: chainID } = account;
 
+  // fetch proposal data if the tx type needs it
   const proposalData = useRecoilValueLoadable(
     proposalQueryState({
       chainID,
@@ -35,6 +36,11 @@ const useHooks = ({
   );
 
   const { t } = useTranslation('account');
+
+  /**
+   * Format the tx data into components that have links that redirect the user to the chain's
+   * block explorer
+   */
   const content = React.useMemo(() => {
     if (type.includes('MsgUnjail')) {
       const { validator } = extraData;
@@ -60,6 +66,10 @@ const useHooks = ({
       };
     }
     if (type.includes('MsgMultiSend')) {
+      /**
+       * If the sender or recipient address is the same as the account's, the chain's
+       * symbol will be shown instead of the address.
+       */
       return {
         title: t('transactions.rows.multisend'),
         description: (
@@ -79,11 +89,14 @@ const useHooks = ({
                     sx={{
                       color: 'primary.main',
                     }}
+                    // if sender addr is same as account addr, render it slightly larger so it
+                    // stands out more
                     variant={detail[0].inputs[0].address === account.address ? 'body2' : 'body6'}
                   />
                 ),
               }}
               values={{
+                // if sender addr is same as account addr, show chain symbol instead of addr
                 addr:
                   detail[0].inputs[0].address === account.address
                     ? chains[chainID].symbol
@@ -109,11 +122,13 @@ const useHooks = ({
                         sx={{
                           color: 'primary.main',
                         }}
+                        // if recipient addr is same as account addr, make text larger
                         variant={output.address === account.address ? 'body2' : 'body6'}
                       />
                     ),
                   }}
                   values={{
+                    // if recipient addr is same as account addr, show chain symbol instead of addr
                     addr:
                       output.address === account.address ? chains[chainID].symbol : output.address,
                     amount: formatCoin(chainID, output.coins[0]),

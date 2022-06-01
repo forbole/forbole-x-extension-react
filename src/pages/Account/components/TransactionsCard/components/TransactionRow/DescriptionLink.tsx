@@ -11,7 +11,7 @@ type Props = {
 };
 
 /**
- * Created an external link for use in transactionRow descriptions
+ * Convenience component to create an external link for Transactions
  */
 const DescriptionLink: React.FC<Props> = ({ children, hashOrAddr, type, chainID }) => {
   const link = () => {
