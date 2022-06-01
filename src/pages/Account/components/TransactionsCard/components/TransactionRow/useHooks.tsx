@@ -7,6 +7,7 @@ import _ from 'lodash';
 import FormatUtils from 'lib/FormatUtils';
 import { useRecoilValueLoadable } from 'recoil';
 import { Box, CircularProgress, Typography } from '@mui/material';
+import chains from 'misc/chains';
 import DescriptionLink from './DescriptionLink';
 import { proposalQueryState } from '../../../../../../recoil/proposal';
 
@@ -16,14 +17,16 @@ import { proposalQueryState } from '../../../../../../recoil/proposal';
 const useHooks = ({
   detail,
   extraData,
-  chainID,
   type,
+  account,
 }: {
   detail: any;
-  chainID: string;
   type: string;
   extraData: any;
+  account: Account;
 }) => {
+  const { chain: chainID } = account;
+
   const proposalData = useRecoilValueLoadable(
     proposalQueryState({
       chainID,
@@ -76,12 +79,15 @@ const useHooks = ({
                     sx={{
                       color: 'primary.main',
                     }}
-                    variant="body6"
+                    variant={detail[0].inputs[0].address === account.address ? 'body2' : 'body6'}
                   />
                 ),
               }}
               values={{
-                addr: detail[0].inputs[0].address,
+                addr:
+                  detail[0].inputs[0].address === account.address
+                    ? chains[chainID].symbol
+                    : detail[0].inputs[0].address,
                 amount: formatCoin(chainID, detail[0].inputs[0].coins[0]),
               }}
             />
@@ -103,12 +109,13 @@ const useHooks = ({
                         sx={{
                           color: 'primary.main',
                         }}
-                        variant="body6"
+                        variant={output.address === account.address ? 'body2' : 'body6'}
                       />
                     ),
                   }}
                   values={{
-                    addr: output.address,
+                    addr:
+                      output.address === account.address ? chains[chainID].symbol : output.address,
                     amount: formatCoin(chainID, output.coins[0]),
                   }}
                 />

@@ -131,7 +131,7 @@ const TransactionsCard = ({ account, validators }: Props) => {
             {filteredAndOrganizedTx[key].map((tx, idx) => (
               <Box className={`TransactionCard-${theme}`}>
                 {idx === 0 && <TransactionDateSeparator daysFromPresent={Number(key)} />}
-                <TransactionRow key={tx.uuid} {...tx} chainID={account.contents.chain} />
+                <TransactionRow key={tx.uuid} {...tx} account={account.contents} />
               </Box>
             ))}
           </>
