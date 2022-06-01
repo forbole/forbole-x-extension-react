@@ -1,12 +1,14 @@
 import React from 'react';
-import { Box, Card, CircularProgress, Typography } from '@mui/material';
+import { Box, Card, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import useTxForAddress from 'hooks/useTxForAddress';
 import FormatUtils from 'lib/FormatUtils';
-import { Loadable } from 'recoil';
+import { Loadable, useRecoilValue } from 'recoil';
 import TransactionRow from './components/TransactionRow';
 import TransactionDateSeparator from './components/TransactionDateSeparator';
 import TabButton from './components/TabButton';
+import './styles.css';
+import { themeState } from '../../../../recoil/general';
 
 type Props = {
   /**
@@ -22,11 +24,12 @@ type Props = {
 
 const TransactionsCard = ({ account, validators }: Props) => {
   const { t } = useTranslation('account');
+  const theme = useRecoilValue(themeState);
 
   const [filterType, setFilterType] = React.useState(0);
 
   // TODO: REWRITE INTO RECOIL
-  const { txData, error, loading } = useTxForAddress({
+  const { txData, loading } = useTxForAddress({
     address: account?.contents?.address,
     chain: account?.contents?.chain,
   });
@@ -84,23 +87,11 @@ const TransactionsCard = ({ account, validators }: Props) => {
     );
   }, [transactions, filterType]);
 
-  if (error)
-    return (
-      <Card
-        sx={(theme) => ({
-          margin: `${theme.spacing(1)} ${theme.spacing(2.5)}`,
-          borderRadius: 2,
-        })}
-      >
-        <Typography>An error has occurred</Typography>
-      </Card>
-    );
-
   if (loading || account.state !== 'hasValue') {
     return (
       <Card
-        sx={(theme) => ({
-          margin: `${theme.spacing(1)} ${theme.spacing(2.5)}`,
+        sx={(_theme) => ({
+          margin: `${_theme.spacing(1)} ${_theme.spacing(2.5)}`,
           borderRadius: 2,
           display: 'flex',
           justifyContent: 'center',
@@ -113,8 +104,8 @@ const TransactionsCard = ({ account, validators }: Props) => {
 
   return (
     <Card
-      sx={(theme) => ({
-        margin: `${theme.spacing(1)} ${theme.spacing(2.5)}`,
+      sx={(_theme) => ({
+        margin: `${_theme.spacing(1)} ${_theme.spacing(2.5)}`,
         borderRadius: 2,
       })}
     >
@@ -137,9 +128,11 @@ const TransactionsCard = ({ account, validators }: Props) => {
       <Box>
         {Object.keys(filteredAndOrganizedTx).map((key) => (
           <>
-            <TransactionDateSeparator daysFromPresent={Number(key)} />
-            {filteredAndOrganizedTx[key].map((tx) => (
-              <TransactionRow key={tx.uuid} {...tx} chainID={account.contents.chain} />
+            {filteredAndOrganizedTx[key].map((tx, idx) => (
+              <Box className={`TransactionCard-${theme}`}>
+                {idx === 0 && <TransactionDateSeparator daysFromPresent={Number(key)} />}
+                <TransactionRow key={tx.uuid} {...tx} chainID={account.contents.chain} />
+              </Box>
             ))}
           </>
         ))}
