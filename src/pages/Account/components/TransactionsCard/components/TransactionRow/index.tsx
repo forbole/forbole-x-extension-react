@@ -1,6 +1,7 @@
 import React from 'react';
-import { Grid, Paper, Typography } from '@mui/material';
+import { Box, Grid, Paper, Typography } from '@mui/material';
 import { format } from 'date-fns';
+import TxhashLink from './TxhashLink';
 import useHooks from './useHooks';
 
 type Props = {
@@ -28,7 +29,6 @@ type Props = {
  */
 const TransactionRow = ({ txhash, timestamp, detail, chainID, type, extraData }: Props) => {
   const { content } = useHooks({
-    txhash,
     detail,
     chainID,
     type,
@@ -37,33 +37,54 @@ const TransactionRow = ({ txhash, timestamp, detail, chainID, type, extraData }:
 
   return (
     <Paper>
-      <Grid
+      <Box
         sx={{
+          display: 'flex',
+          flexDirection: 'column',
           padding: 2,
         }}
-        container
       >
-        <Grid xs={1.5}>{content?.icon}</Grid>
-        <Grid
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-          xs={10.5}
-        >
-          {content?.title}
-          {content?.description}
-          <Typography
-            variant="body6"
+        <TxhashLink txhash={txhash} chainID={chainID} />
+        <Grid container>
+          <Grid xs={1.5}>{content?.icon}</Grid>
+          <Grid
             sx={{
-              marginTop: 2,
-              color: 'text.secondary',
+              display: 'flex',
+              flexDirection: 'column',
             }}
+            xs={10.5}
           >
-            {format(new Date(timestamp), 'dd MMM, HH:mm')}
-          </Typography>
+            <Typography
+              sx={{
+                color: 'text.primary',
+              }}
+              variant="body6"
+            >
+              {content?.title}
+            </Typography>
+
+            <Typography
+              sx={{
+                color: 'text.secondary',
+                marginTop: 1,
+              }}
+              variant="body6"
+            >
+              {content?.description}
+            </Typography>
+
+            <Typography
+              variant="body6"
+              sx={{
+                marginTop: 1,
+                color: 'text.secondary',
+              }}
+            >
+              {format(new Date(timestamp), 'dd MMM, HH:mm')}
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </Paper>
   );
 };

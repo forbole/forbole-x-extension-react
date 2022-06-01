@@ -3,13 +3,10 @@ import { Trans, useTranslation } from 'react-i18next';
 import IconDelegateTx from 'components/svg/IconDelegateTx';
 import { formatCoin } from 'misc/utils';
 import IconTx from 'components/svg/IconTx';
-import IconSendTx from 'components/svg/IconSendTx';
 import _ from 'lodash';
 import FormatUtils from 'lib/FormatUtils';
 import { useRecoilValueLoadable } from 'recoil';
 import { Box, CircularProgress, Typography } from '@mui/material';
-import RowDescription from './RowDescription';
-import RowTitle from './RowTitle';
 import DescriptionLink from './DescriptionLink';
 import { proposalQueryState } from '../../../../../../recoil/proposal';
 
@@ -17,13 +14,11 @@ import { proposalQueryState } from '../../../../../../recoil/proposal';
  * Hooks for the TransactionRow component
  */
 const useHooks = ({
-  txhash,
   detail,
   extraData,
   chainID,
   type,
 }: {
-  txhash: string;
   detail: any;
   chainID: string;
   type: string;
@@ -42,36 +37,30 @@ const useHooks = ({
       const { validator } = extraData;
       return {
         title: (
-          <RowTitle txhash={txhash} chainID={chainID}>
-            <Trans
-              i18nKey="account:transactions.rows.userUnjailed"
-              components={{
-                linkA: (
-                  <DescriptionLink
-                    hashOrAddr={detail[0].validator_addr}
-                    type="validator"
-                    chainID={chainID}
-                  />
-                ),
-              }}
-              values={{
-                validator: FormatUtils.getNameOrAddress(validator),
-              }}
-            />
-          </RowTitle>
+          <Trans
+            i18nKey="account:transactions.rows.userUnjailed"
+            components={{
+              linkA: (
+                <DescriptionLink
+                  hashOrAddr={detail[0].validator_addr}
+                  type="validator"
+                  chainID={chainID}
+                />
+              ),
+            }}
+            values={{
+              validator: FormatUtils.getNameOrAddress(validator),
+            }}
+          />
         ),
-        description: <RowDescription>{t('transactions.rows.unjailed')}</RowDescription>,
+        description: t('transactions.rows.unjailed'),
       };
     }
     if (type.includes('MsgMultiSend')) {
       return {
-        title: (
-          <RowTitle txhash={txhash} chainID={chainID}>
-            {t('transactions.rows.multisend')}
-          </RowTitle>
-        ),
+        title: t('transactions.rows.multisend'),
         description: (
-          <RowDescription>
+          <>
             <Trans
               i18nKey="account:transactions.rows.sendAmtToAddr"
               components={{
@@ -125,7 +114,7 @@ const useHooks = ({
                 />
               </>
             ))}
-          </RowDescription>
+          </>
         ),
         icon: <IconTx />,
       };
@@ -133,33 +122,23 @@ const useHooks = ({
     if (type.includes('MsgVote')) {
       if (proposalData.state !== 'hasValue') {
         return {
-          title: (
-            <RowTitle txhash={txhash} chainID={chainID}>
-              {t('transactions.rows.voteProposal', {
-                proposalNum: detail[0].proposal_id,
-                choice: t(`transactions.rows.${detail[0].option}`),
-              })}
-            </RowTitle>
-          ),
+          title: t('transactions.rows.voteProposal', {
+            proposalNum: detail[0].proposal_id,
+            choice: t(`transactions.rows.${detail[0].option}`),
+          }),
           description: <CircularProgress size={16} />,
           icon: <IconDelegateTx />,
         };
       }
       return {
-        title: (
-          <RowTitle txhash={txhash} chainID={chainID}>
-            {t('transactions.rows.voteProposal', {
-              proposalNum: detail[0].proposal_id,
-              choice: t(`transactions.rows.${detail[0].option}`),
-            })}
-          </RowTitle>
-        ),
+        title: t('transactions.rows.voteProposal', {
+          proposalNum: detail[0].proposal_id,
+          choice: t(`transactions.rows.${detail[0].option}`),
+        }),
         description: (
-          <RowDescription>
-            <DescriptionLink hashOrAddr={detail[0].proposal_id} type="proposal" chainID={chainID}>
-              {proposalData.contents.content.title}
-            </DescriptionLink>
-          </RowDescription>
+          <DescriptionLink hashOrAddr={detail[0].proposal_id} type="proposal" chainID={chainID}>
+            {proposalData.contents.content.title}
+          </DescriptionLink>
         ),
         icon: <IconDelegateTx />,
       };
@@ -167,96 +146,78 @@ const useHooks = ({
     if (type.includes('MsgBeginRedelegate')) {
       const { validatorA, validatorB } = extraData;
       return {
-        title: (
-          <RowTitle txhash={txhash} chainID={chainID}>
-            {t('transactions.rows.redelegate', {
-              amount: formatCoin(chainID, detail[0].amount),
-            })}
-          </RowTitle>
-        ),
+        title: t('transactions.rows.redelegate', {
+          amount: formatCoin(chainID, detail[0].amount),
+        }),
         description: (
-          <RowDescription>
-            <Trans
-              i18nKey="account:transactions.rows.fromToUser"
-              components={{
-                linkA: (
-                  <DescriptionLink
-                    hashOrAddr={_.get(validatorA, 'address')}
-                    type="validator"
-                    chainID={chainID}
-                  />
-                ),
-                linkB: (
-                  <DescriptionLink
-                    hashOrAddr={_.get(validatorB, 'address')}
-                    type="validator"
-                    chainID={chainID}
-                  />
-                ),
-              }}
-              values={{
-                userA: FormatUtils.getNameOrAddress(validatorA),
-                userB: FormatUtils.getNameOrAddress(validatorB),
-              }}
-            />
-          </RowDescription>
+          <Trans
+            i18nKey="account:transactions.rows.fromToUser"
+            components={{
+              linkA: (
+                <DescriptionLink
+                  hashOrAddr={_.get(validatorA, 'address')}
+                  type="validator"
+                  chainID={chainID}
+                />
+              ),
+              linkB: (
+                <DescriptionLink
+                  hashOrAddr={_.get(validatorB, 'address')}
+                  type="validator"
+                  chainID={chainID}
+                />
+              ),
+            }}
+            values={{
+              userA: FormatUtils.getNameOrAddress(validatorA),
+              userB: FormatUtils.getNameOrAddress(validatorB),
+            }}
+          />
         ),
         icon: <IconDelegateTx />,
       };
     }
     if (type.includes('MsgSend'))
       return {
-        title: (
-          <RowTitle txhash={txhash} chainID={chainID}>
-            {t('transactions.rows.send', {
-              amount: formatCoin(chainID, detail[0].amount[0]),
-            })}
-          </RowTitle>
-        ),
+        title: t('transactions.rows.send', {
+          amount: formatCoin(chainID, detail[0].amount[0]),
+        }),
         description: (
-          <RowDescription>
-            <Trans
-              i18nKey="account:transactions.rows.toUser"
-              components={{
-                linkA: (
-                  <DescriptionLink
-                    hashOrAddr={detail[0].to_address}
-                    type="account"
-                    chainID={chainID}
-                  />
-                ),
-              }}
-              values={{ user: detail[0].to_address }}
-            />
-          </RowDescription>
+          <Trans
+            i18nKey="account:transactions.rows.toUser"
+            components={{
+              linkA: (
+                <DescriptionLink
+                  hashOrAddr={detail[0].to_address}
+                  type="account"
+                  chainID={chainID}
+                />
+              ),
+            }}
+            values={{ user: detail[0].to_address }}
+          />
         ),
         icon: <IconTx />,
       };
     if (type.includes('MsgSetWithdrawAddress')) {
       return {
-        title: (
-          <RowTitle txhash={txhash} chainID={chainID}>
-            {t('transactions.rows.setWithdrawAddr')}
-          </RowTitle>
-        ),
+        title: t('transactions.rows.setWithdrawAddr'),
         description: (
-          <RowDescription>
-            <Trans
-              i18nKey="account:transactions.rows.toAddr"
-              values={{
-                addr: detail[0].withdraw_address,
-              }}
-              components={{
-                linkA: (
-                  <DescriptionLink
-                    hashOrAddr={detail[0].withdraw_address}
-                    type="account"
-                    chainID={chainID}
-                  />
-                ),
-              }}
-            />
-          </RowDescription>
+          <Trans
+            i18nKey="account:transactions.rows.toAddr"
+            values={{
+              addr: detail[0].withdraw_address,
+            }}
+            components={{
+              linkA: (
+                <DescriptionLink
+                  hashOrAddr={detail[0].withdraw_address}
+                  type="account"
+                  chainID={chainID}
+                />
+              ),
+            }}
+          />
         ),
         icon: <IconDelegateTx />,
       };
@@ -265,29 +226,23 @@ const useHooks = ({
       const { validator } = extraData;
 
       return {
-        title: (
-          <RowTitle txhash={txhash} chainID={chainID}>
-            {t('transactions.rows.undelegate', {
-              amount: formatCoin(chainID, detail[0].amount),
-            })}
-          </RowTitle>
-        ),
+        title: t('transactions.rows.undelegate', {
+          amount: formatCoin(chainID, detail[0].amount),
+        }),
         description: (
-          <RowDescription>
-            <Trans
-              i18nKey="account:transactions.rows.fromUser"
-              components={{
-                linkA: (
-                  <DescriptionLink
-                    hashOrAddr={detail[0].validator_address}
-                    type="account"
-                    chainID={chainID}
-                  />
-                ),
-              }}
-              values={{ user: FormatUtils.getNameOrAddress(validator) }}
-            />
-          </RowDescription>
+          <Trans
+            i18nKey="account:transactions.rows.fromUser"
+            components={{
+              linkA: (
+                <DescriptionLink
+                  hashOrAddr={detail[0].validator_address}
+                  type="account"
+                  chainID={chainID}
+                />
+              ),
+            }}
+            values={{ user: FormatUtils.getNameOrAddress(validator) }}
+          />
         ),
         icon: <IconDelegateTx />,
       };
@@ -307,31 +262,25 @@ const useHooks = ({
       const { validator } = extraData;
 
       return {
-        title: (
-          <RowTitle txhash={txhash} chainID={chainID}>
-            {t('transactions.rows.withdrawAmount', {
-              amount: formatCoin(chainID, detail.amount),
-            })}
-          </RowTitle>
-        ),
+        title: t('transactions.rows.withdrawAmount', {
+          amount: formatCoin(chainID, detail.amount),
+        }),
         description: (
-          <RowDescription>
-            <Trans
-              i18nKey="account:transactions.rows.fromUser"
-              components={{
-                linkA: (
-                  <DescriptionLink
-                    hashOrAddr={detail.validator_address}
-                    type="validator"
-                    chainID={chainID}
-                  />
-                ),
-              }}
-              values={{
-                user: FormatUtils.getNameOrAddress(validator),
-              }}
-            />
-          </RowDescription>
+          <Trans
+            i18nKey="account:transactions.rows.fromUser"
+            components={{
+              linkA: (
+                <DescriptionLink
+                  hashOrAddr={detail.validator_address}
+                  type="validator"
+                  chainID={chainID}
+                />
+              ),
+            }}
+            values={{
+              user: FormatUtils.getNameOrAddress(validator),
+            }}
+          />
         ),
         icon: <IconTx />,
       };
@@ -339,43 +288,30 @@ const useHooks = ({
     if (type.includes('MsgDelegate')) {
       const { validator } = extraData;
       return {
-        title: (
-          <RowTitle txhash={txhash} chainID={chainID}>
-            {t('transactions.rows.delegateAmount', {
-              amount: formatCoin(chainID, detail.amount),
-            })}
-          </RowTitle>
-        ),
+        title: t('transactions.rows.delegateAmount', {
+          amount: formatCoin(chainID, detail.amount),
+        }),
         description: (
-          <RowDescription>
-            <Trans
-              i18nKey="account:transactions.rows.toUser"
-              components={{
-                linkA: (
-                  <DescriptionLink
-                    hashOrAddr={detail.validator_address}
-                    type="validator"
-                    chainID={chainID}
-                  />
-                ),
-              }}
-              values={{
-                user: FormatUtils.getNameOrAddress(validator),
-              }}
-            />
-          </RowDescription>
+          <Trans
+            i18nKey="account:transactions.rows.toUser"
+            components={{
+              linkA: (
+                <DescriptionLink
+                  hashOrAddr={detail.validator_address}
+                  type="validator"
+                  chainID={chainID}
+                />
+              ),
+            }}
+            values={{
+              user: FormatUtils.getNameOrAddress(validator),
+            }}
+          />
         ),
-        // description: t('transactions.rows.toUser', {
-        //   user: detail.validator_address,
-        // }),
         icon: <IconTx />,
       };
     }
-    return {
-      title: '',
-      description: '',
-      icon: <IconSendTx />,
-    };
+    return {};
   }, [detail]);
 
   return {
