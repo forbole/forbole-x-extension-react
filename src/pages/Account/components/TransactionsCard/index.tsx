@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import useTxForAddress from 'hooks/useTxForAddress';
 import FormatUtils from 'lib/FormatUtils';
 import { Loadable, useRecoilValue } from 'recoil';
+import useBottomScroll from 'hooks/useBottomScroll';
 import TransactionRow from './components/TransactionRow';
 import TransactionDateSeparator from './components/TransactionDateSeparator';
 import TabButton from './components/TabButton';
@@ -22,13 +23,25 @@ type Props = {
   validators: Loadable<Validator[]>;
 };
 
+const INITIAL_TXS_TO_SHOW = 10;
+
+const TXS_PER_STEP = 3;
+
 const TransactionsCard = ({ account, validators }: Props) => {
   const { t } = useTranslation('account');
   const theme = useRecoilValue(themeState);
-
   const [filterType, setFilterType] = React.useState(0);
 
-  // TODO: REWRITE INTO RECOIL
+  const [txsToShow, setTxsToShow] = React.useState(INITIAL_TXS_TO_SHOW);
+
+  const scrollToBottomCallback = () => {
+    const newTxLength = Math.min(txData.length, txsToShow + TXS_PER_STEP);
+    setTxsToShow(newTxLength);
+  };
+
+  // @ts-ignore
+  const { scrollRef, onScroll } = useBottomScroll(scrollToBottomCallback);
+
   const { txData, loading } = useTxForAddress({
     address: account?.contents?.address,
     chain: account?.contents?.chain,
@@ -76,16 +89,22 @@ const TransactionsCard = ({ account, validators }: Props) => {
     ];
   }, [transactions]);
 
+  const truncatedTx = React.useMemo(() => {
+    const txs = [...transactions];
+    txs.length = txsToShow;
+    return txs;
+  }, [txsToShow, transactions]);
+
   const filteredAndOrganizedTx = React.useMemo(() => {
     const filterArr = ['', 'bank', 'staking', 'distribution', 'gov', 'slashing'];
 
     if (filterType === 0) {
-      return FormatUtils.organizeIntoDates(transactions);
+      return FormatUtils.organizeIntoDates(truncatedTx);
     }
     return FormatUtils.organizeIntoDates(
-      transactions.filter((tx) => tx.type.includes(filterArr[filterType]))
+      truncatedTx.filter((tx) => tx.type.includes(filterArr[filterType]))
     );
-  }, [transactions, filterType]);
+  }, [truncatedTx, filterType]);
 
   if (loading || account.state !== 'hasValue') {
     return (
@@ -125,7 +144,14 @@ const TransactionsCard = ({ account, validators }: Props) => {
           />
         ))}
       </Box>
-      <Box>
+      <Box
+        sx={{
+          maxHeight: '400px',
+          overflowY: 'scroll',
+        }}
+        ref={scrollRef}
+        onScroll={onScroll}
+      >
         {Object.keys(filteredAndOrganizedTx).map((key) => (
           <>
             {filteredAndOrganizedTx[key].map((tx, idx) => (
