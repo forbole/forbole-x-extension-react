@@ -10,12 +10,24 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "postinstall": "patch-package",
-    "prettier": "prettier --config .prettierrc --write '**/*.{ts,tsx,json,yaml}'"
+    "prettier": "prettier --config .prettierrc --write '**/*.{ts,tsx,json,yaml}'",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
     ]
   },
   "browserslist": {
@@ -42,6 +54,7 @@
     "@ledgerhq/hw-transport-webhid": "^6.24.1",
     "@mui/material": "^5.6.4",
     "@tailwindcss/forms": "^0.4.0",
+    "@types/big.js": "^6.1.3",
     "batch-promises": "^0.0.3",
     "big.js": "^6.1.1",
     "buffer": "^6.0.3",
@@ -55,7 +68,6 @@
     "markdown-to-jsx": "^7.1.7",
     "nightwind": "^1.1.12",
     "path-browserify": "^1.0.1",
-    "process": "^0.11.10",
     "query-string": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -73,10 +85,22 @@
     "sass": "^1.45.1",
     "slick-carousel": "^1.8.1",
     "stream-browserify": "^3.0.0",
+    "usehooks-ts": "^2.5.3",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
     "@forbole/mrm-preset-forbole-rn": "^1.3.3",
+    "@storybook/addon-actions": "^6.5.5",
+    "@storybook/addon-essentials": "^6.5.5",
+    "@storybook/addon-interactions": "^6.5.5",
+    "@storybook/addon-links": "^6.5.5",
+    "@storybook/builder-webpack5": "^6.5.5",
+    "@storybook/manager-webpack5": "^6.5.5",
+    "@storybook/node-logger": "^6.5.5",
+    "@storybook/preset-create-react-app": "^4.1.1",
+    "@storybook/react": "^6.5.5",
+    "@storybook/testing-library": "^0.0.11",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -90,6 +114,7 @@
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
     "autoprefixer": "^10.4.0",
+    "babel-plugin-named-exports-order": "^0.0.2",
     "eslint": "^8.11.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
@@ -99,16 +124,23 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.3",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-storybook": "^0.5.12",
     "jest-chrome": "^0.7.2",
     "mrm": "^4.0.0",
     "patch-package": "^6.4.7",
     "postcss": "^8.4.5",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.6.2",
+    "process": "^0.11.10",
+    "prop-types": "^15.8.1",
+    "react-app-rewire-alias": "^1.1.7",
     "react-app-rewired": "^2.2.1",
+    "storybook-addon-material-ui": "^0.9.0-alpha.24",
     "tailwindcss": "^3.0.7",
     "ts-loader": "^9.2.6",
+    "tsconfig-paths-webpack-plugin": "^3.5.2",
     "typescript": "^4.5.4",
+    "webpack": "^5.72.1",
     "webpack-cli": "^4.9.1"
   },
   "resolutions": {

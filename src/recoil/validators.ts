@@ -1,16 +1,16 @@
-import { selectorFamily } from 'recoil'
-import { fetchValidators } from '../fetches/validators'
-import chains from '../misc/chains'
+import { selectorFamily } from 'recoil';
+import { fetchValidators } from '../services/fetches/validators';
+import chains from '../misc/chains';
 
 export const validatorsState = selectorFamily<Validator[], { chainId: string }>({
   key: 'validators',
   get:
     ({ chainId }) =>
-    async ({ get }) => {
+    async ({}) => {
       if (!chains[chainId]) {
-        return []
+        return [];
       }
-      const validators = await fetchValidators(chainId)
-      return validators
+      const validators = await fetchValidators(chainId);
+      return validators;
     },
-})
+});
