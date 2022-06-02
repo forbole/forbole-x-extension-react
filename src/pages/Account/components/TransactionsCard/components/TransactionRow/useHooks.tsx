@@ -8,7 +8,7 @@ import FormatUtils from 'lib/FormatUtils';
 import { useRecoilValueLoadable } from 'recoil';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import chains from 'misc/chains';
-import DescriptionLink from './DescriptionLink';
+import DescriptionLink from './components/DescriptionLink';
 import { proposalQueryState } from '../../../../../../recoil/proposal';
 
 /**

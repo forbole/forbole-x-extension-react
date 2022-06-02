@@ -1,8 +1,9 @@
 import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { format } from 'date-fns';
-import TxhashLink from './TxhashLink';
+import TxhashLink from './components/TxhashLink';
 import useHooks from './useHooks';
+import styles from './styles';
 
 type Props = {
   txhash: string;
@@ -35,50 +36,25 @@ const TransactionRow = ({ txhash, timestamp, detail, type, extraData, account }:
     extraData,
   });
 
+  const { container, contentCell, titleText, contentText } = styles;
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        padding: 2,
-      }}
-    >
+    <Box sx={container}>
       <TxhashLink txhash={txhash} chainID={account.chain} />
       <Grid container>
-        <Grid xs={1.5}>{content?.icon}</Grid>
-        <Grid
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-          xs={10.5}
-        >
-          <Typography
-            sx={{
-              color: 'text.primary',
-            }}
-            variant="body6"
-          >
+        <Grid item xs={1.5}>
+          {content?.icon}
+        </Grid>
+        <Grid item sx={contentCell} xs={10.5}>
+          <Typography sx={titleText} variant="body6">
             {content?.title}
           </Typography>
 
-          <Typography
-            sx={{
-              color: 'text.secondary',
-              marginTop: 1,
-            }}
-            variant="body6"
-          >
+          <Typography sx={contentText} variant="body6">
             {content?.description}
           </Typography>
 
-          <Typography
-            variant="body6"
-            sx={{
-              marginTop: 1,
-              color: 'text.secondary',
-            }}
-          >
+          <Typography sx={contentText} variant="body6">
             {format(new Date(timestamp), 'dd MMM, HH:mm')}
           </Typography>
         </Grid>
