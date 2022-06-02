@@ -9,7 +9,7 @@ type Props = {
 };
 
 /**
- * Dumb component to render transaction row titles
+ * Dumb component to render txhash that redirects to external block explorer
  */
 const TxhashLink: React.FC<Props> = ({ txhash, chainID }) => {
   return (

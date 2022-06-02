@@ -3,7 +3,7 @@ import React from 'react';
 /**
  * A hook that runs a callback if a specified ref has been scrolled to bottom.
  */
-const useBottomScroll = (callback: () => {}) => {
+const useBottomScroll = (callback: () => void) => {
   const scrollRef = React.useRef();
 
   const onScroll = () => {

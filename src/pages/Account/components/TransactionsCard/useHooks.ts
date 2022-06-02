@@ -6,8 +6,11 @@ import { Loadable } from 'recoil';
 import { Account } from '@cosmjs/stargate';
 import { useTranslation } from 'react-i18next';
 
+// initial amount of txs to show
 const INITIAL_TXS_TO_SHOW = 10;
 
+// number of transactions to add to the list as the user
+// scrolls down
 const TXS_PER_STEP = 3;
 
 /**
@@ -85,7 +88,8 @@ const useHooks = ({
   }, [transactions]);
 
   /**
-   * for infinite scroll
+   * Reduce the tx list according to the current maximum txs to show to create an
+   * infinite scroll effect
    */
   const truncatedTx = React.useMemo(() => {
     const txs = [...transactions];

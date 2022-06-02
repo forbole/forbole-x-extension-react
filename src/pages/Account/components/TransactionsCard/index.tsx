@@ -4,6 +4,7 @@ import { Loadable, useRecoilValue } from 'recoil';
 import TransactionRow from './components/TransactionRow';
 import TransactionDateSeparator from './components/TransactionDateSeparator';
 import TabButton from './components/TabButton';
+// even-odd styles in plain css as psuedo-classes do not support nth-child(even|odd) selectors
 import './styles.css';
 import styles from './styles';
 import { themeState } from '../../../../recoil/general';
@@ -21,6 +22,9 @@ type Props = {
   validators: Loadable<Validator[]>;
 };
 
+/**
+ * A container component that holds the tx type filter group and all transaction history
+ */
 const TransactionsCard = ({ account, validators }: Props) => {
   const theme = useRecoilValue(themeState);
 

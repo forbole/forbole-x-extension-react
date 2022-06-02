@@ -1,6 +1,9 @@
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 
+/**
+ * sx style definitions for the TransactionRow component
+ */
 const styles: { [index: string]: SxProps<Theme> } = {
   container: {
     display: 'flex',

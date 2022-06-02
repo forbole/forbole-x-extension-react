@@ -3,6 +3,9 @@ import getSendTxForAddress from 'services/fetches/getSendTxForAddress';
 import getReceiveTxForAddress from 'services/fetches/getReceiveTxForAddress';
 import _ from 'lodash';
 
+/**
+ * Fetch transactions for a given address on a chain
+ */
 const useTxForAddress = ({ address, chain }: { address: string; chain: string }) => {
   const [txData, setTxData] = React.useState([]);
   const [error, setError] = React.useState<any>(undefined);

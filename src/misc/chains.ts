@@ -13,8 +13,6 @@ const chains: { [key: string]: Chain } = {
     blockExplorerBaseUrl: 'https://explorer.desmos.network',
     lcdApiUrl: 'https://api.desmos.forbole.com',
     rpcApiUrl: 'https://rpc.desmos.forbole.com',
-    // lcdApiUrl: 'https://api.mainnet.desmos.network',
-    // rpcApiUrl: 'https://rpc.mainnet.desmos.network',
     ibcChains: [],
     gasAdjustment: 1.5,
     gasFee: {
