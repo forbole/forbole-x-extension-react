@@ -28,7 +28,7 @@ const Account = () => {
         {account.state === 'hasValue' && (
           <ProfileCard profile={get(account, ['contents', 'profile'])} />
         )}
-        {account.state === 'hasValue' && <WalletCard account={account} />}
+        {account.state === 'hasValue' && <WalletCard account={account} validators={validators} />}
         <BalanceCard account={account} />
         <StakingCard account={account} validators={validators} />
 
