@@ -4,6 +4,7 @@
   "pwLevel1": "Medium",
   "pwLevel2": "Strong",
   "pwCaption": "* at least 6 characters in length",
+  "share address": "Share Address",
   "snackbar": {
     "copied": "Copied to Clipboard!"
   }
