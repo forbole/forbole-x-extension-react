@@ -1,20 +1,20 @@
-import React from 'react'
-import { Box, Button, Divider, Menu, MenuItem, Typography } from '@mui/material'
-import DropdownIcon from '../../../../../../components/svg/DropdownIcon'
+import React from 'react';
+import { Box, Button, Divider, Menu, MenuItem, Typography } from '@mui/material';
+import DropdownIcon from '../../../../../../components/svg/DropdownIcon';
 
 type Props = {
-  label: string
+  label: string;
 
-  selectedIndex: number
+  selectedIndex: number;
 
-  values: any[]
+  values: any[];
 
-  onChange: (_index: number) => void
-}
+  onChange: (_index: number) => void;
+};
 
 const SettingsDropdown = ({ label, selectedIndex, values, onChange }: Props) => {
-  const [menuOpened, setMenuOpened] = React.useState(false)
-  const anchorRef = React.useRef<any>()
+  const [menuOpened, setMenuOpened] = React.useState(false);
+  const anchorRef = React.useRef<any>();
   return (
     <Box
       padding={(theme) => theme.spacing(2)}
@@ -59,7 +59,7 @@ const SettingsDropdown = ({ label, selectedIndex, values, onChange }: Props) => 
         // keepMounted
         open={menuOpened}
         onClose={() => {
-          setMenuOpened(false)
+          setMenuOpened(false);
         }}
       >
         {values.map((x, i) => {
@@ -70,19 +70,19 @@ const SettingsDropdown = ({ label, selectedIndex, values, onChange }: Props) => 
                   width: theme.spacing(20),
                 })}
                 onClick={() => {
-                  onChange(i)
-                  setMenuOpened(false)
+                  onChange(i);
+                  setMenuOpened(false);
                 }}
               >
                 {x}
               </MenuItem>
               {i + 1 === values.length ? null : <Divider style={{ margin: '8px' }} />}
             </>
-          )
+          );
         })}
       </Menu>
     </Box>
-  )
-}
+  );
+};
 
-export default SettingsDropdown
+export default SettingsDropdown;

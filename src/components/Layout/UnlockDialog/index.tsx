@@ -1,7 +1,7 @@
 import React from 'react'
+import { useForm } from 'react-hook-form'
 import Button from '../../Element/button'
 import Dialog from '../../Element/dialog'
-import { useForm } from 'react-hook-form'
 import { useUnlockWallets } from '../../../recoil/general'
 
 interface Props {
@@ -16,15 +16,9 @@ const UnlockDialog = ({ open }: Props) => {
   const [error, setError] = React.useState('')
   const unlockWallets = useUnlockWallets()
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>()
+  const { register, handleSubmit, watch, reset } = useForm<Inputs>()
 
-  const onFormSubmit = async (data) => {
+  const onFormSubmit = async () => {
     try {
       setError('')
       await unlockWallets(watch('password'))
@@ -47,7 +41,7 @@ const UnlockDialog = ({ open }: Props) => {
                 key="password"
                 type="password"
                 {...register('password', { required: true })}
-                className="form-input shadow-sm focus:ring-primary-100 focus:border-primary-100 block w-full text-sm border-gray-300 rounded-sm px-3 py-2 bg-popup-100"
+                className="form-input shadow-sm focus:ring-primary-100 focus:border-primary-100 block w-full text-font-100 text-sm border-gray-300 rounded-sm px-3 py-2 bg-popup-100"
               />
               {!!error && <p className="text-sm mt-2 text-red-500 nightwind-prevent">{error}</p>}
               <p className="text-font-100 text-sm mt-2">* Require after 15 minutes</p>

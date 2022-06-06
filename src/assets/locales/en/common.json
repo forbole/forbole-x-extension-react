@@ -14,5 +14,9 @@
   "add validator": "Add Validator",
   "memo": "Note (Memo)",
   "description optional": "Description (optional)",
-  "next": "Next"
+  "next": "Next",
+  "share address": "Share Address",
+  "snackbar": {
+    "copied": "Copied to Clipboard!"
+  }
 }

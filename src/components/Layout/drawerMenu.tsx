@@ -1,19 +1,15 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import useIconProps from '../../misc/useIconProps'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import { ReactComponent as SettingsIcon } from '../../assets/images/icons/icon_settings.svg'
-import { ReactComponent as AddressBookIcon } from '../../assets/images/icons/icon_address_book.svg'
-import { ReactComponent as WalletIcon } from '../../assets/images/icons/icon_wallet_manage.svg'
+import { ReactComponent as SettingsIcon } from '../../assets/images/icons/icon_settings.svg';
+import { ReactComponent as AddressBookIcon } from '../../assets/images/icons/icon_address_book.svg';
+import { ReactComponent as WalletIcon } from '../../assets/images/icons/icon_wallet_manage.svg';
 
-import { Link, NavLink } from 'react-router-dom'
-import ThemeModeButton from '../Common/themeModeButton'
-import { getStorage } from '../../recoil/utils/chromeStorageEncryption'
+import ThemeModeButton from '../Common/themeModeButton';
 
-interface Props {}
-
-const DrawerMenu = (props: Props) => {
-  const iconProps = useIconProps()
+const DrawerMenu = () => {
+  const { t } = useTranslation();
 
   const [menuList] = useState([
     {
@@ -31,7 +27,22 @@ const DrawerMenu = (props: Props) => {
       icon: <SettingsIcon className="w-5 fill-icon-light dark:fill-icon-dark" />,
       path: '/setting',
     },
-  ])
+    {
+      title: t('feedback:tabName'),
+      icon: <div />,
+      path: '/feedback',
+    },
+    {
+      title: t('followus:tabName'),
+      icon: <div />,
+      path: '/follow-us',
+    },
+    {
+      title: t('about:tabName'),
+      icon: <div />,
+      path: 'about',
+    },
+  ]);
 
   return (
     <div className="text-font-2">
@@ -42,7 +53,10 @@ const DrawerMenu = (props: Props) => {
         {menuList.map((item) => (
           <div key={item.path}>
             <Link to={item.path} className="no-underline text-font-200">
-              <button className="flex items-center space-x-5 hover:bg-gray-100 p-3 rounded-lg w-full">
+              <button
+                type="button"
+                className="flex items-center space-x-5 hover:bg-gray-100 p-3 rounded-lg w-full"
+              >
                 {item.icon}
                 <h4>{item.title}</h4>
               </button>
@@ -51,7 +65,7 @@ const DrawerMenu = (props: Props) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DrawerMenu
+export default DrawerMenu;

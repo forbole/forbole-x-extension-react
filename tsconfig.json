@@ -17,5 +17,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["*.d.ts", "**/*.ts", "**/*.tsx", "setupTests.js", "jest.config.js"],
-  "exclude": ["node_modules", "cypress", "tests"]
+  "exclude": ["node_modules", "cypress", "tests"],
+  "extends": "./tsconfig.paths.json"
 }
