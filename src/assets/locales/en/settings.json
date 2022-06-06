@@ -7,6 +7,7 @@
   },
   "next": "Next",
   "save": "Save",
+  "share": "Share",
   "general": {
     "darkMode": "Dark Mode",
     "currency": {
@@ -46,6 +47,33 @@
       "stage3": {
         "title": "Success",
         "description": "The password has been changed"
+      }
+    },
+    "viewRecoveryPhraseDialog": {
+      "passwordStage": {
+        "title": "Wallet Security Password",
+        "description": "",
+        "heading": "Enter current wallet security password"
+      },
+      "mnemonicStage": {
+        "title": "Mnemonic phrase",
+        "description": "Please write down and safe your mnemonic phrase. It’s the ONLY WAY to restore your account",
+        "heading": ""
+      },
+      "encryptionStage": {
+        "title": "Export mnemonic",
+        "description": "In oder to export your mnemonic properly, we need a password with it will be encrypted for security reasons. Please insert below passwords that you will also be required later when importing it.",
+        "heading": "Set encryption password"
+      },
+      "exportStage": {
+        "title": "Export mnemonic",
+        "description": "You can export this data whenever you want, even sending it to a friend of yours for backup, if you have used a strong enough password.",
+        "heading": "Mnemonic phrase backup"
+      },
+      "shareStage": {
+        "title": "Share via",
+        "description": "",
+        "heading": ""
       }
     }
   },

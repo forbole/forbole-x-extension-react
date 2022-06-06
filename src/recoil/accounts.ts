@@ -1,10 +1,10 @@
-import { useCallback } from 'react'
-import { atom, selectorFamily, noWait, useSetRecoilState } from 'recoil'
-import lodashGet from 'lodash/get'
-import { fetchAccountBalance, fetchAccount } from '../fetches/accounts'
-import chains from '../misc/chains'
-import { passwordState } from './general'
-import { encryptAndSaveToChromeStorage, removeStorage } from './utils/chromeStorageEncryption'
+import { useCallback } from 'react';
+import { atom, selectorFamily, noWait, useSetRecoilState } from 'recoil';
+import lodashGet from 'lodash/get';
+import { fetchAccountBalance, fetchAccount } from '../services/fetches/accounts';
+import chains from '../misc/chains';
+import { passwordState } from './general';
+import { encryptAndSaveToChromeStorage, removeStorage } from './utils/chromeStorageEncryption';
 
 export const accountsState = atom<Account[]>({
   key: 'accounts',
@@ -12,16 +12,16 @@ export const accountsState = atom<Account[]>({
   effects: [
     ({ onSet, getPromise }) => {
       onSet(async (newAccounts) => {
-        const password = await getPromise(passwordState)
+        const password = await getPromise(passwordState);
         if (password && newAccounts.length) {
-          await encryptAndSaveToChromeStorage('accounts', newAccounts, password)
+          await encryptAndSaveToChromeStorage('accounts', newAccounts, password);
         } else {
-          await removeStorage('accounts')
+          await removeStorage('accounts');
         }
-      })
+      });
     },
   ],
-})
+});
 
 export const accountState = selectorFamily<
   Account | undefined,
@@ -32,7 +32,7 @@ export const accountState = selectorFamily<
     ({ walletId, address }) =>
     ({ get }) =>
       get(accountsState).find((a) => a.walletId === walletId && a.address === address),
-})
+});
 
 export const accountDetailState = selectorFamily<
   AccountDetail,
@@ -42,12 +42,12 @@ export const accountDetailState = selectorFamily<
   get:
     ({ walletId, address }) =>
     async ({ get }) => {
-      const account = get(accountState({ walletId, address }))
+      const account = get(accountState({ walletId, address }));
       const { balances, prices, delegations, unbondings, redelegations } =
-        await fetchAccountBalance(account.chain, account.address)
-      const authAccount = await fetchAccount(account.chain, account.address)
-      const vestings = []
-      const vestingPeriods = lodashGet(authAccount, 'account.vesting_periods', [])
+        await fetchAccountBalance(account.chain, account.address);
+      const authAccount = await fetchAccount(account.chain, account.address);
+      const vestings = [];
+      const vestingPeriods = lodashGet(authAccount, 'account.vesting_periods', []);
       for (let i = 0; i < vestingPeriods.length; i += 1) {
         vestings.push({
           amount: vestingPeriods[i].amount,
@@ -56,7 +56,7 @@ export const accountDetailState = selectorFamily<
               ? Number(lodashGet(authAccount, 'account.start_time', '0')) * 1000
               : vestings[i - 1].date) +
             Number(vestingPeriods[i].length) * 1000,
-        })
+        });
       }
       return {
         ...account,
@@ -74,19 +74,19 @@ export const accountDetailState = selectorFamily<
             }
           : undefined,
         vestings,
-      }
+      };
     },
-})
+});
 
 export const walletAccountsState = selectorFamily<AccountDetail[], string>({
   key: 'walletAccounts',
   get:
     (walletId) =>
     ({ get }) => {
-      const accounts = get(accountsState).filter((a) => a.walletId === walletId)
+      const accounts = get(accountsState).filter((a) => a.walletId === walletId);
       const loadable = accounts.map((a) =>
         get(noWait(accountDetailState({ walletId: a.walletId, address: a.address })))
-      )
+      );
       return accounts.map((a, i) =>
         loadable[i].state === 'hasValue'
           ? loadable[i].contents
@@ -95,16 +95,16 @@ export const walletAccountsState = selectorFamily<AccountDetail[], string>({
               balances: { available: [], delegated: [], rewards: [], unbonding: [], total: [] },
               prices: [],
             }
-      )
+      );
     },
-})
+});
 
 export const useCreateAccounts = () => {
-  const setAccounts = useSetRecoilState(accountsState)
+  const setAccounts = useSetRecoilState(accountsState);
 
   const createAccounts = useCallback(
     (params: { walletId: string; address: string; chain: string; hdPath: HdPath }[]) => {
-      const createdAt = Date.now()
+      const createdAt = Date.now();
       setAccounts((accounts) => [
         ...accounts,
         ...params.map((account) => ({
@@ -120,16 +120,16 @@ export const useCreateAccounts = () => {
           fav: false,
           createdAt,
         })),
-      ])
+      ]);
     },
     [setAccounts]
-  )
+  );
 
-  return createAccounts
-}
+  return createAccounts;
+};
 
 export const useChangeAccountName = () => {
-  const setAccounts = useSetRecoilState(accountsState)
+  const setAccounts = useSetRecoilState(accountsState);
 
   const changeAccountName = useCallback(
     (params: { walletId: string; address: string; name: string }) => {
@@ -139,25 +139,25 @@ export const useChangeAccountName = () => {
             ? { ...a, name: params.name }
             : a
         )
-      )
+      );
     },
     [setAccounts]
-  )
+  );
 
-  return changeAccountName
-}
+  return changeAccountName;
+};
 
 export const useDeleteAccount = () => {
-  const setAccounts = useSetRecoilState(accountsState)
+  const setAccounts = useSetRecoilState(accountsState);
 
   const deleteAccount = useCallback(
     (params: { walletId: string; address: string }) => {
       setAccounts((accounts) =>
         accounts.filter((a) => !(a.walletId === params.walletId && a.address === params.address))
-      )
+      );
     },
     [setAccounts]
-  )
+  );
 
-  return deleteAccount
-}
+  return deleteAccount;
+};

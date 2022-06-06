@@ -1,28 +1,28 @@
-import Big from 'big.js'
-import get from 'lodash/get'
-import flatten from 'lodash/flatten'
-import { fetchCoingecko, fetchLcd } from '.'
-import chains from '../misc/chains'
-import { sumCoins } from '../misc/utils'
+import Big from 'big.js';
+import get from 'lodash/get';
+import flatten from 'lodash/flatten';
+import chains from 'misc/chains';
+import { sumCoins } from 'misc/utils';
+import { fetchCoingecko, fetchLcd } from './index';
 
 export const fetchAvailableAccountBalance = async (chainId: string, address: string) => {
-  const available = await fetchLcd(chainId, `/cosmos/bank/v1beta1/balances/${address}`)
-  return get(available, 'balances', []) || []
-}
+  const available = await fetchLcd(chainId, `/cosmos/bank/v1beta1/balances/${address}`);
+  return get(available, 'balances', []) || [];
+};
 
 export const fetchAccount = async (chainId: string, address: string) => {
   try {
-    const response = await fetchLcd(chainId, `/cosmos/auth/v1beta1/accounts/${address}`)
-    return get(response, 'account')
+    const response = await fetchLcd(chainId, `/cosmos/auth/v1beta1/accounts/${address}`);
+    return get(response, 'account');
   } catch (err) {
-    console.log(err)
-    return undefined
+    console.log(err);
+    return undefined;
   }
-}
+};
 
 export const fetchAccountBalance = async (chainId: string, address: string) => {
   try {
-    const chain = chains[chainId]
+    const chain = chains[chainId];
     const [prices, available, delegations, rewards, unbonding, redelegations] = await Promise.all([
       fetchCoingecko(
         `/simple/price?ids=${chain.tokens.map((t) => t.coingeckoId).join(',')}&vs_currencies=usd`
@@ -32,7 +32,7 @@ export const fetchAccountBalance = async (chainId: string, address: string) => {
       fetchLcd(chainId, `/cosmos/distribution/v1beta1/delegators/${address}/rewards`),
       fetchLcd(chainId, `/cosmos/staking/v1beta1/delegators/${address}/unbonding_delegations`),
       fetchLcd(chainId, `/cosmos/staking/v1beta1/delegators/${address}/redelegations`),
-    ])
+    ]);
 
     const balances = {
       available: get(available, 'balances', []) || [],
@@ -50,7 +50,7 @@ export const fetchAccountBalance = async (chainId: string, address: string) => {
             .reduce((a, b) => Big(a).plus(b).toString(), '0'),
         },
       ],
-    }
+    };
 
     return {
       balances: {
@@ -93,7 +93,7 @@ export const fetchAccountBalance = async (chainId: string, address: string) => {
           }))
         )
       ),
-    } as Partial<AccountDetail>
+    } as Partial<AccountDetail>;
   } catch (err) {
     return {
       balances: {
@@ -107,6 +107,6 @@ export const fetchAccountBalance = async (chainId: string, address: string) => {
       delegations: [],
       unbondings: [],
       redelegations: [],
-    }
+    };
   }
-}
+};
