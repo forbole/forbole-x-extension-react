@@ -1,48 +1,39 @@
 import React from 'react';
 import { Box, Button, Divider, Menu, MenuItem, Typography } from '@mui/material';
-import DropdownIcon from '../../../../../../components/svg/DropdownIcon';
+import DropdownIcon from 'components/svg/DropdownIcon';
+import styles from './styles';
 
 type Props = {
   label: string;
 
-  selectedIndex: number;
+  selectedValue: string;
 
   values: any[];
 
   onChange: (_index: number) => void;
+
+  placeholder?: string;
 };
 
-const SettingsDropdown = ({ label, selectedIndex, values, onChange }: Props) => {
+const MUIDropdown = ({ placeholder, label, selectedValue, values, onChange }: Props) => {
   const [menuOpened, setMenuOpened] = React.useState(false);
   const anchorRef = React.useRef<any>();
+
   return (
-    <Box
-      padding={(theme) => theme.spacing(2)}
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-    >
+    <Box sx={styles.container}>
       <Typography variant="subtitle1">{label}</Typography>
       <Button
         ref={anchorRef}
         onClick={() => setMenuOpened(true)}
         variant="outlined"
-        sx={(theme) => ({
-          borderColor: 'iconBorder',
-          width: theme.spacing(20),
-          padding: `${theme.spacing(0.5)} ${theme.spacing(1.5)}`,
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-        })}
+        sx={styles.dropdownButton}
       >
         <Typography
-          sx={{
-            color: 'text.primary',
-          }}
+          color={selectedValue ? 'text.primary' : 'text.secondary'}
+          sx={styles.contentText}
           variant="subtitle1"
         >
-          {values[selectedIndex]}
+          {selectedValue || placeholder}
         </Typography>
         <DropdownIcon />
       </Button>
@@ -66,11 +57,12 @@ const SettingsDropdown = ({ label, selectedIndex, values, onChange }: Props) => 
           return (
             <>
               <MenuItem
+                key={x}
                 sx={(theme) => ({
-                  width: theme.spacing(20),
+                  width: theme.spacing(55),
                 })}
                 onClick={() => {
-                  onChange(i);
+                  onChange(x);
                   setMenuOpened(false);
                 }}
               >
@@ -85,4 +77,4 @@ const SettingsDropdown = ({ label, selectedIndex, values, onChange }: Props) => 
   );
 };
 
-export default SettingsDropdown;
+export default MUIDropdown;
