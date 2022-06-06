@@ -6,12 +6,12 @@ import followus from './followus.json';
 import about from './about.json';
 
 const en = {
-  common,
-  settings,
-  account,
-  feedback,
-  followus,
-  about,
+    common,
+    settings,
+    account,
+    feedback,
+    followus,
+    about,
 };
 
 export default en;

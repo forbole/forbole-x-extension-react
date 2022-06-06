@@ -23,7 +23,7 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
     set(
       transformedMsg,
       'value.timeoutTimestamp',
-      new Long(get(transformedMsg, 'value.timeoutTimestamp', 0)),
+      new Long(get(transformedMsg, 'value.timeoutTimestamp', 0))
     )
   }
   if (
@@ -38,9 +38,9 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
       'value.chainAddress.value',
       Uint8Array.from(
         Bech32Address.encode(
-          Bech32Address.fromPartial(get(transformedMsg, 'value.chainAddress.value', {})),
-        ).finish(),
-      ),
+          Bech32Address.fromPartial(get(transformedMsg, 'value.chainAddress.value', {}))
+        ).finish()
+      )
     )
 
     set(
@@ -50,9 +50,9 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
         PubKey.encode(
           PubKey.fromPartial({
             key: fromBase64(get(transformedMsg, 'value.proof.pubKey.value', '')),
-          }),
-        ).finish(),
-      ),
+          })
+        ).finish()
+      )
     )
   }
 
@@ -61,8 +61,8 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
       transformedMsg,
       'value.content.value',
       Uint8Array.from(
-        TextProposal.encode(TextProposal.fromPartial(get(msg, 'value.content.value'))).finish(),
-      ),
+        TextProposal.encode(TextProposal.fromPartial(get(msg, 'value.content.value'))).finish()
+      )
     )
   } else if (
     get(msg, 'value.content.typeUrl') === '/cosmos.params.v1beta1.ParameterChangeProposal'
@@ -72,9 +72,9 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
       'value.content.value',
       Uint8Array.from(
         ParameterChangeProposal.encode(
-          ParameterChangeProposal.fromPartial(get(msg, 'value.content.value')),
-        ).finish(),
-      ),
+          ParameterChangeProposal.fromPartial(get(msg, 'value.content.value'))
+        ).finish()
+      )
     )
   } else if (
     get(msg, 'value.content.typeUrl') === '/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal'
@@ -82,16 +82,16 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
     set(
       transformedMsg,
       'value.content.value.plan.height',
-      new Long(get(transformedMsg, 'value.content.value.plan.height', 0)),
+      new Long(get(transformedMsg, 'value.content.value.plan.height', 0))
     )
     set(
       transformedMsg,
       'value.content.value',
       Uint8Array.from(
         SoftwareUpgradeProposal.encode(
-          SoftwareUpgradeProposal.fromPartial(get(transformedMsg, 'value.content.value')),
-        ).finish(),
-      ),
+          SoftwareUpgradeProposal.fromPartial(get(transformedMsg, 'value.content.value'))
+        ).finish()
+      )
     )
   } else if (
     get(msg, 'value.content.typeUrl') === '/cosmos.distribution.v1beta1.CommunityPoolSpendProposal'
@@ -101,9 +101,9 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
       'value.content.value',
       Uint8Array.from(
         CommunityPoolSpendProposal.encode(
-          CommunityPoolSpendProposal.fromPartial(get(msg, 'value.content.value')),
-        ).finish(),
-      ),
+          CommunityPoolSpendProposal.fromPartial(get(msg, 'value.content.value'))
+        ).finish()
+      )
     )
   }
 
@@ -118,12 +118,12 @@ const signAndBroadcastCosmosTransaction = async (
   index: number,
   transactionData: any,
   ledgerTransport?: any,
-  onSignEnd?: () => void,
+  onSignEnd?: () => void
 ): Promise<any> => {
   const signerOptions = {
     hdPaths: [
       stringToPath(
-        `m/44'/${chains[crypto].coinType}'/${account || 0}'/${change || 0}/${index || 0}`,
+        `m/44'/${chains[crypto].coinType}'/${account || 0}'/${change || 0}/${index || 0}`
       ),
     ],
     prefix: chains[crypto].prefix,
@@ -138,19 +138,15 @@ const signAndBroadcastCosmosTransaction = async (
     } as any)
   }
   const accounts = await signer.getAccounts()
-  const client = await SigningStargateClient.connectWithSigner(
-    chains[crypto].rpcApiUrl,
-    signer,
-    {
-      registry,
-      aminoTypes: new AminoTypes({ additions: aminoAdditions, prefix: signerOptions.prefix }),
-    },
-  )
+  const client = await SigningStargateClient.connectWithSigner(chains[crypto].rpcApiUrl, signer, {
+    registry,
+    aminoTypes: new AminoTypes({ additions: aminoAdditions, prefix: signerOptions.prefix }),
+  })
   const tx = await client.sign(
     accounts[0].address,
     transactionData.msgs.map((msg: any) => formatTransactionMsg(msg)),
     transactionData.fee,
-    transactionData.memo,
+    transactionData.memo
   )
   if (onSignEnd) {
     onSignEnd()
@@ -170,7 +166,7 @@ const signAndBroadcastTransaction = async (
   transactionData: any,
   securityPassword: string,
   ledgerTransport?: any,
-  onSignEnd?: () => void,
+  onSignEnd?: () => void
 ): Promise<any> => {
   const channel = new BroadcastChannel('forbole-x')
   try {
@@ -188,7 +184,7 @@ const signAndBroadcastTransaction = async (
       account.hdPath.index,
       transactionData,
       ledgerTransport,
-      onSignEnd,
+      onSignEnd
     )
     channel.postMessage({
       event: 'transactionSuccess',

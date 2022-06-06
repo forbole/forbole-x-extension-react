@@ -1,3 +1,4 @@
+import { EnglishMnemonic } from '@cosmjs/crypto'
 import Big from 'big.js';
 import keyBy from 'lodash/keyBy';
 import groupBy from 'lodash/groupBy';
@@ -67,3 +68,13 @@ export const formatPercentage = (percent: number): string =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(percent || 0);
+
+export const isValidMnemonic = (input) => {
+  try {
+    // eslint-disable-next-line no-new
+    new EnglishMnemonic(input);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
