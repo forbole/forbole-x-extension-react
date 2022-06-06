@@ -32,6 +32,16 @@ const DrawerMenu = () => {
       icon: <div />,
       path: '/feedback',
     },
+    {
+      title: t('followus:tabName'),
+      icon: <div />,
+      path: '/follow-us',
+    },
+    {
+      title: t('about:tabName'),
+      icon: <div />,
+      path: 'about',
+    },
   ]);
 
   return (

@@ -75,33 +75,5 @@
         "heading": ""
       }
     }
-  },
-  "about": {
-    "aboutFbx": "About Forbole X",
-    "privacyPolicy": "Privacy Policy",
-    "toc": "Terms of Conditions",
-    "version": "Version"
-  },
-  "followUs": {
-    "twitter": {
-      "site": "Twitter",
-      "name": "@forboleX"
-    },
-    "telegram": {
-      "site": "Telegram",
-      "name": "@forbole"
-    },
-    "forboleBlog": {
-      "site": "Forbole Blog",
-      "name": "forbole.com/blog"
-    },
-    "bigDipper": {
-      "site": "Big Dipper Block Explorer",
-      "name": "bigdipper.live"
-    },
-    "github": {
-      "site": "Github",
-      "name": "github.com/forbole"
-    }
   }
 }

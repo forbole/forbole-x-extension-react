@@ -1,6 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Feedback from 'pages/Feedback';
+import FollowUs from 'pages/FollowUs';
+import About from 'pages/About';
 import Account from '../pages/Account';
 import AddressBook from '../pages/address-book';
 import Setting from '../pages/Settings';
@@ -12,6 +14,8 @@ const routes = [
   { path: '/address-book', key: 'ADDRESS-BOOK', exact: true, component: <AddressBook /> },
   { path: '/account/:address', key: 'ACCOUNT', component: <Account /> },
   { path: '/feedback', key: 'FEEDBACK', component: <Feedback /> },
+  { path: '/follow-us', key: 'FOLLOW-US', component: <FollowUs /> },
+  { path: '/about', key: 'ABOUT', component: <About /> },
   //   {
   //     path: "/app",
   //     key: "APP",
