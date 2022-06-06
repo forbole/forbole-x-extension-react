@@ -1,33 +1,30 @@
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { Box, Divider, Paper, Typography } from '@mui/material'
-import AboutLink from './components/AboutLink'
-import pkg from '../../../../../package.json'
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Box, Divider, Typography } from '@mui/material';
+import Layout from 'components/Layout/layout';
+import AboutLink from './components/AboutLink';
+import pkg from '../../../package.json';
 
-const AboutUsTab = () => {
-  const { t } = useTranslation('settings')
+const About = () => {
+  const { t } = useTranslation('about');
 
   const links: React.ComponentProps<typeof AboutLink>[] = [
     {
       URL: 'https://x.forbole.com/settings/about-forbole-x',
-      label: t('about.aboutFbx'),
+      label: t('aboutFbx'),
     },
     {
       URL: 'https://www.forbole.com/privacy-policy',
-      label: t('about.privacyPolicy'),
+      label: t('privacyPolicy'),
     },
     {
       URL: 'https://www.forbole.com/terms-and-conditions',
-      label: t('about.toc'),
+      label: t('toc'),
     },
-  ]
+  ];
 
   return (
-    <Paper
-      sx={(theme) => ({
-        paddingBottom: theme.spacing(2),
-      })}
-    >
+    <Layout title={t('tabName')} backPath="/">
       {links.map((x) => (
         <>
           <AboutLink key={x.label} {...x} />
@@ -49,12 +46,12 @@ const AboutUsTab = () => {
           alignItems: 'center',
         })}
       >
-        <Typography>{t('about.version')}</Typography>
+        <Typography>{t('version')}</Typography>
 
         <Typography>{pkg.version}</Typography>
       </Box>
-    </Paper>
-  )
-}
+    </Layout>
+  );
+};
 
-export default AboutUsTab
+export default About;

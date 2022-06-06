@@ -1,7 +1,6 @@
 {
   "tabs": {
     "general": "General",
-    "feedback": "Feedback",
     "followUs": "Follow Us",
     "about": "About"
   },
@@ -46,7 +45,7 @@
       },
       "stage3": {
         "title": "Success",
-        "description": "The password has been changed"
+        "description": "Unlock password has been successfully changed."
       }
     },
     "viewRecoveryPhraseDialog": {
@@ -75,52 +74,6 @@
         "description": "",
         "heading": ""
       }
-    }
-  },
-  "feedback": {
-    "email": {
-      "label": "Email",
-      "placeholder": "Your Email Address"
-    },
-    "subject": {
-      "label": "Subject",
-      "placeholder": "Summary of your observation..."
-    },
-    "message": {
-      "label": "Message",
-      "placeholder": "Give as many details as possible..."
-    },
-    "successDialog": {
-      "title": "Thank you",
-      "content": "We successfully received your feedback and will get back to you as soon as possible."
-    }
-  },
-  "about": {
-    "aboutFbx": "About Forbole X",
-    "privacyPolicy": "Privacy Policy",
-    "toc": "Terms of Conditions",
-    "version": "Version"
-  },
-  "followUs": {
-    "twitter": {
-      "site": "Twitter",
-      "name": "@forboleX"
-    },
-    "telegram": {
-      "site": "Telegram",
-      "name": "@forbole"
-    },
-    "forboleBlog": {
-      "site": "Forbole Blog",
-      "name": "forbole.com/blog"
-    },
-    "bigDipper": {
-      "site": "Big Dipper Block Explorer",
-      "name": "bigdipper.live"
-    },
-    "github": {
-      "site": "Github",
-      "name": "github.com/forbole"
     }
   }
 }

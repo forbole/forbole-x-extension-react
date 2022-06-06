@@ -1,21 +1,21 @@
-import React from 'react'
-import { Dialog, DialogContent, DialogTitle, Typography, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import React from 'react';
+import { Dialog, DialogContent, DialogTitle, Typography, Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   /**
    * Should the dialog be shown
    */
-  isOpen: boolean
+  isOpen: boolean;
 
   /**
    * What to do when the dialog is closed
    */
-  onClose: () => void
-}
+  onClose: () => void;
+};
 
 const SuccessDialog = ({ isOpen, onClose }: Props) => {
-  const { t } = useTranslation('settings')
+  const { t } = useTranslation('settings');
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
@@ -30,7 +30,7 @@ const SuccessDialog = ({ isOpen, onClose }: Props) => {
         </Box>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default SuccessDialog
+export default SuccessDialog;

@@ -1,12 +1,12 @@
-import React from 'react'
-import { Link, Typography } from '@mui/material'
-import ArrowRight from '../../../../../../components/svg/ArrowRight'
+import React from 'react';
+import { Link, Typography } from '@mui/material';
+import ArrowRight from 'components/svg/ArrowRight';
 
 type Props = {
-  URL: string
+  URL: string;
 
-  label: string
-}
+  label: string;
+};
 
 const AboutLink = ({ URL, label }: Props) => {
   return (
@@ -31,7 +31,7 @@ const AboutLink = ({ URL, label }: Props) => {
 
       <ArrowRight />
     </Link>
-  )
-}
+  );
+};
 
-export default AboutLink
+export default AboutLink;

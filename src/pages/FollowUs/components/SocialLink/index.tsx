@@ -1,27 +1,27 @@
-import React from 'react'
-import { Link, Box, Typography } from '@mui/material'
+import React from 'react';
+import { Link, Box, Typography } from '@mui/material';
 
 type Props = {
   /**
    * The url the link will open a window to.
    */
-  URL: string
+  URL: string;
 
   /**
    * The svg icon of the link
    */
-  Icon: any
+  Icon: any;
 
   /**
    * The name of the external site the URL redirects to
    */
-  siteName: string
+  siteName: string;
 
   /**
    * The label of the link
    */
-  label: string
-}
+  label: string;
+};
 
 const SocialLink = ({ URL, Icon, label, siteName }: Props) => {
   return (
@@ -55,7 +55,7 @@ const SocialLink = ({ URL, Icon, label, siteName }: Props) => {
 
       <Typography>{label}</Typography>
     </Link>
-  )
-}
+  );
+};
 
-export default SocialLink
+export default SocialLink;
