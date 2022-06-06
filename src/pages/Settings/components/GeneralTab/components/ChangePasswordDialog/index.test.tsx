@@ -1,42 +1,42 @@
-import React from 'react'
-import i18next from 'i18next'
-import { fireEvent, waitFor } from '@testing-library/dom'
-import ChangePasswordDialog from './index'
-import { render } from '../../../../../../jest/test-utils'
-import { useUnlockWallets, useUpdatePassword } from '../../../../../../recoil/general'
+import React from 'react';
+import i18next from 'i18next';
+import { fireEvent, waitFor } from '@testing-library/dom';
+import ChangePasswordDialog from './index';
+import { render } from '../../../../../../jest/test-utils';
+import { useUnlockWallets, useUpdatePassword } from '../../../../../../recoil/general';
 
 jest.mock('../../../../../../recoil/general', () => ({
   useUnlockWallets: jest.fn(),
   useUpdatePassword: jest.fn(),
-}))
+}));
 
 describe('component: ChangePasswordDialog', () => {
   it('renders', () => {
-    const t = render(<ChangePasswordDialog isOpen />)
+    const t = render(<ChangePasswordDialog />);
 
-    expect(t).toMatchSnapshot()
-  })
+    expect(t).toMatchSnapshot();
+  });
 
   it('goes from stage 1 -> 2', async () => {
-    ;(useUnlockWallets as jest.Mock).mockReturnValueOnce(() => async () => true)
-    ;(useUpdatePassword as jest.Mock).mockReturnValueOnce(() => () => true)
+    (useUnlockWallets as jest.Mock).mockReturnValueOnce(() => async () => true);
+    (useUpdatePassword as jest.Mock).mockReturnValueOnce(() => () => true);
 
-    const { getByText, getByPlaceholderText } = render(<ChangePasswordDialog isOpen />)
+    const { getByText, getByPlaceholderText } = render(<ChangePasswordDialog />);
 
     // expect stage 1 input label
-    expect(getByText(i18next.t('settings:general.changePwDialog.stage1.label') as string))
+    expect(getByText(i18next.t('settings:general.changePwDialog.stage1.label') as string));
 
     const stage1Input = getByPlaceholderText(
       i18next.t('settings:general.changePwDialog.stage1.placeholder') as string
-    )
+    );
 
-    fireEvent.change(stage1Input, 'abc123')
-    fireEvent.click(getByText(i18next.t('settings:next') as string))
+    fireEvent.change(stage1Input, 'abc123');
+    fireEvent.click(getByText(i18next.t('settings:next') as string));
 
     await waitFor(() => {
-      expect(getByText(i18next.t('settings:general.changePwDialog.stage2.label') as string))
-    })
-  })
+      expect(getByText(i18next.t('settings:general.changePwDialog.stage2.label') as string));
+    });
+  });
 
   // not sure why this doesn't work
   // it('goes from stage 2 -> 3', async () => {
@@ -67,4 +67,4 @@ describe('component: ChangePasswordDialog', () => {
   //     expect(getByText(i18next.t('settings:general.changePwDialog.stage3.description') as string))
   //   })
   // })
-})
+});

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Paper, TextField } from '@mui/material';
+import { Box, Divider, Paper } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import { useTranslation } from 'react-i18next';
 import SettingsDropdown from './components/SettingsDropdown';
@@ -66,18 +66,19 @@ const GeneralTab = () => {
           handleClick={() => setShowPwChangeDialog(true)}
         />
       </Paper>
-      <ChangePasswordDialog
-        isOpen={showPwChangeDialog}
-        onClose={() => setShowPwChangeDialog(false)}
-      />
-      <TextField
-        InputProps={{
-          disableUnderline: true,
-        }}
-        fullWidth
-        variant="filled"
-        rows={10}
-      />
+      {showPwChangeDialog && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+          }}
+        >
+          <ChangePasswordDialog onClose={() => setShowPwChangeDialog(false)} />
+        </Box>
+      )}
     </>
   );
 };

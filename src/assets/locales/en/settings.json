@@ -45,7 +45,7 @@
       },
       "stage3": {
         "title": "Success",
-        "description": "The password has been changed"
+        "description": "Unlock password has been successfully changed."
       }
     },
     "viewRecoveryPhraseDialog": {
