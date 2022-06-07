@@ -7,10 +7,12 @@ import TelegramIcon from 'components/svg/TelegramIcon';
 import ForboleIcon from 'components/svg/ForboleIcon';
 import GithubIcon from 'components/svg/GithubIcon';
 import Layout from 'components/Layout/layout';
+import { useNavigate } from 'react-router';
 import SocialLink from './components/SocialLink';
 
 const FollowUs = () => {
   const { t } = useTranslation('followus');
+  const navigate = useNavigate();
 
   const links: React.ComponentProps<typeof SocialLink>[] = React.useMemo(
     () => [
@@ -49,7 +51,7 @@ const FollowUs = () => {
   );
 
   return (
-    <Layout title={t('tabName')} backPath="/">
+    <Layout title={t('tabName')} backCallback={() => navigate(-1)}>
       {links.map((x, index) => (
         <>
           <SocialLink key={x.label} {...x} />
