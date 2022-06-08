@@ -20,7 +20,7 @@ const Support = () => {
         {
           question: 'How to install and set up Forbole X?',
           answer:
-            'Go to the Chrome Web Store and download the [Forbole X Extension](http://x.forbole.com "Forbole X Extension").  To kick start, you may: \n 1. Create a new wallet (Step by step guide you once you’ve installed Forbole X) \n 2. Import your existing wallet with four options \n  - Input 12 or 24-word secret recovery phrase backup \n    - Enter your password and encrypted secret recovery phrase backup \n    - Connect your Ledger Nano S or Nano X to start \n    - Entering your private key',
+            'Go to the Chrome Web Store and download the [Forbole X Extension](http://x.forbole.com "Forbole X Extension").  To kick start, you may: \n 1. Create a new wallet (Step by step guide you once you’ve installed Forbole X) \n 2. Import your existing wallet with four options \n     - Input 12 or 24-word secret recovery phrase backup \n    - Enter your password and encrypted secret recovery phrase backup \n    - Connect your Ledger Nano S or Nano X to start \n    - Entering your private key',
         },
         {
           question: 'Does Forbole X support Ledger Nano hardware wallets?',
@@ -104,11 +104,17 @@ const Support = () => {
         .map((e, index) => (
           <div className={`px-4 pt-8 ${index === 0 ? 'pt-6' : ''}`}>
             <h2 className="px-6 pb-4">{e.title}</h2>
-            {e.items.map((i) => (
-              <div>
-                <CollapseCard question={i.question} answer={i.answer} />
-              </div>
-            ))}
+            {e.items
+              .filter(
+                (i) =>
+                  i.answer.toLowerCase().search(queryString.toLowerCase()) > -1 ||
+                  i.question.toLowerCase().search(queryString.toLowerCase()) > -1
+              )
+              .map((i) => (
+                <div>
+                  <CollapseCard question={i.question} answer={i.answer} />
+                </div>
+              ))}
           </div>
         ))}
       <div className="text-sm text-font-200 p-10 pt-5">
