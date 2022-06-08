@@ -1,0 +1,13 @@
+{
+  "address": "Address",
+  "amount": "Amount",
+  "note": "Note",
+  "fee": "Fee",
+  "viewData": "View data",
+  "estimatingGas": "Estimating gas fees",
+  "setGas": "Set gas",
+  "delegate": {
+    "delegateAmount": "Delegate {{amount}}",
+    "delegateTo": "Delegate to"
+  }
+}

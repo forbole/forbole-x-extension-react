@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Feedback from 'pages/Feedback';
 import FollowUs from 'pages/FollowUs';
 import About from 'pages/About';
+import ConfirmTx from 'pages/ConfirmTx';
 import Account from '../pages/Account';
 import AddressBook from '../pages/address-book';
 import Setting from '../pages/Settings';
@@ -16,6 +17,7 @@ const routes = [
   { path: '/feedback', key: 'FEEDBACK', component: <Feedback /> },
   { path: '/follow-us', key: 'FOLLOW-US', component: <FollowUs /> },
   { path: '/about', key: 'ABOUT', component: <About /> },
+  { path: '/confirm-tx', key: 'CONFIRM-TX', component: <ConfirmTx /> },
   //   {
   //     path: "/app",
   //     key: "APP",

@@ -4,14 +4,16 @@ import account from './account.json';
 import feedback from './feedback.json';
 import followus from './followus.json';
 import about from './about.json';
+import confirmtx from './confirmtx.json';
 
 const en = {
-    common,
-    settings,
-    account,
-    feedback,
-    followus,
-    about,
+  common,
+  settings,
+  account,
+  feedback,
+  followus,
+  about,
+  confirmtx,
 };
 
 export default en;
