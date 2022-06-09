@@ -1,27 +1,22 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { ReactComponent as RemoveIcon } from '../../../assets/images/icons/icon_clear.svg'
-import useIconProps from '../../../misc/useIconProps'
-import Button from '../../Element/button'
-import { formatCoins, sumCoinsValues } from '../../../misc/utils'
-import { de } from 'date-fns/locale'
+import React from 'react';
+import { formatCoins } from 'misc/utils';
+import Button from '../../Element/button';
 
 interface SelectAmountProps {
-  onConfirm(amount: number, denom: string): void
-  account: AccountDetail
+  onConfirm(amount: number): void;
+  account: AccountDetail;
 }
-
+// TODO: refactor
 const SelectAmount: React.FC<SelectAmountProps> = ({ onConfirm, account }) => {
-  const iconProps = useIconProps()
-  const { balances, prices } = account
-  const [amount, setAmount] = React.useState('')
-  const [denom, setDenom] = React.useState(prices[0].token.symbol)
+  const { balances, prices } = account;
+  const [amount, setAmount] = React.useState('');
+
   return (
     <form
       noValidate
       onSubmit={(e) => {
-        e.preventDefault()
-        onConfirm(Number(amount), denom)
+        e.preventDefault();
+        onConfirm(Number(amount));
       }}
     >
       <div className="px-5 flex flex-row items-start">
@@ -35,7 +30,7 @@ const SelectAmount: React.FC<SelectAmountProps> = ({ onConfirm, account }) => {
           value={amount}
           placeholder={prices[0].token.symbol}
           onChange={(e) => {
-            setAmount(e.target.value)
+            setAmount(e.target.value);
           }}
         />
       </div>
@@ -43,7 +38,7 @@ const SelectAmount: React.FC<SelectAmountProps> = ({ onConfirm, account }) => {
         <Button disabled={amount.length <= 0} text="Next" type="submit" />
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default SelectAmount
+export default SelectAmount;

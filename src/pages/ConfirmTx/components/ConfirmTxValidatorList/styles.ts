@@ -4,7 +4,11 @@
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material';
 
-const styles: { [index: string]: SxProps<Theme> } = {
+interface StyleType {
+  [index: string]: SxProps<Theme>;
+}
+
+const styles: StyleType = {
   container: {
     paddingBottom: 1,
     paddingLeft: 2,

@@ -75,7 +75,7 @@ const ConfirmTx = () => {
         content={formatCoin(chainID, MsgUtils.calculateTotalTokens(msgs))}
       />
 
-      <ConfirmTxRow label={t('note')} content={memo} />
+      <ConfirmTxRow label={t('note')} content={memo || t('NA')} />
 
       <GasEstimation chainID={chainID} gasFee={computedFee} onGasChanged={setGas} />
     </Layout>

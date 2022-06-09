@@ -81,7 +81,7 @@ const ConfirmTxValidatorList = ({ msgs }: Props) => {
             </Typography>
           </Box>
           {/* don't render divider for last item */}
-          {idx !== validatorsAddresses.length - 1 && <Divider sx={styles.marginBottom} />}
+          {idx !== validatorsAddresses.length - 1 && <Divider sx={styles.bottomDivider} />}
         </>
       ))}
     </Box>

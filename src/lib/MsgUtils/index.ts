@@ -40,10 +40,42 @@ const getChainIDWithDenom = (denom: string) => {
   }
 };
 
+const createDelegateTxMsg = ({
+  delegatorAddress,
+  delegations,
+  denom,
+}: {
+  delegatorAddress: string;
+  delegations: {
+    validator: Validator;
+    amount: number;
+  }[];
+  denom: string;
+}): TransactionMsgDelegate[] => {
+  const exponent = Object.values(chains)
+    .find((chain) => chain.stakingDenom === denom)
+    .tokens.find((token) => token.denom === denom).digit;
+
+  return delegations.map((d) => ({
+    typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+    value: {
+      delegatorAddress,
+      validatorAddress: d.validator.address,
+      amount: {
+        amount: String(d.amount * 10 ** exponent),
+        denom,
+      },
+    },
+  }));
+};
+
 const MsgUtils = {
   getTxTypeFromMsgArr,
   calculateTotalTokens,
   getChainIDWithDenom,
+
+  // tx msg creation
+  createDelegateTxMsg,
 };
 
 export default MsgUtils;

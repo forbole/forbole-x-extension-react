@@ -3,53 +3,46 @@ import {
   Button,
   Box,
   DialogActions,
-  DialogContent,
   IconButton,
   InputAdornment,
   TextField,
   Typography,
   Grid,
-  CircularProgress,
-  useTheme,
   Slider,
   Card,
-} from '@mui/material'
-import React from 'react'
-import Avatar from '../../Element/avatar'
-import { useTranslation } from 'react-i18next'
-import useIconProps from '../../../misc/useIconProps'
-import DropdownIcon from '../../../components/svg/DropdownIcon'
-import { ReactComponent as RemoveIcon } from '../../../assets/images/icons/icon_clear.svg'
-import MemoInput from '../../../components/MemoInput'
-import { Loadable, useRecoilValueLoadable } from 'recoil'
-import { randomizedValidatorsState } from '../../../recoil/validators'
+} from '@mui/material';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useRecoilValueLoadable } from 'recoil';
+import { randomizedValidatorsState } from '@recoil/validators';
+import Avatar from '../../Element/avatar';
+import useIconProps from '../../../misc/useIconProps';
+import DropdownIcon from '../../svg/DropdownIcon';
+import { ReactComponent as RemoveIcon } from '../../../assets/images/icons/icon_clear.svg';
+import MemoInput from '../../MemoInput';
 
 interface SelectValidatorsProps {
-  onConfirm(delegations: Array<{ amount: number; validator: Validator }>, memo: string): void
-  delegations: Array<{ amount: number; validator: Validator }>
+  onConfirm(delegations: Array<{ amount: number; validator: Validator }>, memo: string): void;
+  delegations: Array<{ amount: number; validator: Validator }>;
   //   price: number
-  validators: Loadable<Validator[]>
-  amount: number
-  denom: string
-  loading: boolean
-  account: AccountDetail
-  validatorsMap: { [name: string]: Validator }
+  amount: number;
+  denom: string;
+  account: AccountDetail;
+  validatorsMap: { [name: string]: Validator };
 }
 
 const SelectValidators = ({
   account,
   onConfirm,
   delegations: defaultDelegations,
-  validators,
   amount,
   denom,
-  loading,
   validatorsMap,
 }: SelectValidatorsProps) => {
-  const { t } = useTranslation('common')
-  const iconProps = useIconProps()
-  const [consent, setConsent] = React.useState(true)
-  const [memo, setMemo] = React.useState('')
+  const { t } = useTranslation('common');
+  const iconProps = useIconProps();
+  const [consent, setConsent] = React.useState(true);
+  const [memo, setMemo] = React.useState('');
   const [delegations, setDelegations] = React.useState<
     Array<{ amount: string; validator: any; percentage: string; showSlider: boolean }>
   >(
@@ -61,13 +54,13 @@ const SelectValidators = ({
           showSlider: false,
         }))
       : [{ amount: amount.toString(), validator: {}, percentage: '100', showSlider: false }]
-  )
+  );
 
   const randomizedValidators = useRecoilValueLoadable(
     randomizedValidatorsState({
       chainId: account.chain,
     })
-  )
+  );
 
   React.useMemo(() => {
     setDelegations((d) =>
@@ -87,19 +80,14 @@ const SelectValidators = ({
               amount: String(amount * (1 - (1 / delegations.length) * (delegations.length - 1))),
             }
       )
-    )
-  }, [delegations.length])
-
-  const totalAmount = React.useMemo(
-    () => delegations.map((v) => Number(v.amount)).reduce((a, b) => a + b, 0),
-    [delegations]
-  )
+    );
+  }, [delegations.length]);
 
   return (
     <form
       noValidate
       onSubmit={(e) => {
-        e.preventDefault()
+        e.preventDefault();
         onConfirm(
           delegations
             .filter((v) => v.validator.name && Number(v.amount))
@@ -108,7 +96,7 @@ const SelectValidators = ({
               amount: Number(v.amount),
             })),
           memo
-        )
+        );
       }}
     >
       <Box minHeight={360} maxHeight={600}>
@@ -121,7 +109,7 @@ const SelectValidators = ({
             <Typography gutterBottom>{t('delegate to')}</Typography>
             {delegations.map((v, i) => (
               <Box
-                key={i.toString()}
+                key={v.validator.address}
                 display="flex"
                 alignItems="center"
                 ml={delegations.length <= 1 ? 0 : -5}
@@ -130,7 +118,7 @@ const SelectValidators = ({
                 {delegations.length <= 1 ? null : (
                   <IconButton
                     onClick={() => {
-                      setDelegations((d) => d.filter((a, j) => j !== i))
+                      setDelegations((d) => d.filter((a, j) => j !== i));
                     }}
                   >
                     <RemoveIcon className={`${iconProps} mr-2 flex items-center`} />
@@ -138,8 +126,11 @@ const SelectValidators = ({
                 )}
                 {Array.isArray(randomizedValidators.contents) && validatorsMap !== null ? (
                   <Autocomplete
-                    sx={(t) => ({
-                      '.MuiFilledInput-root': { padding: t.spacing(1), paddingRight: t.spacing(1) },
+                    sx={(_theme) => ({
+                      '.MuiFilledInput-root': {
+                        padding: _theme.spacing(1),
+                        paddingRight: _theme.spacing(1),
+                      },
                     })}
                     options={randomizedValidators.contents.map((val) => val)}
                     getOptionLabel={(option) => option.name}
@@ -153,10 +144,10 @@ const SelectValidators = ({
                     onChange={(_, value: Validator) => {
                       setDelegations((d) =>
                         d.map((a, j) => (j === i ? { ...a, validator: value || {} } : a))
-                      )
+                      );
                     }}
-                    renderOption={(props: any, option: any) => {
-                      const image = validatorsMap[props.key].image
+                    renderOption={(props: any) => {
+                      const { image } = validatorsMap[props.key];
                       return (
                         <Box
                           {...props}
@@ -168,7 +159,7 @@ const SelectValidators = ({
                           <Avatar size={8} src={image || ''} />
                           <Typography sx={{ marginLeft: '8px' }}>{props.key}</Typography>
                         </Box>
-                      )
+                      );
                     }}
                     renderInput={({ InputProps, inputProps, ...params }) => {
                       return (
@@ -197,7 +188,7 @@ const SelectValidators = ({
                             ),
                           }}
                         />
-                      )
+                      );
                     }}
                   />
                 ) : (
@@ -240,11 +231,16 @@ const SelectValidators = ({
             <Typography gutterBottom>{t('amount')}</Typography>
             {delegations.map((v, i) => (
               <Box position="relative">
-                <Box key={i.toString()} display="flex" alignItems="center" mt={i === 0 ? 0 : 1}>
+                <Box
+                  key={v.validator.address}
+                  display="flex"
+                  alignItems="center"
+                  mt={i === 0 ? 0 : 1}
+                >
                   <TextField
-                    sx={(t) => ({
+                    sx={(_theme) => ({
                       '.MuiInputBase-input': {
-                        padding: t.spacing(2),
+                        padding: _theme.spacing(2),
                       },
                     })}
                     fullWidth
@@ -282,19 +278,19 @@ const SelectValidators = ({
                               }
                             : a
                         )
-                      )
+                      );
                       const closeSlider = (e) => {
                         if (!e.target.className.includes('MuiSlider')) {
-                          window.removeEventListener('click', closeSlider)
+                          window.removeEventListener('click', closeSlider);
                           setDelegations((d) =>
-                            d.map((a, j) => ({
+                            d.map((a) => ({
                               ...a,
                               showSlider: false,
                             }))
-                          )
+                          );
                         }
-                      }
-                      setTimeout(() => window.addEventListener('click', closeSlider), 100)
+                      };
+                      setTimeout(() => window.addEventListener('click', closeSlider), 100);
                     }}
                     sx={(theme) => ({
                       width: theme.spacing(16),
@@ -360,7 +356,7 @@ const SelectValidators = ({
                                 }
                               : a
                           )
-                        )
+                        );
                       }}
                     />
                   </Card>
@@ -374,9 +370,7 @@ const SelectValidators = ({
         <DialogActions>
           <Button
             variant="contained"
-            sx={(theme) => ({
-              width: '100%',
-            })}
+            fullWidth
             color="primary"
             disabled={
               !delegations.filter((v) => v.validator.name && Number(v.amount)).length ||
@@ -390,7 +384,7 @@ const SelectValidators = ({
         </DialogActions>
       </Box>
     </form>
-  )
-}
+  );
+};
 
-export default SelectValidators
+export default SelectValidators;
