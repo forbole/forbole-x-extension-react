@@ -1,84 +1,149 @@
-import React, { useState } from 'react'
-import CollapseCard from '../components/Element/collapseCard'
-import Layout from '../components/Layout/layout'
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import CollapseCard from '../components/Element/collapseCard';
+import Layout from '../components/Layout/layout';
 
 const Support = () => {
+  const { t } = useTranslation('support');
+
   const [qnaList] = useState([
     {
-      title: 'Tutorials',
+      title: t('qna.tutorial.title'),
       items: [
         {
-          question: 'How to Manage Your Tokens on Forbole X?',
-          answer:
-            'Forbole X is an all-round crypto management tool for general users aimed at driving wide-adoption of crypto through gamification and education. \n [This guide](http://forbole.com "This guide") will walk you through the basic setup and features of Forbole X',
+          question: t('qna.tutorial.q1.question'),
+          answer: t('qna.tutorial.q1.answer'),
         },
       ],
     },
     {
-      title: 'Getting Started',
+      title: t('qna.gettingStarted.title'),
       items: [
         {
-          question: 'How to install and set up Forbole X?',
-          answer:
-            'Go to the Chrome Web Store and download the [Forbole X Extension](http://x.forbole.com "Forbole X Extension").  To kick start, you may: \n 1. Create a new wallet (Step by step guide you once you’ve installed Forbole X) \n 2. Import your existing wallet with four options \n     - Input 12 or 24-word secret recovery phrase backup \n    - Enter your password and encrypted secret recovery phrase backup \n    - Connect your Ledger Nano S or Nano X to start \n    - Entering your private key',
+          question: t('qna.gettingStarted.q1.question'),
+          answer: t('qna.gettingStarted.q1.answer'),
         },
         {
-          question: 'Does Forbole X support Ledger Nano hardware wallets?',
-          answer: 'Yes. Import your existing wallet by connecting your Ledger Nano.',
-        },
-      ],
-    },
-    {
-      title: 'Assets',
-      items: [
-        {
-          question: 'What tokens do Forbole X support?',
-          answer: 'Forbole X currently only supports $DSM. ',
-        },
-      ],
-    },
-    {
-      title: 'Security',
-      items: [
-        { question: 'Does Forbole X store my private key?', answer: '' },
-        { question: 'What is the Secret Recovery Phrase and why is it so important? ', answer: '' },
-        { question: 'I lost my secret recovery phrase. Can I restore my wallet?', answer: '' },
-        { question: 'I forgot my Forbole X unlock password, how can I reset it?', answer: '' },
-        {
-          question: 'What is the difference between “Unlock Password” and “Wallet Password”?',
-          answer: '',
-        },
-        { question: 'Can I ask the administrator to obtain my password?', answer: '' },
-      ],
-    },
-    {
-      title: 'Staking',
-      items: [
-        { question: 'What is staking?', answer: '' },
-        { question: 'What are delegating, undelegating, and redelegating?', answer: '' },
-        { question: "Why can't I redelegate my token?", answer: '' },
-        { question: 'Which validator should I delegate to?', answer: '' },
-        { question: 'How much staking rewards can I expect by delegating?', answer: '' },
-        { question: 'Why did my staking rewards drop?', answer: '' },
-        { question: 'Any risks associated with delegating?', answer: '' },
-        { question: 'How often should I claim my staking rewards?', answer: '' },
-        {
-          question: 'I delegate to multiple validators. Can I claim my staking rewards in one go?',
-          answer: '',
-        },
-        { question: 'What is the unbonding period and how long does it take?', answer: '' },
-        { question: 'Can I relegate my token to another validator?', answer: '' },
-      ],
-    },
-    {
-      title: 'Others',
-      items: [
-        { question: 'Does Forbole X have a browser extension for Firefox or Safari?', answer: '' },
-      ],
-    },
-  ])
+          question: t('qna.gettingStarted.q2.question'),
 
-  const [queryString, setQueryString] = useState<string>('')
+          answer: t('qna.gettingStarted.q2.answer'),
+        },
+      ],
+    },
+    {
+      title: t('qna.assets.title'),
+      items: [
+        {
+          question: t('qna.assets.q1.question'),
+          answer: t('qna.assets.q1.answer'),
+        },
+      ],
+    },
+    {
+      title: t('qna.security.title'),
+      items: [
+        {
+          question: t('qna.security.q1.question'),
+          answer: t('qna.security.q1.answer'),
+        },
+        {
+          question: t('qna.security.q2.question'),
+
+          answer: t('qna.security.q2.answer'),
+        },
+        {
+          question: t('qna.security.q3.question'),
+
+          answer: t('qna.security.q3.answer'),
+        },
+        {
+          question: t('qna.security.q4.question'),
+
+          answer: t('qna.security.q4.answer'),
+        },
+        {
+          question: t('qna.security.q5.question'),
+
+          answer: t('qna.security.q5.answer'),
+        },
+        {
+          question: t('qna.security.q6.question'),
+
+          answer: t('qna.security.q6.answer'),
+        },
+      ],
+    },
+    {
+      title: t('qna.staking.title'),
+      items: [
+        {
+          question: t('qna.staking.q1.question'),
+          answer: t('qna.staking.q1.answer'),
+        },
+        {
+          question: t('qna.staking.q2.question'),
+
+          answer: t('qna.staking.q2.answer'),
+        },
+        {
+          question: t('qna.staking.q3.question'),
+
+          answer: t('qna.staking.q3.answer'),
+        },
+        {
+          question: t('qna.staking.q4.question'),
+
+          answer: t('qna.staking.q4.answer'),
+        },
+        {
+          question: t('qna.staking.q5.question'),
+
+          answer: t('qna.staking.q5.answer'),
+        },
+        {
+          question: t('qna.staking.q6.question'),
+
+          answer: t('qna.staking.q6.answer'),
+        },
+        {
+          question: t('qna.staking.q7.question'),
+
+          answer: t('qna.staking.q7.answer'),
+        },
+        {
+          question: t('qna.staking.q8.question'),
+
+          answer: t('qna.staking.q8.answer'),
+        },
+        {
+          question: t('qna.staking.q9.question'),
+
+          answer: t('qna.staking.q9.answer'),
+        },
+        {
+          question: t('qna.staking.q10.question'),
+
+          answer: t('qna.staking.q10.answer'),
+        },
+        {
+          question: t('qna.staking.q11.question'),
+
+          answer: t('qna.staking.q11.answer'),
+        },
+      ],
+    },
+    {
+      title: t('qna.other.title'),
+      items: [
+        {
+          question: t('qna.other.q1.question'),
+          answer: t('qna.other.q1.answer'),
+        },
+      ],
+    },
+  ]);
+
+  const [queryString, setQueryString] = useState<string>('');
 
   return (
     <Layout title="Support">
@@ -127,7 +192,7 @@ const Support = () => {
         </p>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default Support
+export default Support;

@@ -4,6 +4,7 @@ import account from './account.json';
 import feedback from './feedback.json';
 import followus from './followus.json';
 import about from './about.json';
+import support from './support.json';
 
 const en = {
     common,
@@ -12,6 +13,7 @@ const en = {
     feedback,
     followus,
     about,
+    support
 };
 
 export default en;
