@@ -6,35 +6,40 @@ import {
   Box,
   Typography,
   useTheme,
-} from '@mui/material'
-import React from 'react'
-import { passwordStrength } from 'check-password-strength'
-import { useTranslation } from 'react-i18next'
-import ShowPasswordIcon from '../../svg/ShowPasswordIcon'
-import HidePasswordIcon from '../../svg/HidePasswordIcon'
+} from '@mui/material';
+import React from 'react';
+import { passwordStrength } from 'check-password-strength';
+import { useTranslation } from 'react-i18next';
+import ShowPasswordIcon from '../../svg/ShowPasswordIcon';
+import HidePasswordIcon from '../../svg/HidePasswordIcon';
 
 interface PasswordInputProps extends Partial<FilledTextFieldProps> {
-  withSecurityLevel?: boolean
+  withSecurityLevel?: boolean;
 }
 
 const PasswordInput: React.FC<PasswordInputProps> = ({ withSecurityLevel, value, ...props }) => {
-  const theme = useTheme()
-  const { t } = useTranslation('common')
-  const [isShowingPassword, setIsShowingPassword] = React.useState(false)
+  const theme = useTheme();
+  const { t } = useTranslation('common');
+  const [isShowingPassword, setIsShowingPassword] = React.useState(false);
 
   const passwordSecurityLevel = React.useMemo(() => {
-    return value ? passwordStrength(value as any).id : 0
-  }, [value])
+    return value ? passwordStrength(value as any).id : 0;
+  }, [value]);
   const passwordSecurityColors = [
     theme.palette.error.main,
     theme.palette.warning.main,
     theme.palette.success.main,
-  ]
+  ];
 
   return (
     <>
       <TextField
         className="outline-0"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
         InputProps={{
           disableUnderline: true,
           endAdornment: (
@@ -48,6 +53,10 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ withSecurityLevel, value,
         // eslint-disable-next-line react/jsx-no-duplicate-props
         inputProps={{
           autoComplete: 'one-time-code',
+          sx: () => ({
+            padding: `${theme.spacing(1.5)} ${theme.spacing(1)}`,
+            borderRadius: '4px',
+          }),
         }}
         fullWidth
         type={isShowingPassword ? 'text' : 'password'}
@@ -56,7 +65,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ withSecurityLevel, value,
         {...props}
       />
       {withSecurityLevel ? (
-        <Box mt={2}>
+        <Box mt={2} display="flex" alignItems="center">
           <Box my={2} display="flex" alignItems="center">
             <Box flex={1} height={theme.spacing(0.5)} bgcolor={passwordSecurityColors[0]} />
             <Box
@@ -87,7 +96,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ withSecurityLevel, value,
         </Box>
       ) : null}
     </>
-  )
-}
+  );
+};
 
-export default PasswordInput
+export default PasswordInput;

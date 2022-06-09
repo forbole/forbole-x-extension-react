@@ -1,0 +1,23 @@
+{
+  "tabName": "Follow Us",
+  "twitter": {
+    "site": "Twitter",
+    "name": "@forboleX"
+  },
+  "telegram": {
+    "site": "Telegram",
+    "name": "@forbole"
+  },
+  "forboleBlog": {
+    "site": "Forbole Blog",
+    "name": "forbole.com/blog"
+  },
+  "bigDipper": {
+    "site": "Big Dipper Block Explorer",
+    "name": "bigdipper.live"
+  },
+  "github": {
+    "site": "Github",
+    "name": "github.com/forbole"
+  }
+}

@@ -1,5 +1,5 @@
-import { createTheme, ThemeOptions } from '@mui/material'
-import common from './common'
+import { createTheme } from '@mui/material';
+import common from './common';
 
 const darkTheme = createTheme({
   ...common,
@@ -95,7 +95,8 @@ const darkTheme = createTheme({
       three: '#FC6A8A',
     },
     cardBackground: '#3D4047',
+    // color values from figma
   },
-})
+});
 
-export default darkTheme
+export default darkTheme;

@@ -1,0 +1,16 @@
+.TransactionCard-light:nth-child(odd){
+    background-color: #FFFFFF;
+}
+
+.TransactionCard-light:nth-child(even){
+    background-color: #F9F9F9;
+}
+
+.TransactionCard-dark:nth-child(odd){
+    background-color: #25282D;
+}
+
+.TransactionCard-dark:nth-child(even){
+    background-color: #2B2F35;
+}
+

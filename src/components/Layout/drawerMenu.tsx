@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import { ReactComponent as SettingsIcon } from '../../assets/images/icons/icon_settings.svg'
-import { ReactComponent as AddressBookIcon } from '../../assets/images/icons/icon_address_book.svg'
-import { ReactComponent as WalletIcon } from '../../assets/images/icons/icon_wallet_manage.svg'
+import { ReactComponent as SettingsIcon } from '../../assets/images/icons/icon_settings.svg';
+import { ReactComponent as AddressBookIcon } from '../../assets/images/icons/icon_address_book.svg';
+import { ReactComponent as WalletIcon } from '../../assets/images/icons/icon_wallet_manage.svg';
 
 import ThemeModeButton from '../Common/themeModeButton'
 
 const DrawerMenu = () => {
+  const { t } = useTranslation();
+  
   const [menuList] = useState([
     {
       title: 'Wallet',
@@ -46,6 +49,7 @@ const DrawerMenu = () => {
     },
   ])
 
+
   return (
     <div className="text-font-2">
       <div className="flex justify-end">
@@ -70,7 +74,7 @@ const DrawerMenu = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DrawerMenu
+export default DrawerMenu;

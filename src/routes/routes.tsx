@@ -1,10 +1,12 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Account from '../pages/account'
-import AddressBook from '../pages/address-book'
-import Setting from '../pages/Settings'
-import Wallet from '../pages/wallet'
-import Support from '../pages/support'
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Feedback from 'pages/Feedback';
+import FollowUs from 'pages/FollowUs';
+import About from 'pages/About';
+import Account from '../pages/Account';
+import AddressBook from '../pages/address-book';
+import Setting from '../pages/Settings';
+import Wallet from '../pages/wallet';
 
 const routes = [
   { path: '/', key: 'ROOT', exact: true, component: <Wallet /> },
@@ -12,6 +14,9 @@ const routes = [
   { path: '/support', key: 'SUPPORT', exact: true, component: <Support /> },
   { path: '/address-book', key: 'ADDRESS-BOOK', exact: true, component: <AddressBook /> },
   { path: '/account/:address', key: 'ACCOUNT', component: <Account /> },
+  { path: '/feedback', key: 'FEEDBACK', component: <Feedback /> },
+  { path: '/follow-us', key: 'FOLLOW-US', component: <FollowUs /> },
+  { path: '/about', key: 'ABOUT', component: <About /> },
   //   {
   //     path: "/app",
   //     key: "APP",
@@ -31,7 +36,7 @@ const routes = [
   //       },
   //     ],
   //   },
-]
+];
 
 const AppRoutes = () => {
   return (
@@ -40,7 +45,7 @@ const AppRoutes = () => {
         <Route key={route.key} element={route.component} path={route.path} />
       ))}
     </Routes>
-  )
-}
+  );
+};
 
-export default AppRoutes
+export default AppRoutes;
