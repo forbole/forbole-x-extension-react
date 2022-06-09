@@ -7,23 +7,30 @@ import { useRecoilValue } from 'recoil';
 import { transactionState } from '@recoil/transaction';
 import IconDelegateTx from 'components/svg/IconDelegateTx';
 import MsgUtils from 'lib/MsgUtils';
-import { formatCoin, formatCoins } from 'misc/utils';
+import { formatCoin } from 'misc/utils';
 import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
 import ConfirmTxValidatorList from 'pages/ConfirmTx/components/ConfirmTxValidatorList';
-import useGasEstimation from 'hooks/useGasEstimation';
+import GasEstimation from 'pages/ConfirmTx/components/GasEstimation';
+import { transformFee } from 'lib/estimateGasFees';
+import chains from 'misc/chains';
+import styles from './styles';
 
 const ConfirmTx = () => {
   const { t } = useTranslation('confirmtx');
   const navigate = useNavigate();
-
-  const { estimatedGas, loading: isPendingGasEstimation } = useGasEstimation();
 
   const {
     address,
     chainID,
     transactionData: { memo, msgs },
   } = useRecoilValue(transactionState);
+
+  const [gas, setGas] = React.useState(0);
+
+  const computedFee = React.useMemo(() => {
+    return transformFee(chains[chainID], Number(gas));
+  }, [gas]);
 
   const txType = MsgUtils.getTxTypeFromMsgArr(msgs);
 
@@ -51,17 +58,10 @@ const ConfirmTx = () => {
 
   return (
     <Layout backCallback={() => navigate(-1)}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          marginBottom: 2,
-        }}
-      >
+      <Box sx={styles.container}>
         {icon}
 
-        <Typography variant="h3" sx={{ marginTop: 2 }}>
+        <Typography variant="h3" sx={styles.titleText}>
           {titleText}
         </Typography>
       </Box>
@@ -77,12 +77,7 @@ const ConfirmTx = () => {
 
       <ConfirmTxRow label={t('note')} content={memo} />
 
-      <ConfirmTxRow
-        label={t('fee')}
-        content={
-          isPendingGasEstimation ? t('estimatingGas') : formatCoins(chainID, estimatedGas.amount)
-        }
-      />
+      <GasEstimation chainID={chainID} gasFee={computedFee} onGasChanged={setGas} />
     </Layout>
   );
 };

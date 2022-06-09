@@ -47,7 +47,7 @@ const ConfirmTxValidatorList = ({ msgs }: Props) => {
 
   return (
     <Box sx={styles.container}>
-      <Divider sx={{ marginBottom: 2 }} />
+      <Divider sx={styles.topDivider} />
 
       <Typography sx={styles.titleText}>{t('delegate.delegateTo')}</Typography>
 
@@ -81,9 +81,7 @@ const ConfirmTxValidatorList = ({ msgs }: Props) => {
             </Typography>
           </Box>
           {/* don't render divider for last item */}
-          {idx !== validatorsAddresses.length - 1 && (
-            <Divider sx={{ marginTop: 1, marginBottom: 2 }} />
-          )}
+          {idx !== validatorsAddresses.length - 1 && <Divider sx={styles.marginBottom} />}
         </>
       ))}
     </Box>

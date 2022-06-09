@@ -36,6 +36,13 @@ const styles: { [index: string]: SxProps<Theme> } = {
     display: 'flex',
     flexShrink: 0,
   },
+  topDivider: {
+    marginBottom: 2,
+  },
+  bottomDivider: {
+    marginTop: 1,
+    marginBottom: 2,
+  },
 };
 
 export default styles;
