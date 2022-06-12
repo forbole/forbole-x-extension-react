@@ -5,6 +5,8 @@ import feedback from './feedback.json';
 import followus from './followus.json';
 import about from './about.json';
 import confirmtx from './confirmtx.json';
+import error from './error.json';
+import enterWalletPW from './enterWalletPW.json';
 
 const en = {
   common,
@@ -14,6 +16,8 @@ const en = {
   followus,
   about,
   confirmtx,
+  error,
+  enterWalletPW,
 };
 
 export default en;

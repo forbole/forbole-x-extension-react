@@ -20,7 +20,7 @@ export type TransactionStateType = {
 export const transactionState = atom<TransactionStateType>({
   key: 'transactionState',
   default: {
-    address: '123',
+    address: 'desmos1lhr4w3yurtnqsdqyulfrcs042dku0aetvgh6tz',
     chainID: 'desmos-mainnet-1',
     transactionData: {
       memo: 'default memo',
