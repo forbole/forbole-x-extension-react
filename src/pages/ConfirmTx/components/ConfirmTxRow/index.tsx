@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, CircularProgress, Divider, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 
 type Props = {
   label: string;
@@ -14,9 +14,7 @@ type Props = {
  */
 const ConfirmTxRow = ({ label, content, isPending }: Props) => {
   return (
-    <Box sx={{ paddingBottom: 1, paddingLeft: 2, paddingRight: 2 }}>
-      <Divider sx={{ marginBottom: 1 }} />
-
+    <Box sx={{ paddingBottom: 1 }}>
       <Typography>{label}</Typography>
 
       {isPending ? (

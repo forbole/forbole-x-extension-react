@@ -7,6 +7,8 @@
   "estimatingGas": "Estimating gas fees",
   "setGas": "Set gas",
   "NA": "N/A",
+  "viewData": "View Data",
+  "hideData": "Hide Data",
   "delegate": {
     "delegateAmount": "Delegate {{amount}}",
     "delegateTo": "Delegate to"

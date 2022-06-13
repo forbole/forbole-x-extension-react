@@ -5,6 +5,8 @@ import FollowUs from 'pages/FollowUs';
 import About from 'pages/About';
 import ConfirmTx from 'pages/ConfirmTx';
 import EnterWalletPassword from 'pages/EnterWalletPassword';
+import TxSuccess from 'pages/TxResult/TxSuccess';
+import TxReject from 'pages/TxResult/TxReject';
 import Account from '../pages/Account';
 import AddressBook from '../pages/address-book';
 import Setting from '../pages/Settings';
@@ -23,6 +25,16 @@ const routes = [
     path: '/confirm-tx-wallet-pw',
     key: 'CONFIRM-TX-WALLET-PW',
     component: <EnterWalletPassword />,
+  },
+  {
+    path: '/tx-success',
+    key: 'TX-SUCCESS',
+    component: <TxSuccess />,
+  },
+  {
+    path: '/tx-reject',
+    key: 'TX-REJECT',
+    component: <TxReject />,
   },
   //   {
   //     path: "/app",

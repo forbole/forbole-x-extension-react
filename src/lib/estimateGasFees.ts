@@ -88,6 +88,7 @@ const estimateGasFee = async (
     const fee = transformFee(chain, gas);
     return fee;
   } catch (err) {
+    console.log(err);
     const gas = tx.msgs.map((msg) => chain.defaultGas[msg.typeUrl]).reduce((a, b) => a + b, 0);
     const fee = transformFee(chain, gas);
     return fee;

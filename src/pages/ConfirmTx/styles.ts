@@ -9,9 +9,19 @@ const styles: { [index: string]: SxProps<Theme> } = {
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: 2,
+    paddingLeft: 2,
+    paddingRight: 2,
   },
   titleText: {
     marginTop: 2,
+  },
+  contentContainer: {
+    paddingLeft: 2,
+    paddingRight: 2,
+  },
+  divider: {
+    marginTop: 1,
+    marginBottom: 1,
   },
 };
 

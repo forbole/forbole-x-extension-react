@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, IconButton, Slider, TextField, Typography } from '@mui/material';
 import IconCross from 'components/svg/IconCross';
 import IconEditGas from 'components/svg/IconEditGas';
+import styles from './styles';
 
 type Props = {
   chainID: string;
@@ -39,28 +40,11 @@ const GasEstimation = ({ chainID, onGasChanged, gasFee }: Props) => {
 
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+      <Box sx={styles.container}>
         <Typography>{t('fee')}</Typography>
 
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <Typography
-            sx={{
-              color: 'text.secondary',
-            }}
-          >
+        <Box sx={styles.innerContainer}>
+          <Typography sx={styles.feeText}>
             {loading ? t('estimatingGas') : formatCoins(chainID, gasFee.amount)}
           </Typography>
 
@@ -76,11 +60,7 @@ const GasEstimation = ({ chainID, onGasChanged, gasFee }: Props) => {
       {isEditGas && (
         <>
           <TextField
-            sx={{
-              padding: (theme) => `${theme.spacing(0.5)} ${theme.spacing(1)}`,
-              borderRadius: 1,
-              backgroundColor: 'background.paper',
-            }}
+            sx={styles.textField}
             InputProps={{
               disableUnderline: true,
             }}

@@ -12,7 +12,9 @@ import PasswordInput from 'components/inputs/PasswordInput';
 import styles from './styles';
 
 /**
- * A dialog where users enter their wallet password to decrypt their wallets for transaction signing
+ * A dialog where users enter their wallet password to decrypt their wallets for transaction signing.
+ *
+ * Goes to either TxSuccess or TxReject depending on the tx result.
  */
 const EnterWalletPassword = () => {
   const navigate = useNavigate();
@@ -26,20 +28,30 @@ const EnterWalletPassword = () => {
 
   const accounts = useRecoilValue(accountsState);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setError('');
     // Get walletID
     const account = accounts.find((_account) => _account.address === address);
     const walletID = account.walletId;
 
+    let mnemonic;
     try {
       setLoading(true);
-      const { mnemonic } = decryptWallet(walletID, password);
+      const decryptedWallet = decryptWallet(walletID, password);
 
-      signAndBroadcastTransaction(mnemonic, password, account, transactionData, undefined);
+      mnemonic = decryptedWallet.mnemonic;
     } catch (err) {
       console.log(err);
       setError(t('error:incorrectPw'));
+    }
+
+    try {
+      await signAndBroadcastTransaction(mnemonic, password, account, transactionData, undefined);
+
+      navigate('/tx-success');
+    } catch (err) {
+      console.log(err);
+      navigate('/tx-reject', { state: { error: err.toString() } });
     } finally {
       setLoading(false);
     }

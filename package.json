@@ -75,6 +75,7 @@
     "react-hook-form": "^7.22.5",
     "react-hot-toast": "^2.2.0",
     "react-i18next": "^11.16.7",
+    "react-json-view": "^1.21.3",
     "react-qr-code": "^2.0.5",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
@@ -151,6 +152,8 @@
     "transform": {
       "^.+\\.(ts|tsx|js|jsx)$": "babel-jest"
     },
-    "setupFilesAfterEnv": ["<rootDir>/src/jest/setupTests.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/jest/setupTests.js"
+    ]
   }
 }

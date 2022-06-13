@@ -11,8 +11,6 @@ interface StyleType {
 const styles: StyleType = {
   container: {
     paddingBottom: 1,
-    paddingLeft: 2,
-    paddingRight: 2,
   },
   titleText: {
     marginBottom: 1,
@@ -39,9 +37,6 @@ const styles: StyleType = {
   amountText: {
     display: 'flex',
     flexShrink: 0,
-  },
-  topDivider: {
-    marginBottom: 2,
   },
   bottomDivider: {
     marginTop: 1,

@@ -1,10 +1,10 @@
 import { atom, useRecoilState, useSetRecoilState } from 'recoil';
 import { useCallback } from 'react';
 import nightwind from 'nightwind/helper';
+import envConfig from 'config/envConfig';
 import { decryptChromeStorage, getStorage, setStorage } from './utils/chromeStorageEncryption';
 import { walletsState } from './wallets';
 import { accountsState } from './accounts';
-import envConfig from '../config/envConvig';
 
 export const themeState = atom<string>({
   key: 'theme',

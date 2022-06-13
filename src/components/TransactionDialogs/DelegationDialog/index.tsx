@@ -80,7 +80,7 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
 
         navigate('/confirm-tx');
       } catch (err) {
-        // setLoading(false);
+        console.log(err);
       }
     },
     [setStage, account]

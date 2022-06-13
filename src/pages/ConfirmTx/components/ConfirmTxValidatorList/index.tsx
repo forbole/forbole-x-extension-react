@@ -47,8 +47,6 @@ const ConfirmTxValidatorList = ({ msgs }: Props) => {
 
   return (
     <Box sx={styles.container}>
-      <Divider sx={styles.topDivider} />
-
       <Typography sx={styles.titleText}>{t('delegate.delegateTo')}</Typography>
 
       {validatorsAddresses.map((validator, idx) => (

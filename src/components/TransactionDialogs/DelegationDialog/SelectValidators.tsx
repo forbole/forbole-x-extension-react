@@ -62,7 +62,7 @@ const SelectValidators = ({
     })
   );
 
-  React.useMemo(() => {
+  React.useEffect(() => {
     setDelegations((d) =>
       d.map((a, j) =>
         j < delegations.length - 1
