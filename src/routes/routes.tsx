@@ -7,10 +7,12 @@ import Account from '../pages/Account';
 import AddressBook from '../pages/address-book';
 import Setting from '../pages/Settings';
 import Wallet from '../pages/wallet';
+import Support from 'pages/support';
 
 const routes = [
   { path: '/', key: 'ROOT', exact: true, component: <Wallet /> },
   { path: '/setting', key: 'SETTING', exact: true, component: <Setting /> },
+  { path: '/support', key: 'SUPPORT', exact: true, component: <Support /> },
   { path: '/address-book', key: 'ADDRESS-BOOK', exact: true, component: <AddressBook /> },
   { path: '/account/:address', key: 'ACCOUNT', component: <Account /> },
   { path: '/feedback', key: 'FEEDBACK', component: <Feedback /> },
