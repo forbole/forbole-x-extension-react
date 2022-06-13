@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import Layout from 'components/Layout/layout';
 import ConfirmTxRow from 'pages/ConfirmTx/components/ConfirmTxRow';
-import { Typography, Box, Divider } from '@mui/material';
+import { Typography, Box, Divider, Button, CircularProgress } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { transactionState } from '@recoil/transaction';
 import IconDelegateTx from 'components/svg/IconDelegateTx';
@@ -15,6 +15,8 @@ import GasEstimation from 'pages/ConfirmTx/components/GasEstimation';
 import { transformFee } from 'lib/estimateGasFees';
 import chains from 'misc/chains';
 import TxDataView from 'pages/ConfirmTx/components/TxDataView';
+import useSignerInfo from 'hooks/useSignerInfo';
+import useGasEstimation from 'hooks/useGasEstimation';
 import styles from './styles';
 
 /**
@@ -33,7 +35,15 @@ const ConfirmTx = () => {
     transactionData: { memo, msgs },
   } = useRecoilValue(transactionState);
 
+  const { loading: signerInfoLoading, signerInfo } = useSignerInfo(address);
+
+  const { estimatedGas, loading: gasEstimationLoading } = useGasEstimation();
+
   const [gas, setGas] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!gasEstimationLoading) setGas(estimatedGas.gas);
+  }, [gasEstimationLoading]);
 
   const computedFee = React.useMemo(() => {
     return transformFee(chains[chainID], Number(gas));
@@ -62,6 +72,8 @@ const ConfirmTx = () => {
     }
     return '';
   }, []);
+
+  const isLoading = gasEstimationLoading || signerInfoLoading;
 
   return (
     <Layout backCallback={() => navigate(-1)}>
@@ -95,11 +107,21 @@ const ConfirmTx = () => {
 
         <Divider sx={styles.divider} />
 
-        <GasEstimation chainID={chainID} gasFee={computedFee} onGasChanged={setGas} />
+        <GasEstimation
+          estimatedGas={estimatedGas}
+          estimateGasLoading={gasEstimationLoading}
+          chainID={chainID}
+          gasFee={computedFee}
+          onGasChanged={setGas}
+        />
 
         <Divider sx={styles.divider} />
 
-        <TxDataView txData={msgs} fee={gas} />
+        <TxDataView txData={{ ...msgs, ...signerInfo }} fee={computedFee} />
+
+        <Button variant="contained" fullWidth disabled={isLoading}>
+          {isLoading ? <CircularProgress /> : <Typography>{t('common:confirm')}</Typography>}
+        </Button>
       </Box>
     </Layout>
   );
