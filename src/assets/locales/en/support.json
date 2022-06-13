@@ -106,5 +106,9 @@
         "answer": "No, it supports only Chrome and Brave currently."
       }
     }
+  },
+  "contact": {
+    "contactUs": "Contact us directly at",
+    "questions": "Your questions are not covered?"
   }
 }

@@ -1,5 +1,6 @@
+import { Box, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import CollapseCard from '../components/Element/collapseCard';
 import Layout from '../components/Layout/layout';
 
@@ -147,14 +148,14 @@ const Support = () => {
 
   return (
     <Layout title="Support">
-      <div className="mx-4 mt-1">
+      <Box sx={{ paddingX: 2, paddingTop: 0.5 }}>
         <input
           className="bg-surface-100 rounded-lg px-6 py-4 w-full"
           placeholder="Describe your issue"
           value={queryString}
           onChange={(e) => setQueryString(e.target.value)}
         />
-      </div>
+      </Box>
 
       {qnaList
         .filter((e) =>
@@ -167,8 +168,10 @@ const Support = () => {
             : e
         )
         .map((e, index) => (
-          <div className={`px-4 pt-8 ${index === 0 ? 'pt-6' : ''}`}>
-            <h2 className="px-6 pb-4">{e.title}</h2>
+          <Box sx={{ paddingX: 2, paddingTop: index === 0 ? 3 : 4 }}>
+            <Typography variant="h4" sx={{ paddingX: 3, paddingBottom: 0.5 }}>
+              {e.title}
+            </Typography>
             {e.items
               .filter(
                 (i) =>
@@ -176,21 +179,21 @@ const Support = () => {
                   i.question.toLowerCase().search(queryString.toLowerCase()) > -1
               )
               .map((i) => (
-                <div>
-                  <CollapseCard question={i.question} answer={i.answer} />
-                </div>
+                <CollapseCard question={i.question} answer={i.answer} />
               ))}
-          </div>
+          </Box>
         ))}
-      <div className="text-sm text-font-200 p-10 pt-5">
-        <p>Your questions are not covered?</p>
-        <p>
-          Contact us directly at{' '}
-          <a href="mailto:info＠forbole.com" target="_blank" rel="noreferrer">
-            info＠forbole.com
-          </a>
-        </p>
-      </div>
+      <Box sx={{ padding: 5, paddingTop: 2 }}>
+        <Typography variant="body2">{t('contact.questions')}</Typography>
+        <Trans>
+          <Typography variant="body2">
+            {t('contact.contactUs')}{' '}
+            <a href="mailto:info＠forbole.com" target="_blank" rel="noreferrer">
+              info＠forbole.com
+            </a>
+          </Typography>
+        </Trans>
+      </Box>
     </Layout>
   );
 };
