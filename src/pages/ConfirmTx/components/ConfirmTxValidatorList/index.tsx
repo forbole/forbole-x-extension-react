@@ -19,7 +19,7 @@ type Props = {
  * A component that renders a list of validators for Staking type txs
  */
 const ConfirmTxValidatorList = ({ msgs }: Props) => {
-  const { t } = useTranslation('confirmtx');
+  const { t } = useTranslation('confirmTx');
 
   const validators = useRecoilValueLoadable(
     validatorsState({

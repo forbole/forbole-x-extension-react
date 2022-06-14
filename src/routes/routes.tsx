@@ -32,7 +32,7 @@ const routes = [
     component: <TxSuccess />,
   },
   {
-    path: '/tx-reject',
+    path: '/tx-reject/:error',
     key: 'TX-REJECT',
     component: <TxReject />,
   },

@@ -26,6 +26,8 @@ const ConfirmTxUnlockWallet = () => {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
 
+  console.log(transactionData);
+
   const accounts = useRecoilValue(accountsState);
 
   const onSubmit = async () => {
@@ -45,15 +47,18 @@ const ConfirmTxUnlockWallet = () => {
       setError(t('error:incorrectPw'));
     }
 
-    try {
-      await signAndBroadcastTransaction(mnemonic, password, account, transactionData, undefined);
+    if (mnemonic) {
+      console.log(transactionData);
+      try {
+        await signAndBroadcastTransaction(mnemonic, password, account, transactionData, undefined);
 
-      navigate('/tx-success');
-    } catch (err) {
-      console.log(err);
-      navigate('/tx-reject', { state: { error: err.toString() } });
-    } finally {
-      setLoading(false);
+        navigate('/tx-success');
+      } catch (err) {
+        console.log(err);
+        navigate(`/tx-reject/${err.toString()}`);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -76,7 +81,7 @@ const ConfirmTxUnlockWallet = () => {
           </div>
 
           <Box sx={styles.buttonContainer}>
-            <Button fullWidth onClick={onSubmit} variant="contained">
+            <Button fullWidth disabled={loading} onClick={onSubmit} variant="contained">
               {loading ? <CircularProgress /> : <Typography>{t('common:next')}</Typography>}
             </Button>
           </Box>

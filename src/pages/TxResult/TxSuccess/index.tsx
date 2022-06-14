@@ -2,35 +2,26 @@ import React from 'react';
 import Layout from 'components/Layout/layout';
 import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { transactionState } from '@recoil/transaction';
 import { formatCoin } from 'misc/utils';
 import MsgUtils from 'lib/MsgUtils';
 import TxSuccessSvg from 'components/svg/TxSuccessSvg';
-import { useNavigate } from 'react-router';
+import IconCross from 'components/svg/IconCross';
+import { Link } from 'react-router-dom';
 import styles from '../styles';
+import useHooks from '../useHooks';
 
 /**
  * A page that indicates a successful tx. The content shown changes depending on the
  * type of transaction.
  */
 const TxSuccess = () => {
-  const { t } = useTranslation('txSuccess');
-  const navigate = useNavigate();
+  // use shared hooks
+  useHooks();
+
+  const { t } = useTranslation('txResult');
   const txData = useRecoilValue(transactionState);
-  const resetTxData = useResetRecoilState(transactionState);
-
-  //  Redirects user to main page if txData is null
-  React.useEffect(() => {
-    if (txData.transactionData.msgs.length === 0) {
-      navigate('/');
-    }
-  }, []);
-
-  // Clear the transactionState atom on unmount
-  React.useEffect(() => {
-    return () => resetTxData();
-  }, []);
 
   const i18nContent = React.useMemo(() => {
     const txType = txData.transactionData.msgs[0].typeUrl;
@@ -46,10 +37,17 @@ const TxSuccess = () => {
   }, [txData]);
 
   return (
-    <Layout hideLeftElement>
+    <Layout
+      hideLeftElement
+      rightElement={
+        <Link to="/">
+          <IconCross />
+        </Link>
+      }
+    >
       <Box sx={styles.container}>
         <TxSuccessSvg />
-        <Typography sx={styles.headerText}>{t('header')}</Typography>
+        <Typography sx={styles.headerText}>{t('headerSuccess')}</Typography>
         <Typography>{t(i18nContent)}</Typography>
       </Box>
     </Layout>

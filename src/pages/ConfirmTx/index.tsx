@@ -26,7 +26,7 @@ import styles from './styles';
  * Goes to EnterWalletPasswordPage
  */
 const ConfirmTx = () => {
-  const { t } = useTranslation('confirmtx');
+  const { t } = useTranslation('confirmTx');
   const navigate = useNavigate();
 
   const [txData, setTxData] = useRecoilState(transactionState);
@@ -78,7 +78,14 @@ const ConfirmTx = () => {
   const isLoading = gasEstimationLoading || signerInfoLoading;
 
   const handleConfirm = React.useCallback(() => {
-    setTxData({ ...txData, ...computedFee, ...signerInfo });
+    setTxData({
+      ...txData,
+      transactionData: {
+        ...txData.transactionData,
+        ...signerInfo,
+        // fee: computedFee,
+      },
+    });
     navigate('/confirm-tx-unlock-wallet');
   }, [computedFee, signerInfo]);
 

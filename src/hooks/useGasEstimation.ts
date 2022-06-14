@@ -12,7 +12,6 @@ const useGasEstimation = () => {
   React.useEffect(() => {
     estimateGasFee(transactionData, chainID, address)
       .then((response) => {
-        console.log('estimated', response);
         setEstimatedGas(response);
       })
       .catch((err) => {

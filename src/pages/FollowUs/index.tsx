@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router';
 import SocialLink from './components/SocialLink';
 
 const FollowUs = () => {
-  const { t } = useTranslation('followus');
+  const { t } = useTranslation('followUs');
   const navigate = useNavigate();
 
   const links: React.ComponentProps<typeof SocialLink>[] = React.useMemo(

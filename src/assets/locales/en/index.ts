@@ -2,9 +2,9 @@ import common from './common.json';
 import settings from './settings.json';
 import account from './account.json';
 import feedback from './feedback.json';
-import followus from './followus.json';
+import followUs from './followUs.json';
 import about from './about.json';
-import confirmtx from './confirmtx.json';
+import confirmTx from './confirmTx.json';
 import error from './error.json';
 import enterWalletPW from './enterWalletPW.json';
 import txResult from './txResult.json';
@@ -14,9 +14,9 @@ const en = {
   settings,
   account,
   feedback,
-  followus,
+  followUs,
   about,
-  confirmtx,
+  confirmTx,
   error,
   enterWalletPW,
   txResult,
