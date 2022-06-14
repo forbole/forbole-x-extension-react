@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import Layout from 'components/Layout/layout';
 import ConfirmTxRow from 'pages/ConfirmTx/components/ConfirmTxRow';
 import { Typography, Box, Divider, Button, CircularProgress } from '@mui/material';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { transactionState } from '@recoil/transaction';
 import IconDelegateTx from 'components/svg/IconDelegateTx';
 import MsgUtils from 'lib/MsgUtils';
@@ -29,11 +29,13 @@ const ConfirmTx = () => {
   const { t } = useTranslation('confirmtx');
   const navigate = useNavigate();
 
+  const [txData, setTxData] = useRecoilState(transactionState);
+
   const {
     address,
     chainID,
     transactionData: { memo, msgs },
-  } = useRecoilValue(transactionState);
+  } = txData;
 
   const { loading: signerInfoLoading, signerInfo } = useSignerInfo(address);
 
@@ -51,48 +53,53 @@ const ConfirmTx = () => {
 
   const txType = MsgUtils.getTxTypeFromMsgArr(msgs);
 
-  const icon = React.useMemo(() => {
+  const content = React.useMemo(() => {
     switch (txType) {
       case '/cosmos.staking.v1beta1.MsgDelegate':
-        return <IconDelegateTx />;
+        return {
+          icon: <IconDelegateTx />,
+          title: t('delegate.delegateAmount', {
+            amount: formatCoin(
+              MsgUtils.getChainIDWithDenom(_.get(msgs, '[0].value.amount.denom')),
+              MsgUtils.calculateTotalTokens(msgs)
+            ),
+          }),
+          details: <ConfirmTxValidatorList msgs={msgs} />,
+        };
 
       default:
-        return <IconDelegateTx />;
+        return {
+          icon: null,
+          title: '',
+        };
     }
-  }, []);
-
-  const titleText = React.useMemo(() => {
-    if (txType === '/cosmos.staking.v1beta1.MsgDelegate') {
-      return t('delegate.delegateAmount', {
-        amount: formatCoin(
-          MsgUtils.getChainIDWithDenom(_.get(msgs, '[0].value.amount.denom')),
-          MsgUtils.calculateTotalTokens(msgs)
-        ),
-      });
-    }
-    return '';
   }, []);
 
   const isLoading = gasEstimationLoading || signerInfoLoading;
 
+  const handleConfirm = React.useCallback(() => {
+    setTxData({ ...txData, ...computedFee, ...signerInfo });
+    navigate('/confirm-tx-unlock-wallet');
+  }, [computedFee, signerInfo]);
+
   return (
-    <Layout backCallback={() => navigate(-1)}>
-      <Box sx={styles.container}>
-        {icon}
-
-        <Typography variant="h3" sx={styles.titleText}>
-          {titleText}
-        </Typography>
-      </Box>
-
+    <Layout hideLeftElement>
       <Box sx={styles.contentContainer}>
+        <Box sx={styles.titleContainer}>
+          {content.icon}
+
+          <Typography variant="h3" sx={styles.titleText}>
+            {content.title}
+          </Typography>
+        </Box>
+
         <Divider sx={styles.divider} />
 
         <ConfirmTxRow label={t('address')} content={address} />
 
         <Divider sx={styles.divider} />
 
-        {txType === '/cosmos.staking.v1beta1.MsgDelegate' && <ConfirmTxValidatorList msgs={msgs} />}
+        {content.details}
 
         <Divider sx={styles.divider} />
 
@@ -119,9 +126,11 @@ const ConfirmTx = () => {
 
         <TxDataView txData={{ ...msgs, ...signerInfo }} fee={computedFee} />
 
-        <Button variant="contained" fullWidth disabled={isLoading}>
-          {isLoading ? <CircularProgress /> : <Typography>{t('common:confirm')}</Typography>}
-        </Button>
+        <Box sx={styles.buttonContainer}>
+          <Button variant="contained" fullWidth disabled={isLoading} onClick={handleConfirm}>
+            {isLoading ? <CircularProgress /> : <Typography>{t('common:confirm')}</Typography>}
+          </Button>
+        </Box>
       </Box>
     </Layout>
   );

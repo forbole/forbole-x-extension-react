@@ -16,7 +16,7 @@ import styles from './styles';
  *
  * Goes to either TxSuccess or TxReject depending on the tx result.
  */
-const EnterWalletPassword = () => {
+const ConfirmTxUnlockWallet = () => {
   const navigate = useNavigate();
   const { address, transactionData } = useRecoilValue(transactionState);
   const decryptWallet = useDecryptWallet();
@@ -75,13 +75,15 @@ const EnterWalletPassword = () => {
             {error && <Typography sx={styles.errorText}>{error}</Typography>}
           </div>
 
-          <Button fullWidth onClick={onSubmit} variant="contained">
-            {loading ? <CircularProgress /> : <Typography>{t('common:next')}</Typography>}
-          </Button>
+          <Box sx={styles.buttonContainer}>
+            <Button fullWidth onClick={onSubmit} variant="contained">
+              {loading ? <CircularProgress /> : <Typography>{t('common:next')}</Typography>}
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Layout>
   );
 };
 
-export default EnterWalletPassword;
+export default ConfirmTxUnlockWallet;

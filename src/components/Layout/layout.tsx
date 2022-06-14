@@ -81,7 +81,7 @@ const Layout: React.FC<Props> = ({
           {typeof title === 'string' ? <h4 className="leading-none">{title}</h4> : title}
           {rightElement ?? <div className="w-6 h-6" />}
         </div>
-        <div className="h-full grow overflow-y-auto no-scrollbar w-full">
+        <div className="h-full grow overflow-y-auto no-scrollbar flex flex-col w-full">
           {firstTime.state !== 'hasValue' || firstTime.contents ? <GetStarted /> : children}
         </div>
         <Toaster position="bottom-center" />

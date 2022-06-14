@@ -1,12 +1,12 @@
 /**
- * Styles for the EnterWalletPassword screen
+ * Styles for the ConfirmTxUnlockWallet screen
  */
 const styles = {
   container: {
     display: 'flex',
     height: '100%',
     flexDirection: 'column',
-    padding: 2,
+    padding: (theme) => `${theme.spacing(2)} ${theme.spacing(2)} 0 ${theme.spacing(2)}`,
   },
   titleText: {
     textAlign: 'center',
@@ -26,8 +26,12 @@ const styles = {
     flex: 1,
     height: '100%',
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    paddingBottom: 6,
+  },
+  buttonContainer: {
+    display: 'flex',
+    flex: 1,
+    alignItems: 'flex-end',
+    paddingBottom: 4,
   },
 };
 

@@ -4,7 +4,7 @@ import Feedback from 'pages/Feedback';
 import FollowUs from 'pages/FollowUs';
 import About from 'pages/About';
 import ConfirmTx from 'pages/ConfirmTx';
-import EnterWalletPassword from 'pages/EnterWalletPassword';
+import ConfirmTxUnlockWallet from 'pages/ConfirmTxUnlockWallet';
 import TxSuccess from 'pages/TxResult/TxSuccess';
 import TxReject from 'pages/TxResult/TxReject';
 import Account from '../pages/Account';
@@ -22,9 +22,9 @@ const routes = [
   { path: '/about', key: 'ABOUT', component: <About /> },
   { path: '/confirm-tx', key: 'CONFIRM-TX', component: <ConfirmTx /> },
   {
-    path: '/confirm-tx-wallet-pw',
-    key: 'CONFIRM-TX-WALLET-PW',
-    component: <EnterWalletPassword />,
+    path: '/confirm-tx-unlock-wallet',
+    key: 'CONFIRM-TX-UNLOCK-WALLET',
+    component: <ConfirmTxUnlockWallet />,
   },
   {
     path: '/tx-success',
