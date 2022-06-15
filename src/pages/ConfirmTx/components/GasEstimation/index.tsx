@@ -27,6 +27,14 @@ type Props = {
   onGasChanged: (number) => void;
 };
 
+/**
+ * A component that allows the user to see, and change the gas for a given transaction.
+ * This is done by invoking the onGasChanged callback, which should be passed in from a parent
+ * component. The parent component should keep track of the state of the actual gas value.
+ *
+ * The maximum gas is capped at x2 the original estimated gas, which can be calculated using the
+ * useGasEstimation hook.
+ */
 const GasEstimation = ({
   estimateGasLoading,
   estimatedGas,

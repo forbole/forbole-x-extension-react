@@ -1,14 +1,7 @@
 /**
  * Styles for the ConfirmTxValidatorList component
  */
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material';
-
-interface StyleType {
-  [index: string]: SxProps<Theme>;
-}
-
-const styles: StyleType = {
+const styles = {
   container: {
     paddingBottom: 1,
   },

@@ -21,9 +21,10 @@ import styles from './styles';
 
 /**
  * Page where user confirms the transaction. Users can also change the gas fee here.
- * This is also where the final gas fee gets appended to the recoil transactionState atom.
+ * This is also where the final gas fee and signerinfo gets appended to the recoil
+ * transactionState atom.
  *
- * Goes to EnterWalletPasswordPage
+ * Goes to ConfirmTxUnlockWallet page.
  */
 const ConfirmTx = () => {
   const { t } = useTranslation('confirmTx');

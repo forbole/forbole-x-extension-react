@@ -11,7 +11,7 @@ const useSignerInfo = (address: string) => {
   const accounts = useRecoilValue(accountsState);
 
   const account = React.useMemo(() => {
-    if (accounts.length === 0) return undefined;
+    if (accounts.length > 0) return undefined;
     return accounts.find((_account) => _account.address === address);
   }, [accounts]);
 
