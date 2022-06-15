@@ -1,5 +1,5 @@
-import { createTheme, ThemeOptions } from '@mui/material'
-import common from './common'
+import { createTheme } from '@mui/material';
+import common from './common';
 
 const lightTheme = createTheme({
   ...common,
@@ -100,7 +100,11 @@ const lightTheme = createTheme({
     reactJsonBackground: '#F7F7F7',
     buttonDisabled: '#BFDFFF',
     cardBackground: '#F7F7F7',
+    custom: {
+      white: '#ffffff',
+      grey: '#9d9d9d',
+    },
   },
-})
+});
 
-export default lightTheme
+export default lightTheme;

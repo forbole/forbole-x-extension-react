@@ -12,9 +12,21 @@ declare module '@mui/material/styles' {
 
   interface Palette {
     reactJsonBackground: string;
+
+    custom: {
+      white: string;
+
+      grey: string;
+    };
   }
   interface PaletteOptions {
     reactJsonBackground?: string;
+
+    custom?: {
+      white?: string;
+
+      grey?: string;
+    };
   }
 }
 
