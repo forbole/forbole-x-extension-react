@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Loadable } from 'recoil';
-import StakingTabs from 'components/Accounts/StakingTabs';
 import chains from 'misc/chains';
 import ArrowRight from 'components/svg/ArrowRight';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import StakingTabs from '../StakingTabs';
 import useStyles from './useStyles';
 
 type Props = {

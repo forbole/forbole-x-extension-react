@@ -1,20 +1,15 @@
-import { formatCoin, formatCoins, formatPercentage } from '../../../misc/utils'
-import Avatar from '../../Element/avatar'
-
-interface Props {
-  chain: Chain
-  delegations: Delegation[]
-  validatorsMap: { [address: string]: Validator }
-}
+import Avatar from 'components/Element/avatar';
+import { formatCoin, formatCoins, formatPercentage } from 'misc/utils';
+import React from 'react';
 
 const DelegationCard = ({
   chain,
   delegation,
   validator,
 }: {
-  chain: Chain
-  delegation: Delegation
-  validator?: Validator
+  chain: Chain;
+  delegation: Delegation;
+  validator?: Validator;
 }) => {
   return (
     <div className="space-y-4">
@@ -26,7 +21,10 @@ const DelegationCard = ({
             <p>Commission: {formatPercentage(validator?.commission)}</p>
           </div>
         </div>
-        <button className="bg-primary-100 rounded-md px-4 py-2 text-white nightwind-prevent hover:opacity-80">
+        <button
+          type="button"
+          className="bg-primary-100 rounded-md px-4 py-2 text-white nightwind-prevent hover:opacity-80"
+        >
           Manage
         </button>
       </div>
@@ -41,22 +39,7 @@ const DelegationCard = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-const DelegationTab = ({ chain, validatorsMap, delegations }: Props) => {
-  return (
-    <div>
-      {delegations.map((e, i) => (
-        <div
-          key={e.validator}
-          className={`p-6 odd:bg-surface-200 even:bg-surface-100 last:rounded-b-xl text-black`}
-        >
-          <DelegationCard chain={chain} delegation={e} validator={validatorsMap[e.validator]} />
-        </div>
-      ))}
-    </div>
-  )
-}
-
-export default DelegationTab
+export default DelegationCard;

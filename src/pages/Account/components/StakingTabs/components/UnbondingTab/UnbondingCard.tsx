@@ -1,26 +1,21 @@
-import { formatDuration, intervalToDuration, format } from 'date-fns'
-import { formatCoin, formatPercentage } from '../../../misc/utils'
-import Avatar from '../../Element/avatar'
-
-interface Props {
-  chain: Chain
-  unbonding: Unbonding[]
-  validatorsMap: { [address: string]: Validator }
-}
+import { format, formatDuration, intervalToDuration } from 'date-fns';
+import Avatar from 'components/Element/avatar';
+import { formatCoin, formatPercentage } from 'misc/utils';
+import React from 'react';
 
 const UnbondingCard = ({
   chain,
   unbonding,
   validator,
 }: {
-  chain: Chain
-  unbonding: Unbonding
-  validator?: Validator
+  chain: Chain;
+  unbonding: Unbonding;
+  validator?: Validator;
 }) => {
   const duration = intervalToDuration({
     start: new Date(),
     end: unbonding.completion,
-  })
+  });
 
   return (
     <div className="space-y-3">
@@ -48,7 +43,7 @@ const UnbondingCard = ({
                 format: [
                   Object.entries(duration)
                     .filter(([_, value]) => value)
-                    .map(([unit, _]) => unit)[0],
+                    .map(([unit]) => unit)[0],
                 ],
                 delimiter: ', ',
               })}
@@ -58,22 +53,7 @@ const UnbondingCard = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-const UnbondingTab = ({ unbonding, chain, validatorsMap }: Props) => {
-  return (
-    <div>
-      {unbonding.map((e, i) => (
-        <div
-          key={e.completion}
-          className={`p-6 odd:bg-surface-200 even:bg-surface-100 last:rounded-b-xl text-black`}
-        >
-          <UnbondingCard unbonding={e} chain={chain} validator={validatorsMap[e.validator]} />
-        </div>
-      ))}
-    </div>
-  )
-}
-
-export default UnbondingTab
+export default UnbondingCard;

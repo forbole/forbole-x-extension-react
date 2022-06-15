@@ -1,17 +1,17 @@
-import { keyBy } from 'lodash'
-import React, { useMemo } from 'react'
-import DelegationTab from './DelegationTab'
-import RedelegationTab from './RedelegationTab'
-import UnbondingTab from './UnbondingTab'
+import { keyBy } from 'lodash';
+import React, { useMemo } from 'react';
+import RedelegationTab from './components/RedelegationTab';
+import DelegationTab from './components/DelegationTab';
+import UnbondingTab from './components/UnbondingTab';
 
 type Props = {
-  tabIndex: number
-  chain: Chain
-  delegations: Delegation[]
-  redelegations: Redelegation[]
-  unbonding: Unbonding[]
-  validators: Validator[]
-}
+  tabIndex: number;
+  chain: Chain;
+  delegations: Delegation[];
+  redelegations: Redelegation[];
+  unbonding: Unbonding[];
+  validators: Validator[];
+};
 
 const StakingTabs = ({
   tabIndex,
@@ -21,7 +21,7 @@ const StakingTabs = ({
   unbonding,
   validators,
 }: Props) => {
-  const validatorsMap = useMemo(() => keyBy(validators, 'address'), [validators])
+  const validatorsMap = useMemo(() => keyBy(validators, 'address'), [validators]);
   return (
     <div className="relative">
       {tabIndex === 0 && (
@@ -38,7 +38,7 @@ const StakingTabs = ({
         <UnbondingTab chain={chain} unbonding={unbonding} validatorsMap={validatorsMap} />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default StakingTabs
+export default StakingTabs;
