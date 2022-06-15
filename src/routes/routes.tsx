@@ -3,6 +3,10 @@ import { Routes, Route } from 'react-router-dom';
 import Feedback from 'pages/Feedback';
 import FollowUs from 'pages/FollowUs';
 import About from 'pages/About';
+import ConfirmTx from 'pages/ConfirmTx';
+import ConfirmTxUnlockWallet from 'pages/ConfirmTxUnlockWallet';
+import TxSuccess from 'pages/TxResult/TxSuccess';
+import TxReject from 'pages/TxResult/TxReject';
 import Account from '../pages/Account';
 import AddressBook from '../pages/address-book';
 import Setting from '../pages/Settings';
@@ -18,6 +22,22 @@ const routes = [
   { path: '/feedback', key: 'FEEDBACK', component: <Feedback /> },
   { path: '/follow-us', key: 'FOLLOW-US', component: <FollowUs /> },
   { path: '/about', key: 'ABOUT', component: <About /> },
+  { path: '/confirm-tx', key: 'CONFIRM-TX', component: <ConfirmTx /> },
+  {
+    path: '/confirm-tx-unlock-wallet',
+    key: 'CONFIRM-TX-UNLOCK-WALLET',
+    component: <ConfirmTxUnlockWallet />,
+  },
+  {
+    path: '/tx-success',
+    key: 'TX-SUCCESS',
+    component: <TxSuccess />,
+  },
+  {
+    path: '/tx-reject/:error',
+    key: 'TX-REJECT',
+    component: <TxReject />,
+  },
   //   {
   //     path: "/app",
   //     key: "APP",

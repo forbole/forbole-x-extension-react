@@ -1,36 +1,36 @@
-import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing'
-import { stringToPath } from '@cosmjs/crypto'
-import { AminoTypes, SigningStargateClient } from '@cosmjs/stargate'
-import set from 'lodash/set'
-import get from 'lodash/get'
-import cloneDeep from 'lodash/cloneDeep'
-import { TextProposal } from 'cosmjs-types/cosmos/gov/v1beta1/gov'
-import { ParameterChangeProposal } from 'cosmjs-types/cosmos/params/v1beta1/params'
-import { SoftwareUpgradeProposal } from 'cosmjs-types/cosmos/upgrade/v1beta1/upgrade'
-import { CommunityPoolSpendProposal } from 'cosmjs-types/cosmos/distribution/v1beta1/distribution'
-import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
-import { PubKey } from 'cosmjs-types/cosmos/crypto/secp256k1/keys'
-import Long from 'long'
-import { LedgerSigner } from '@cosmjs/ledger-amino'
-import { fromBase64 } from '@cosmjs/encoding'
-import chains from '../chains'
-import { Bech32Address } from '../../desmos-proto/profiles/v1beta1/models_chain_links'
-import { aminoAdditions, registry } from './customTxTypes'
+import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing';
+import { stringToPath } from '@cosmjs/crypto';
+import { AminoTypes, SigningStargateClient } from '@cosmjs/stargate';
+import set from 'lodash/set';
+import get from 'lodash/get';
+import cloneDeep from 'lodash/cloneDeep';
+import { TextProposal } from 'cosmjs-types/cosmos/gov/v1beta1/gov';
+import { ParameterChangeProposal } from 'cosmjs-types/cosmos/params/v1beta1/params';
+import { SoftwareUpgradeProposal } from 'cosmjs-types/cosmos/upgrade/v1beta1/upgrade';
+import { CommunityPoolSpendProposal } from 'cosmjs-types/cosmos/distribution/v1beta1/distribution';
+import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx';
+import { PubKey } from 'cosmjs-types/cosmos/crypto/secp256k1/keys';
+import Long from 'long';
+import { LedgerSigner } from '@cosmjs/ledger-amino';
+import { fromBase64 } from '@cosmjs/encoding';
+import chains from '../chains';
+import { Bech32Address } from '../../desmos-proto/profiles/v1beta1/models_chain_links';
+import { aminoAdditions, registry } from './customTxTypes';
 
 const formatTransactionMsg = (msg: TransactionMsg) => {
-  const transformedMsg = cloneDeep(msg)
+  const transformedMsg = cloneDeep(msg);
   if (transformedMsg.typeUrl === '/ibc.applications.transfer.v1.MsgTransfer') {
     set(
       transformedMsg,
       'value.timeoutTimestamp',
       new Long(get(transformedMsg, 'value.timeoutTimestamp', 0))
-    )
+    );
   }
   if (
     transformedMsg.typeUrl === '/cosmos.gov.v1beta1.MsgDeposit' ||
     transformedMsg.typeUrl === '/cosmos.gov.v1beta1.MsgVote'
   ) {
-    set(transformedMsg, 'value.proposalId', new Long(get(transformedMsg, 'value.proposalId', 0)))
+    set(transformedMsg, 'value.proposalId', new Long(get(transformedMsg, 'value.proposalId', 0)));
   }
   if (transformedMsg.typeUrl === '/desmos.profiles.v1beta1.MsgLinkChainAccount') {
     set(
@@ -41,7 +41,7 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
           Bech32Address.fromPartial(get(transformedMsg, 'value.chainAddress.value', {}))
         ).finish()
       )
-    )
+    );
 
     set(
       transformedMsg,
@@ -53,7 +53,7 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
           })
         ).finish()
       )
-    )
+    );
   }
 
   if (get(msg, 'value.content.typeUrl') === '/cosmos.gov.v1beta1.TextProposal') {
@@ -63,7 +63,7 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
       Uint8Array.from(
         TextProposal.encode(TextProposal.fromPartial(get(msg, 'value.content.value'))).finish()
       )
-    )
+    );
   } else if (
     get(msg, 'value.content.typeUrl') === '/cosmos.params.v1beta1.ParameterChangeProposal'
   ) {
@@ -75,7 +75,7 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
           ParameterChangeProposal.fromPartial(get(msg, 'value.content.value'))
         ).finish()
       )
-    )
+    );
   } else if (
     get(msg, 'value.content.typeUrl') === '/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal'
   ) {
@@ -83,7 +83,7 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
       transformedMsg,
       'value.content.value.plan.height',
       new Long(get(transformedMsg, 'value.content.value.plan.height', 0))
-    )
+    );
     set(
       transformedMsg,
       'value.content.value',
@@ -92,7 +92,7 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
           SoftwareUpgradeProposal.fromPartial(get(transformedMsg, 'value.content.value'))
         ).finish()
       )
-    )
+    );
   } else if (
     get(msg, 'value.content.typeUrl') === '/cosmos.distribution.v1beta1.CommunityPoolSpendProposal'
   ) {
@@ -104,11 +104,11 @@ const formatTransactionMsg = (msg: TransactionMsg) => {
           CommunityPoolSpendProposal.fromPartial(get(msg, 'value.content.value'))
         ).finish()
       )
-    )
+    );
   }
 
-  return transformedMsg
-}
+  return transformedMsg;
+};
 
 const signAndBroadcastCosmosTransaction = async (
   mnemonic: string,
@@ -127,36 +127,36 @@ const signAndBroadcastCosmosTransaction = async (
       ),
     ],
     prefix: chains[crypto].prefix,
-  }
-  let signer
+  };
+  let signer;
   if (!ledgerTransport) {
-    signer = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, signerOptions)
+    signer = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, signerOptions);
   } else {
     signer = new LedgerSigner(ledgerTransport, {
       ...signerOptions,
       ledgerAppName: chains[crypto].ledgerAppName,
-    } as any)
+    } as any);
   }
-  const accounts = await signer.getAccounts()
+  const accounts = await signer.getAccounts();
   const client = await SigningStargateClient.connectWithSigner(chains[crypto].rpcApiUrl, signer, {
     registry,
     aminoTypes: new AminoTypes({ additions: aminoAdditions, prefix: signerOptions.prefix }),
-  })
+  });
   const tx = await client.sign(
     accounts[0].address,
     transactionData.msgs.map((msg: any) => formatTransactionMsg(msg)),
     transactionData.fee,
     transactionData.memo
-  )
+  );
   if (onSignEnd) {
-    onSignEnd()
+    onSignEnd();
   }
-  const result = await client.broadcastTx(TxRaw.encode(tx).finish())
+  const result = await client.broadcastTx(TxRaw.encode(tx).finish());
   if (!result.rawLog.match(/^\[/)) {
-    throw new Error(result.rawLog)
+    throw new Error(result.rawLog);
   }
-  return result
-}
+  return result;
+};
 
 const signAndBroadcastTransaction = async (
   // obtain mnemonic using decryptWallet from the useDecryptWallet hook
@@ -164,11 +164,10 @@ const signAndBroadcastTransaction = async (
   password: string,
   account: Account,
   transactionData: any,
-  securityPassword: string,
   ledgerTransport?: any,
   onSignEnd?: () => void
 ): Promise<any> => {
-  const channel = new BroadcastChannel('forbole-x')
+  const channel = new BroadcastChannel('forbole-x');
   try {
     // legacy, marked for deletion
     // const { mnemonic } = await sendMsgToChromeExt({
@@ -185,18 +184,18 @@ const signAndBroadcastTransaction = async (
       transactionData,
       ledgerTransport,
       onSignEnd
-    )
+    );
     channel.postMessage({
       event: 'transactionSuccess',
       data: result,
-    })
-    return result
+    });
+    return result;
   } catch (err) {
     channel.postMessage({
       event: 'transactionFail',
       data: err,
-    })
-    throw err
+    });
+    throw err;
   }
-}
-export default signAndBroadcastTransaction
+};
+export default signAndBroadcastTransaction;

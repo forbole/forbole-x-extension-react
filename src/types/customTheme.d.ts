@@ -9,6 +9,13 @@ declare module '@mui/material/styles' {
   interface TypographyVariantsOptions {
     body6: React.CSSProperties;
   }
+
+  interface Palette {
+    reactJsonBackground: string;
+  }
+  interface PaletteOptions {
+    reactJsonBackground?: string;
+  }
 }
 
 // Update the Typography's variant prop options

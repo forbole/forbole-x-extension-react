@@ -18,5 +18,6 @@
   "share address": "Share Address",
   "snackbar": {
     "copied": "Copied to Clipboard!"
-  }
+  },
+  "confirm": "Confirm"
 }

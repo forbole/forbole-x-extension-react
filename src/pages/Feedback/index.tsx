@@ -5,6 +5,7 @@ import { useTheme, Box, Button, CircularProgress, Typography } from '@mui/materi
 import CustomInput from 'components/inputs/CustomInput';
 import Layout from 'components/Layout/layout';
 import MUIDropdown from 'components/MUIDropdown';
+import { useNavigate } from 'react-router';
 import SuccessDialog from './components/SuccessDialog';
 
 const Feedback = () => {
@@ -14,6 +15,7 @@ const Feedback = () => {
   const [showSuccessDialog, setShowSuccessDialog] = React.useState(false);
   const [category, setCategory] = React.useState(undefined);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const dropdownValues = [t('category.feedback'), t('category.issue'), t('category.others')];
 
@@ -46,7 +48,7 @@ const Feedback = () => {
   );
 
   return (
-    <Layout title={t('tabName')} backPath="/">
+    <Layout title={t('tabName')} backCallback={() => navigate(-1)}>
       <Box
         sx={{
           padding: 2,

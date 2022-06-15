@@ -2,6 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@recoil": ["./src/recoil"],
+      "@recoil/*": ["./src/recoil/*"],
       "assets": ["./src/assets"],
       "assets/*": ["./src/assets/*"],
       "config": ["./src/config"],

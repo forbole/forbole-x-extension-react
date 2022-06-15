@@ -2,11 +2,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Divider, Typography } from '@mui/material';
 import Layout from 'components/Layout/layout';
+import { useNavigate } from 'react-router';
 import AboutLink from './components/AboutLink';
 import pkg from '../../../package.json';
 
 const About = () => {
   const { t } = useTranslation('about');
+  const navigate = useNavigate();
 
   const links: React.ComponentProps<typeof AboutLink>[] = [
     {
@@ -24,7 +26,7 @@ const About = () => {
   ];
 
   return (
-    <Layout title={t('tabName')} backPath="/">
+    <Layout title={t('tabName')} backCallback={() => navigate(-1)}>
       {links.map((x) => (
         <>
           <AboutLink key={x.label} {...x} />

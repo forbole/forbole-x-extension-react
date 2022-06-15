@@ -1,21 +1,14 @@
-import React, { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import SelectAmount from './SelectAmount'
-import SelectValidators from './SelectValidators'
-import { ReactComponent as RemoveIcon } from '../../../assets/images/icons/icon_clear.svg'
-import useIconProps from '../../../misc/useIconProps'
-import Dialog from '../../Element/dialog'
-import Button from '../../Element/button'
-import useStateHistory from '../../../misc/useStateHistory'
-import { formatCoins } from '../../../misc/utils'
-import { Loadable } from 'recoil'
-import keyBy from 'lodash/keyBy'
-
-interface Props {
-  open: boolean
-  onClose: () => void
-  account: Account
-}
+import React, { useEffect } from 'react';
+import { Loadable, useSetRecoilState } from 'recoil';
+import keyBy from 'lodash/keyBy';
+import chains from 'misc/chains';
+import MsgUtils from 'lib/MsgUtils';
+import { transactionState } from '@recoil/transaction';
+import { useNavigate } from 'react-router';
+import SelectAmount from './SelectAmount';
+import SelectValidators from './SelectValidators';
+import Dialog from '../../Element/dialog';
+import useStateHistory from '../../../misc/useStateHistory';
 
 export enum DelegationStage {
   SelectAmountStage = 'select amount',
@@ -23,16 +16,16 @@ export enum DelegationStage {
 }
 
 interface Content {
-  title: string
-  content: React.ReactNode
+  title: string;
+  content: React.ReactNode;
 }
 
 interface DelegationDialogProps {
-  account: AccountDetail
-  open: boolean
-  onClose: (open: boolean) => void
-  validators: Loadable<Validator[]>
-  defaultValidator?: Validator
+  account: AccountDetail;
+  open: boolean;
+  onClose: (open: boolean) => void;
+  validators: Loadable<Validator[]>;
+  defaultValidator?: Validator;
 }
 
 const DelegationDialog: React.FC<DelegationDialogProps> = ({
@@ -42,90 +35,56 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
   validators,
   defaultValidator,
 }) => {
-  const [amount, setAmount] = React.useState(0)
-  const [denom, setDenom] = React.useState('')
-  const validatorsMap = React.useMemo(() => keyBy(validators.contents, 'name'), [validators])
+  const navigate = useNavigate();
+  const [amount, setAmount] = React.useState(0);
+  const validatorsMap = React.useMemo(() => keyBy(validators.contents, 'name'), [validators]);
   const [delegations, setDelegations] = React.useState<
     Array<{ amount: number; validator: Validator }>
-  >([])
+  >([]);
+
+  const setTxState = useSetRecoilState(transactionState);
+
   const [stage, setStage, toPrevStage, isPrevStageAvailable] = useStateHistory(
     DelegationStage.SelectAmountStage
-  )
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm()
-  const iconProps = useIconProps()
-  const { balances, prices } = account
-  const [recipients, setRecipients] = React.useState<
-    Array<{ amount: string; denom: string; address: string }>
-  >([{ amount: '', denom: 'DSM', address: '' }])
-  const [memo, setMemo] = React.useState('')
+  );
 
   useEffect(() => {
     if (!open) {
-      setStage(DelegationStage.SelectAmountStage, true)
+      setStage(DelegationStage.SelectAmountStage, true);
     }
-  }, [open])
+  }, [open]);
 
   const confirmAmount = React.useCallback(
-    (a: number, d: string) => {
-      setAmount(a)
-      setDenom(d)
-      setDelegations([{ amount: a, validator: (defaultValidator || {}) as Validator }])
-      setStage(DelegationStage.SelectValidatorsStage)
+    (a: number) => {
+      setAmount(a);
+      setDelegations([{ amount: a, validator: (defaultValidator || {}) as Validator }]);
+      setStage(DelegationStage.SelectValidatorsStage);
     },
     [setAmount, setStage, defaultValidator]
-  )
-  const [loading, setLoading] = React.useState(false)
-  // const confirmDelegations = React.useCallback(
-  //   async (d: Array<{ amount: number; validator: Validator }>, memo: string) => {
-  //     try {
-  //       setLoading(true)
-  //       const msgs: TransactionMsgDelegate[] = d.map((r) => {
-  //         // const coinsToSend = getEquivalentCoinToSend(
-  //         //   { amount: r.amount, denom },
-  //         //   amount.coins,
-  //         //   availableTokens.tokens_prices
-  //         // )
-  //         return {
-  //           typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
-  //           value: {
-  //             delegatorAddress: account.address,
-  //             validatorAddress: r.validator.address,
-  //             amount: {
-  //               amount: Math.round(coinsToSend.amount).toString(),
-  //               denom: coinsToSend.denom,
-  //             },
-  //           },
-  //         }
-  //       })
-  //       await sendTransaction(password, account.address, {
-  //         msgs,
-  //         memo,
-  //       })
-  //       setLoading(false)
-  //       onClose()
-  //     } catch (err) {
-  //       setLoading(false)
-  //     }
-  //   },
-  //   [setStage, password, availableTokens, account, denom, sendTransaction]
-  // )
+  );
 
   const confirmDelegations = React.useCallback(
     async (d: Array<{ amount: number; validator: Validator }>, memo: string) => {
       try {
-        console.log('delegation sent')
+        const tx = MsgUtils.createDelegateTxMsg({
+          delegatorAddress: account.address,
+          delegations: d,
+          denom: chains[account.chain].stakingDenom,
+        });
+
+        setTxState({
+          chainID: account.chain,
+          address: account.address,
+          transactionData: { memo, msgs: tx },
+        });
+
+        navigate('/confirm-tx');
       } catch (err) {
-        setLoading(false)
+        console.log(err);
       }
     },
-    [setStage, account, denom]
-  )
+    [setStage, account]
+  );
 
   const content: Content = React.useMemo(() => {
     switch (stage) {
@@ -133,40 +92,38 @@ const DelegationDialog: React.FC<DelegationDialogProps> = ({
         return {
           title: 'Delegate',
           content: <SelectAmount account={account} onConfirm={confirmAmount} />,
-        }
+        };
       case DelegationStage.SelectValidatorsStage:
         return {
           title: 'Delegate',
           content: (
             <SelectValidators
-              // crypto={crypto}
               account={account}
               delegations={delegations}
-              validators={validators}
               amount={amount}
-              // price={prices}
-              denom={denom}
+              denom={chains[account.chain].stakingDenom}
               onConfirm={confirmDelegations}
-              loading={loading}
               validatorsMap={validatorsMap}
             />
           ),
-        }
+        };
+      default:
+        return null;
     }
-  }, [stage, account, onClose, setStage, toPrevStage])
+  }, [stage, account, onClose, setStage, toPrevStage]);
 
   return (
     <Dialog
       title={content.title}
       open={open}
       onClose={() => {
-        onClose(false)
+        onClose(false);
       }}
       toPrevStage={isPrevStageAvailable ? toPrevStage : null}
     >
-      <>{content.content}</>
+      {content.content}
     </Dialog>
-  )
-}
+  );
+};
 
-export default DelegationDialog
+export default DelegationDialog;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, DialogContent, DialogActions, Typography, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Layout from 'components/Layout/layout';
-import TxSuccess from 'components/svg/TxSuccess';
+import TxSuccessSvg from 'components/svg/TxSuccessSvg';
 import IconCross from 'components/svg/IconCross';
 import { useUnlockWallets, useUpdatePassword } from '../../../../../../recoil/general';
 import PasswordInput from '../../../../../../components/inputs/PasswordInput';
@@ -104,7 +104,7 @@ const ChangePasswordDialog = ({ onClose }: Props) => {
             alignItems: 'center',
           }}
         >
-          <TxSuccess />
+          <TxSuccessSvg />
           <Typography variant="h5" textAlign="center" marginBottom={4}>
             {t('general.changePwDialog.stage3.title')}
           </Typography>
