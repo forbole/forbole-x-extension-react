@@ -8,6 +8,7 @@ import confirmTx from './confirmTx.json';
 import error from './error.json';
 import enterWalletPW from './enterWalletPW.json';
 import txResult from './txResult.json';
+import support from './support.json';
 
 const en = {
   common,
@@ -20,6 +21,7 @@ const en = {
   error,
   enterWalletPW,
   txResult,
+  support,
 };
 
 export default en;

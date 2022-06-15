@@ -12,6 +12,16 @@ const options = {
         onClick: (e) => e.stopPropagation(),
       },
     },
+    ul: {
+      props: {
+        class: 'ml-5 list-disc',
+      },
+    },
+    ol: {
+      props: {
+        class: 'ml-5 list-decimal',
+      },
+    },
   },
 }
 

@@ -64,6 +64,9 @@ module.exports = {
           100: '#25282D',
           200: '#2B2F35',
         },
+        divider: {
+          100: '#34383E',
+        },
         primary: {
           100: '#007FFF',
         },
@@ -76,5 +79,6 @@ module.exports = {
       },
     },
   },
+  // eslint-disable-next-line global-require
   plugins: [require('@tailwindcss/forms')({ strategy: 'class' }), require('nightwind')],
 }
