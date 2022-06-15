@@ -34,7 +34,7 @@ const GasEstimation = ({
   onGasChanged,
   gasFee,
 }: Props) => {
-  const { t } = useTranslation('confirmtx');
+  const { t } = useTranslation('confirmTx');
   const [isEditGas, setIsEditGas] = React.useState(false);
 
   const onChange = React.useCallback(

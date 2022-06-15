@@ -16,7 +16,7 @@ type Props = {
  * A component that renders transaction data and fee in json form
  */
 const TxDataView = ({ txData, fee }: Props) => {
-  const { t } = useTranslation('confirmtx');
+  const { t } = useTranslation('confirmTx');
   const MUItheme = useTheme();
   const theme = useRecoilValue(themeState);
   const [showData, setShowData] = React.useState(false);

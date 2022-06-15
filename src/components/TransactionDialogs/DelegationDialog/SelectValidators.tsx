@@ -99,7 +99,7 @@ const SelectValidators = ({
         );
       }}
     >
-      <Box minHeight={360} maxHeight={600}>
+      <Box>
         <Box px={4} display="flex" sx={{ flexDirection: 'row', alignItems: 'flex-start' }}>
           <p>{t('total delegation amount')}</p>
           <p className="font-bold pl-2">{amount}</p>
