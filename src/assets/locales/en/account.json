@@ -49,8 +49,8 @@
       "manage": "Manage",
       "delegate": "Delegate",
       "redelegate": "Redelegate",
-      "withdrawRewards": "Withdraw Rewards",
-      "undelegate": "Undelegate"
+      "undelegate": "Undelegate",
+      "withdrawRewards": "Withdraw Rewards"
     }
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import useBottomScroll from 'hooks/useBottomScroll';
 import useTxForAddress from 'hooks/useTxForAddress';
-import FormatUtils from 'lib/FormatUtils';
+import TxFormatUtils from 'lib/TxFormatUtils';
 import { Loadable } from 'recoil';
 import { Account } from '@cosmjs/stargate';
 import { useTranslation } from 'react-i18next';
@@ -44,7 +44,7 @@ const useHooks = ({
 
   const transactions = React.useMemo(() => {
     if (txData.length > 0 && validators.state === 'hasValue') {
-      return FormatUtils.formatTx(txData, validators.contents);
+      return TxFormatUtils.formatTx(txData, validators.contents);
     }
     return [];
   }, [txData, validators.state]);
@@ -104,9 +104,9 @@ const useHooks = ({
     const filterArr = ['', 'bank', 'staking', 'distribution', 'gov', 'slashing'];
 
     if (filterType === 0) {
-      return FormatUtils.organizeIntoDates(truncatedTx);
+      return TxFormatUtils.organizeIntoDates(truncatedTx);
     }
-    return FormatUtils.organizeIntoDates(
+    return TxFormatUtils.organizeIntoDates(
       truncatedTx.filter((tx) => tx.type.includes(filterArr[filterType]))
     );
   }, [truncatedTx, filterType]);

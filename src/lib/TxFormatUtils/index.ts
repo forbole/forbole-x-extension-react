@@ -250,10 +250,10 @@ const formatWithdrawRewardsTx = (transaction: any) => {
 
 const getNameOrAddress = (validator: Validator) => _.get(validator, 'name', validator?.address);
 
-const FormatUtils = {
+const TxFormatUtils = {
   formatTx,
   organizeIntoDates,
   getNameOrAddress,
 };
 
-export default FormatUtils;
+export default TxFormatUtils;

@@ -1,4 +1,4 @@
-import { EnglishMnemonic } from '@cosmjs/crypto'
+import { EnglishMnemonic } from '@cosmjs/crypto';
 import Big from 'big.js';
 import keyBy from 'lodash/keyBy';
 import groupBy from 'lodash/groupBy';
@@ -25,7 +25,12 @@ export const sumCoinsValues = (coins: Coin[], prices: { price: number; token: To
     .toNumber();
 };
 
-export const formatCoin = (chainId: string, coin: Coin, compact?: boolean) => {
+export const formatCoin = (
+  chainId: string,
+  coin: Coin,
+  compact?: boolean,
+  includeDenom?: boolean
+) => {
   const chain = chains[chainId];
   const token = chain.tokens.find((t) => t.denom === coin.denom) || {
     denom: coin.denom,
@@ -41,6 +46,35 @@ export const formatCoin = (chainId: string, coin: Coin, compact?: boolean) => {
       .div(10 ** token.digit)
       .toNumber()
   )} ${token.symbol}`;
+};
+
+export const formatCoinV2 = (
+  chainId: string,
+  coin: Coin,
+  compact?: boolean,
+  includeDenom?: boolean
+) => {
+  const chain = chains[chainId];
+  const token = chain.tokens.find((t) => t.denom === coin.denom) || {
+    denom: coin.denom,
+    symbol: coin.denom,
+    digit: 1,
+  };
+  return {
+    formatted: `${new Intl.NumberFormat('en', {
+      signDisplay: 'never',
+      maximumFractionDigits: compact ? 2 : 6,
+      notation: compact ? 'compact' : undefined,
+    }).format(
+      Big(coin.amount)
+        .div(10 ** token.digit)
+        .toNumber()
+    )} ${token.symbol}`,
+    token,
+    amount: Big(coin.amount)
+      .div(10 ** token.digit)
+      .toNumber(),
+  };
 };
 
 export const formatCoins = (

@@ -4,7 +4,7 @@ import IconDelegateTx from 'components/svg/IconDelegateTx';
 import { formatCoin } from 'misc/utils';
 import IconTx from 'components/svg/IconTx';
 import _ from 'lodash';
-import FormatUtils from 'lib/FormatUtils';
+import TxFormatUtils from 'lib/TxFormatUtils';
 import { useRecoilValueLoadable } from 'recoil';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import chains from 'misc/chains';
@@ -58,7 +58,7 @@ const useHooks = ({
               ),
             }}
             values={{
-              validator: FormatUtils.getNameOrAddress(validator),
+              validator: TxFormatUtils.getNameOrAddress(validator),
             }}
           />
         ),
@@ -191,8 +191,8 @@ const useHooks = ({
               ),
             }}
             values={{
-              userA: FormatUtils.getNameOrAddress(validatorA),
-              userB: FormatUtils.getNameOrAddress(validatorB),
+              userA: TxFormatUtils.getNameOrAddress(validatorA),
+              userB: TxFormatUtils.getNameOrAddress(validatorB),
             }}
           />
         ),
@@ -263,7 +263,7 @@ const useHooks = ({
                 />
               ),
             }}
-            values={{ user: FormatUtils.getNameOrAddress(validator) }}
+            values={{ user: TxFormatUtils.getNameOrAddress(validator) }}
           />
         ),
         icon: <IconDelegateTx />,
@@ -300,7 +300,7 @@ const useHooks = ({
               ),
             }}
             values={{
-              user: FormatUtils.getNameOrAddress(validator),
+              user: TxFormatUtils.getNameOrAddress(validator),
             }}
           />
         ),
@@ -326,7 +326,7 @@ const useHooks = ({
               ),
             }}
             values={{
-              user: FormatUtils.getNameOrAddress(validator),
+              user: TxFormatUtils.getNameOrAddress(validator),
             }}
           />
         ),

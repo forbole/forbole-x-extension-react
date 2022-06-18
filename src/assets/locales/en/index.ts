@@ -9,6 +9,7 @@ import error from './error.json';
 import enterWalletPW from './enterWalletPW.json';
 import txResult from './txResult.json';
 import support from './support.json';
+import redelegate from './redelegate.json';
 
 const en = {
   common,
@@ -22,6 +23,7 @@ const en = {
   enterWalletPW,
   txResult,
   support,
+  redelegate,
 };
 
 export default en;

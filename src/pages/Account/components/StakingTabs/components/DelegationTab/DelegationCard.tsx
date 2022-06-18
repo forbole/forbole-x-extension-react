@@ -1,6 +1,10 @@
 import Avatar from 'components/Element/avatar';
 import { formatCoin, formatCoins, formatPercentage } from 'misc/utils';
 import React from 'react';
+import { Menu, MenuItem } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 const DelegationCard = ({
   chain,
@@ -11,6 +15,45 @@ const DelegationCard = ({
   delegation: Delegation;
   validator?: Validator;
 }) => {
+  const { address } = useParams();
+
+  const navigate = useNavigate();
+  const { t } = useTranslation('account');
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>();
+  const open = Boolean(menuAnchorEl);
+
+  const handleManageClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setMenuAnchorEl(null);
+  };
+
+  const menuOptions = React.useMemo(() => {
+    return [
+      {
+        label: t('staking.delegation.delegate'),
+        onClick: () => {},
+      },
+      {
+        label: t('staking.delegation.redelegate'),
+        onClick: () => {
+          console.log(address, validator.address);
+          navigate(`/redelegation/${address}/${validator.address}`);
+        },
+      },
+      {
+        label: t('staking.delegation.undelegate'),
+        onClick: () => {},
+      },
+      {
+        label: t('staking.delegation.withdrawRewards'),
+        onClick: () => {},
+      },
+    ];
+  }, [validator]);
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -22,6 +65,7 @@ const DelegationCard = ({
           </div>
         </div>
         <button
+          onClick={handleManageClick}
           type="button"
           className="bg-primary-100 rounded-md px-4 py-2 text-white nightwind-prevent hover:opacity-80"
         >
@@ -38,6 +82,13 @@ const DelegationCard = ({
           <p>{formatCoins(chain.chainId, delegation.rewards)}</p>
         </div>
       </div>
+      <Menu anchorEl={menuAnchorEl} open={open} onClose={handleClose}>
+        {menuOptions.map((option) => (
+          <MenuItem key={option.label} onClick={option.onClick}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </Menu>
     </div>
   );
 };
