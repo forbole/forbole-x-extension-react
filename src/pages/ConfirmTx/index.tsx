@@ -32,6 +32,8 @@ const ConfirmTx = () => {
 
   const [txData, setTxData] = useRecoilState(transactionState);
 
+  console.log(txData);
+
   const {
     address,
     chainID,

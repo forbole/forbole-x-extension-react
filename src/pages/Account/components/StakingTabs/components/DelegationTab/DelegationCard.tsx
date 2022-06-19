@@ -39,13 +39,14 @@ const DelegationCard = ({
       {
         label: t('staking.delegation.redelegate'),
         onClick: () => {
-          console.log(address, validator.address);
           navigate(`/redelegation/${address}/${validator.address}`);
         },
       },
       {
         label: t('staking.delegation.undelegate'),
-        onClick: () => {},
+        onClick: () => {
+          navigate(`/undelegate/${address}/${validator.address}`);
+        },
       },
       {
         label: t('staking.delegation.withdrawRewards'),

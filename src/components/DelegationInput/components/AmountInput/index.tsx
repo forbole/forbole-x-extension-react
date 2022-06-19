@@ -31,7 +31,7 @@ const AmountInput = ({
   const [showSlider, setShowSlider] = React.useState(false);
 
   return (
-    <Box sx={styles.container}>
+    <Box>
       <Box display="flex">
         <TextField
           sx={styles.amountInput}

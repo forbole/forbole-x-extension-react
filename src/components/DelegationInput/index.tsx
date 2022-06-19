@@ -32,10 +32,7 @@ type Props = {
    */
   handleChange: (event: any) => void;
 
-  /**
-   * The component type. Controls the label that will be rendered above the validator's name.
-   */
-  type: 'delegate' | 'redelegate';
+  validatorLabel: string;
 
   percent: number;
 
@@ -54,22 +51,17 @@ const DelegationInput = ({
   delegationAmount,
   tokenDenom,
   handleChange,
-  type,
+  validatorLabel,
   percent,
   handleSliderChanged,
   handlePercentChanged,
 }: Props) => {
-  const { t } = useTranslation('redelegate');
-
-  const validatorLabel = () => {
-    if (type === 'delegate') return t('Delegate');
-    return t('redelegate:redelegateFrom');
-  };
+  const { t } = useTranslation('staking');
 
   return (
     <Box sx={styles.container}>
-      <Box flex={1}>
-        <Typography sx={styles.labelText}>{validatorLabel()}</Typography>
+      <Box sx={styles.labelContainer}>
+        <Typography sx={styles.labelText}>{validatorLabel}</Typography>
         <RedelegateValidatorLink
           avatar={validator.image}
           name={validator.name}

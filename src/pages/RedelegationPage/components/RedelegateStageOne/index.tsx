@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Box, Typography } from '@mui/material';
 import _ from 'lodash';
 import { formatCoin, formatCoinV2 } from 'misc/utils';
@@ -36,6 +36,8 @@ const RedelegateStageOne = ({ validator, delegatedAmount, onConfirm, chainID }: 
   const actualDenoms = React.useMemo(() => {
     return formatCoinV2(chainID, delegatedAmount);
   }, [delegatedAmount]);
+
+  const { t } = useTranslation('staking');
 
   const [amountToRedelegate, setAmountToRedelegate] = React.useState(actualDenoms.amount);
 
@@ -82,12 +84,12 @@ const RedelegateStageOne = ({ validator, delegatedAmount, onConfirm, chainID }: 
       </Typography>
 
       <DelegationInput
+        validatorLabel={t('staking:redelegate')}
         validator={validator}
         chainID={chainID}
         delegationAmount={amountToRedelegate}
         tokenDenom={actualDenoms.token.symbol}
         percent={percent}
-        type="redelegate"
         handleChange={handleChange('amount')}
         handlePercentChanged={handleChange('percent')}
         handleSliderChanged={handleChange('slider')}

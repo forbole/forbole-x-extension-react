@@ -1,6 +1,7 @@
 const styles = {
   container: {
     display: 'flex',
+    width: '100%',
     padding: (theme) => `${theme.spacing(1)} ${theme.spacing(1.5)}`,
     backgroundColor: 'background.paper',
     alignItems: 'center',

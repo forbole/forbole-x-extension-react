@@ -1,5 +1,6 @@
 import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import i18next from 'i18next';
 import DelegationInput from './index';
 
 type CompType = typeof DelegationInput;
@@ -28,12 +29,12 @@ const defaultProps: PropType = {
   handleChange: () => {},
   handleSliderChanged: () => {},
   handlePercentChanged: () => {},
-  type: 'delegate',
+  validatorLabel: i18next.t('staking:delegate'),
 };
 
 const redelegateProps: PropType = {
   ...defaultProps,
-  type: 'redelegate',
+  validatorLabel: i18next.t('staking:redelegate'),
 };
 
 export const Delegate: ComponentStory<CompType> = () => <DelegationInput {...defaultProps} />;

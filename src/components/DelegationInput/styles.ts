@@ -4,6 +4,7 @@
 const styles = {
   container: {
     display: 'flex',
+    flex: 1,
     justifyContent: 'space-between',
     marginTop: 4,
   },
@@ -14,9 +15,11 @@ const styles = {
     mx: 1,
   },
   amountContainer: {
-    flex: 1,
     display: 'flex',
     flexDirection: 'column',
+  },
+  labelContainer: {
+    width: '50%',
   },
 };
 
