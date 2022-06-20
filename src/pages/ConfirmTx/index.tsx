@@ -70,6 +70,15 @@ const ConfirmTx = () => {
           details: <ConfirmTxValidatorList msgs={msgs} />,
         };
 
+      case '/cosmos.staking.v1beta1.MsgUndelegate':
+        return {
+          icon: <IconDelegateTx />,
+          title: t('undelegate.undelegateAmount', {
+            amount: formatCoin(chainID, MsgUtils.calculateTotalTokens(msgs)),
+          }),
+          details: <ConfirmTxValidatorList msgs={msgs} />,
+        };
+
       default:
         return {
           icon: null,
@@ -81,14 +90,16 @@ const ConfirmTx = () => {
   const isLoading = gasEstimationLoading || signerInfoLoading;
 
   const handleConfirm = React.useCallback(() => {
+    // note: this call is async, need to think of a better way to handle this
     setTxData({
       ...txData,
       transactionData: {
         ...txData.transactionData,
         ...signerInfo,
-        // fee: computedFee,
+        fee: computedFee,
       },
     });
+
     navigate('/confirm-tx-unlock-wallet');
   }, [computedFee, signerInfo]);
 

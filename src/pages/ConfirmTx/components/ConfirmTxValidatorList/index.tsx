@@ -45,9 +45,22 @@ const ConfirmTxValidatorList = ({ msgs }: Props) => {
     };
   };
 
+  const titleText = () => {
+    const type = _.get(msgs, '[0].typeUrl');
+
+    switch (type) {
+      case '/cosmos.staking.v1beta1.MsgUndelegate':
+        return t('undelegate.undelegateFrom');
+      case '/cosmos.staking.v1beta1.MsgDelegate':
+        return t('delegate.delegateTo');
+      default:
+        return '';
+    }
+  };
+
   return (
     <Box sx={styles.container}>
-      <Typography sx={styles.titleText}>{t('delegate.delegateTo')}</Typography>
+      <Typography sx={styles.titleText}>{titleText()}</Typography>
 
       {validatorsAddresses.map((validator, idx) => (
         <>

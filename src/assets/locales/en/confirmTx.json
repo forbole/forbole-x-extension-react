@@ -12,5 +12,9 @@
   "delegate": {
     "delegateAmount": "Delegate {{amount}}",
     "delegateTo": "Delegate to"
+  },
+  "undelegate": {
+    "undelegateAmount": "Undelegate {{amount}}",
+    "undelegateFrom": "Undelegate from"
   }
 }
