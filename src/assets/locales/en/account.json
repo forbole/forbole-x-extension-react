@@ -33,5 +33,23 @@
       "sendAmtToAddr": "<linkA>{{addr}}</linkA> sent {{amount}} to the following recipients:",
       "addrAmtReceived": "<linkA>{{addr}}</linkA> received {{amount}}"
     }
+  },
+  "staking": {
+    "title": "Staking",
+    "tabs": {
+      "delegation": "Delegation",
+      "redelegation": "Redelegation",
+      "unbonding": "Unbonding"
+    },
+    "delegation": {
+      "commission": "Commission",
+      "delegated": "Delegated",
+      "rewards": "Rewards",
+      "manage": "Manage",
+      "delegate": "Delegate",
+      "redelegate": "Redelegate",
+      "undelegate": "Undelegate",
+      "withdrawRewards": "Withdraw Rewards"
+    }
   }
 }

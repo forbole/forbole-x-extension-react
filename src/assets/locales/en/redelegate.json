@@ -1,0 +1,9 @@
+{
+  "title": "Redelegate",
+  "totalDelegationAmount": "Total delegation Amount <bold>{{amount}}</bold>",
+  "redelegateFrom": "Redelegate from",
+  "amount": "Amount",
+  "note": "Note (Memo)",
+  "selectValidator": "Select validator",
+  "description": "Description (optional)"
+}

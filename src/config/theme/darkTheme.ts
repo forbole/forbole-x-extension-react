@@ -95,6 +95,10 @@ const darkTheme = createTheme({
       three: '#FC6A8A',
     },
     cardBackground: '#3D4047',
+    custom: {
+      white: '#ffffff',
+      grey: '#9d9d9d',
+    },
     // color values from figma
   },
 });

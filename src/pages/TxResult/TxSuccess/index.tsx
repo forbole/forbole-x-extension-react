@@ -9,6 +9,7 @@ import MsgUtils from 'lib/MsgUtils';
 import TxSuccessSvg from 'components/svg/TxSuccessSvg';
 import IconCross from 'components/svg/IconCross';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import styles from '../styles';
 import useHooks from '../useHooks';
 
@@ -24,7 +25,7 @@ const TxSuccess = () => {
   const txData = useRecoilValue(transactionState);
 
   const i18nContent = React.useMemo(() => {
-    const txType = txData.transactionData.msgs[0].typeUrl;
+    const txType = _.get(txData, 'transactionData.msgs[0].typeUrl');
     if (txType === '/cosmos.staking.v1beta1.MsgDelegate')
       return t('successDelegation', {
         amount: formatCoin(
@@ -32,6 +33,14 @@ const TxSuccess = () => {
           MsgUtils.calculateTotalTokens(txData.transactionData.msgs)
         ),
       });
+    if (txType === '/cosmos.staking.v1beta1.MsgUndelegate') {
+      return t('successUndelegation', {
+        amount: formatCoin(
+          txData.chainID,
+          MsgUtils.calculateTotalTokens(txData.transactionData.msgs)
+        ),
+      });
+    }
 
     return '';
   }, [txData]);

@@ -69,6 +69,36 @@ const createDelegateTxMsg = ({
   }));
 };
 
+const createUndelegateMessage = ({
+  delegatorAddress,
+  validatorAddress,
+  undelegateAmount,
+}: {
+  delegatorAddress: string;
+  validatorAddress: string;
+  undelegateAmount: { amount: string; denom: string };
+}): TransactionMsgUndelegate[] => {
+  const { amount, denom } = undelegateAmount;
+
+  const exponent = Object.values(chains)
+    .find((chain) => chain.stakingDenom === denom)
+    .tokens.find((token) => token.denom === denom).digit;
+
+  return [
+    {
+      typeUrl: '/cosmos.staking.v1beta1.MsgUndelegate',
+      value: {
+        delegatorAddress,
+        validatorAddress,
+        amount: {
+          amount: String(Number(amount) * 10 ** exponent),
+          denom,
+        },
+      },
+    },
+  ];
+};
+
 const MsgUtils = {
   getTxTypeFromMsgArr,
   calculateTotalTokens,
@@ -76,6 +106,7 @@ const MsgUtils = {
 
   // tx msg creation
   createDelegateTxMsg,
+  createUndelegateMessage,
 };
 
 export default MsgUtils;

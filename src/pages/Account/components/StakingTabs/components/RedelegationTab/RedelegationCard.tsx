@@ -1,7 +1,7 @@
-import React from 'react'
-import { formatDuration, intervalToDuration, format } from 'date-fns'
-import { formatCoin } from '../../../misc/utils'
-import Avatar from '../../Element/avatar'
+import { format, formatDuration, intervalToDuration } from 'date-fns';
+import Avatar from 'components/Element/avatar';
+import { formatCoin } from 'misc/utils';
+import React from 'react';
 
 const RedelegationCard = ({
   chain,
@@ -9,15 +9,15 @@ const RedelegationCard = ({
   fromValidator,
   toValidator,
 }: {
-  chain: Chain
-  redelegation: Redelegation
-  fromValidator?: Validator
-  toValidator?: Validator
+  chain: Chain;
+  redelegation: Redelegation;
+  fromValidator?: Validator;
+  toValidator?: Validator;
 }) => {
   const duration = intervalToDuration({
     start: new Date(),
     end: new Date(redelegation.completion),
-  })
+  });
 
   return (
     <div className="space-y-3">
@@ -56,7 +56,7 @@ const RedelegationCard = ({
                 format: [
                   Object.entries(duration)
                     .filter(([_, value]) => value)
-                    .map(([unit, _]) => unit)[0],
+                    .map(([unit]) => unit)[0],
                 ],
                 delimiter: ', ',
               })}
@@ -66,33 +66,7 @@ const RedelegationCard = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-interface Props {
-  chain: Chain
-  redelegations: Redelegation[]
-  validatorsMap: { [address: string]: Validator }
-}
-
-const RedelegationTab = ({ chain, redelegations, validatorsMap }: Props) => {
-  return (
-    <div>
-      {redelegations.map((e, i) => (
-        <div
-          key={e.completion}
-          className={`p-6 odd:bg-surface-200 even:bg-surface-100 last:rounded-b-xl text-black`}
-        >
-          <RedelegationCard
-            redelegation={e}
-            fromValidator={validatorsMap[e.fromValidator]}
-            toValidator={validatorsMap[e.toValidator]}
-            chain={chain}
-          />
-        </div>
-      ))}
-    </div>
-  )
-}
-
-export default RedelegationTab
+export default RedelegationCard;

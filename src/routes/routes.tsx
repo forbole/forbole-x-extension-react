@@ -7,11 +7,12 @@ import ConfirmTx from 'pages/ConfirmTx';
 import ConfirmTxUnlockWallet from 'pages/ConfirmTxUnlockWallet';
 import TxSuccess from 'pages/TxResult/TxSuccess';
 import TxReject from 'pages/TxResult/TxReject';
+import Support from 'pages/support';
+import UndelegatePage from 'pages/UndelegatePage';
 import Account from '../pages/Account';
 import AddressBook from '../pages/address-book';
 import Setting from '../pages/Settings';
 import Wallet from '../pages/wallet';
-import Support from 'pages/support';
 
 const routes = [
   { path: '/', key: 'ROOT', exact: true, component: <Wallet /> },
@@ -37,6 +38,17 @@ const routes = [
     path: '/tx-reject/:error',
     key: 'TX-REJECT',
     component: <TxReject />,
+  },
+  // Complete in another branch
+  // {
+  //   path: '/redelegation/:address/:validatorAddress',
+  //   key: 'REDELEGATION',
+  //   component: <RedelegationPage />,
+  // },
+  {
+    path: '/undelegate/:address/:validatorAddress',
+    key: 'UNDELEGATE',
+    component: <UndelegatePage />,
   },
   //   {
   //     path: "/app",
