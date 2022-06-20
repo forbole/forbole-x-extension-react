@@ -3,14 +3,28 @@ import { Box, Typography } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
 import { formatCoinV2 } from 'misc/utils';
 import DelegationInput from 'components/DelegationInput';
+import styles from './styles';
 
 type Props = {
+  /**
+   * The list of validators for the chain.
+   */
   validators: Validator[];
 
+  /**
+   * The total (max) delegation available for this component to manage.
+   */
   totalDelegation: Coin;
 
+  /**
+   * The staking account.
+   */
   account: Account;
 
+  /**
+   * Preselected validators that will appear in the list on mount. Should be
+   * an array of addresses
+   */
   preSelectedValidators?: string[];
 
   /**
@@ -28,6 +42,10 @@ const formatPercent = (decimal: number) => {
   return (decimal * 100).toFixed(2);
 };
 
+/**
+ * A component for staking type transactions where users can select validators
+ * to delegate to/redelegate to/undelegate from
+ */
 const MultiFunctionStaking = ({
   validators,
   account,
@@ -59,7 +77,6 @@ const MultiFunctionStaking = ({
       };
     }, {});
 
-    console.log('amount', amount);
     const amountMap = preSelectedValidators.reduce((acc, cur) => {
       return {
         ...acc,
@@ -126,13 +143,18 @@ const MultiFunctionStaking = ({
     [delegatedAmounts, percents]
   );
 
+  /**
+   * Bubble the delegated amount value to parent state.
+   * This is done in a useEffect instead of the callback
+   * so we don't have to deal with the async nature of setState.
+   */
   React.useEffect(() => {
     onChange(delegatedAmounts);
   }, [delegatedAmounts]);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <Typography variant="body1" sx={{ display: 'flex' }}>
+    <Box sx={styles.container}>
+      <Typography variant="body1" sx={styles.titleBold}>
         <Trans
           i18nKey="staking:totalDelegationAmount"
           values={{
@@ -143,11 +165,7 @@ const MultiFunctionStaking = ({
           }}
         />
       </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-        }}
-      >
+      <Box sx={styles.validatorList}>
         {selectedValidators.map((validatorAddress) => {
           return (
             <DelegationInput

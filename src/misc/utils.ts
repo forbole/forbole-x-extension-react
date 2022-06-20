@@ -48,12 +48,11 @@ export const formatCoin = (
   )} ${token.symbol}`;
 };
 
-export const formatCoinV2 = (
-  chainId: string,
-  coin: Coin,
-  compact?: boolean,
-  includeDenom?: boolean
-) => {
+/**
+ * An advanced version of formatCoin that returns the formatted human readable string,
+ * token symbol information, and raw amount (as a number) in an object
+ */
+export const formatCoinV2 = (chainId: string, coin: Coin, compact?: boolean) => {
   const chain = chains[chainId];
   const token = chain.tokens.find((t) => t.denom === coin.denom) || {
     denom: coin.denom,

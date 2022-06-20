@@ -3,16 +3,34 @@ import { Box, Card, InputAdornment, Slider, TextField } from '@mui/material';
 import styles from './styles';
 
 type Props = {
+  /**
+   * The amount that the user has selected.
+   */
   amount: number;
 
+  /**
+   * The denomination of the coin/token being manipulated.
+   */
   denomSymbol: string;
 
+  /**
+   * The percent of the maximum stakingable value.
+   */
   percent: number;
 
+  /**
+   * Callback when the amount input is changed.
+   */
   handleAmountChanged: (event: any) => void;
 
+  /**
+   * Callback when the percent input is changed.
+   */
   handlePercentChanged: (event: any) => void;
 
+  /**
+   * Callback when the percent slider is changed.
+   */
   handleSliderChanged: (event: any, newValue: any) => void;
 };
 

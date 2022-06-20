@@ -34,7 +34,6 @@
       "addrAmtReceived": "<linkA>{{addr}}</linkA> received {{amount}}"
     }
   },
-  "hello": "world",
   "staking": {
     "title": "Staking",
     "tabs": {
