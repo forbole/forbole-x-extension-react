@@ -8,7 +8,7 @@ import { fetchCoingecko } from 'services/fetches';
  */
 const useCurrencyValue = (coinGeckoID: string, currency: string) => {
   const [loading, setLoading] = React.useState(true);
-  const [value, setValue] = React.useState(-1);
+  const [value, setValue] = React.useState(undefined);
 
   const fetchValue = async () => {
     const response = await fetchCoingecko(

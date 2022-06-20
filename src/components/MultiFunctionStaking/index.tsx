@@ -1,15 +1,17 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
 import { formatCoinV2 } from 'misc/utils';
 import DelegationInput from 'components/DelegationInput';
+import { useRecoilValueLoadable } from 'recoil';
+import { validatorsState } from '@recoil/validators';
 import styles from './styles';
 
 type Props = {
   /**
    * The list of validators for the chain.
    */
-  validators: Validator[];
+  // validators: Validator[];
 
   /**
    * The total (max) delegation available for this component to manage.
@@ -47,7 +49,6 @@ const formatPercent = (decimal: number) => {
  * to delegate to/redelegate to/undelegate from
  */
 const MultiFunctionStaking = ({
-  validators,
   account,
   totalDelegation,
   preSelectedValidators = [],
@@ -55,6 +56,8 @@ const MultiFunctionStaking = ({
   onChange,
 }: Props) => {
   const { t } = useTranslation('staking');
+
+  const validators = useRecoilValueLoadable(validatorsState({ chainId: account.chain }));
 
   const [selectedValidators, setSelectedValidators] = React.useState<any>([]);
 
@@ -152,6 +155,10 @@ const MultiFunctionStaking = ({
     onChange(delegatedAmounts);
   }, [delegatedAmounts]);
 
+  if (validators.state !== 'hasValue') {
+    return <CircularProgress />;
+  }
+
   return (
     <Box sx={styles.container}>
       <Typography variant="body1" sx={styles.titleBold}>
@@ -171,7 +178,7 @@ const MultiFunctionStaking = ({
             <DelegationInput
               key={validatorAddress}
               validatorLabel={validatorLabel()}
-              validator={validators.find((x) => x.address === validatorAddress)}
+              validator={validators.contents.find((x) => x.address === validatorAddress)}
               chainID={chainID}
               delegationAmount={delegatedAmounts[validatorAddress]}
               percent={percents[validatorAddress]}

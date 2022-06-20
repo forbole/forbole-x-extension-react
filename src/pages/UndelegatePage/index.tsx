@@ -8,34 +8,27 @@ import CoinCurrency from 'components/CoinCurrency';
 import _ from 'lodash';
 import { useRecoilValue } from 'recoil';
 import { currencyState } from '@recoil/settings';
+import { formatCoinV2 } from 'misc/utils';
 import useHooks from './useHooks';
 import styles from './styles';
 
 const UndelegatePage = () => {
   const { t } = useTranslation('staking');
-  const navigate = useNavigate();
-  const currency = useRecoilValue(currencyState);
-
   const {
     account,
-    isCurrencyValueLoading,
     currencyValue,
-    validators,
     delegatedAmount,
     memo,
     setMemo,
     validatorAddress,
-    redelegations,
-    setRedelegations,
+    undelegateAmount,
+    setUndelegateAmount,
     onConfirm,
-    formattedCoin,
   } = useHooks();
 
-  if (validators.state !== 'hasValue') {
-    return <CircularProgress />;
-  }
-
-  console.log(redelegations[validatorAddress]);
+  const navigate = useNavigate();
+  const currency = useRecoilValue(currencyState);
+  const formattedCoin = formatCoinV2(account.chain, delegatedAmount);
 
   return (
     <Layout
@@ -47,11 +40,10 @@ const UndelegatePage = () => {
       <Box px={2}>
         <MultiFunctionStaking
           type="undelegate"
-          validators={validators.contents}
           totalDelegation={delegatedAmount}
           account={account}
           preSelectedValidators={[validatorAddress]}
-          onChange={setRedelegations}
+          onChange={setUndelegateAmount}
         />
 
         <Box>
@@ -77,11 +69,11 @@ const UndelegatePage = () => {
       </Box>
 
       <Box sx={styles.bottomGroup}>
-        {isCurrencyValueLoading ? (
+        {!currencyValue ? (
           <CircularProgress />
         ) : (
           <CoinCurrency
-            amount={redelegations[validatorAddress] || 0}
+            amount={undelegateAmount[validatorAddress] || 0}
             symbol={formattedCoin.token.symbol}
             currencyValue={currencyValue}
             currency={currency}
@@ -90,8 +82,8 @@ const UndelegatePage = () => {
 
         <Button
           disabled={
-            !redelegations[validatorAddress] ||
-            _.get(redelegations, `[${validatorAddress}]`) > formattedCoin.amount
+            !undelegateAmount[validatorAddress] ||
+            _.get(undelegateAmount, `[${validatorAddress}]`) > formattedCoin.amount
           }
           sx={styles.nextButton}
           variant="contained"
