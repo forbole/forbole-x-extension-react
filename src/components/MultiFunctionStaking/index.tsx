@@ -183,7 +183,7 @@ const MultiFunctionStaking = ({
               delegationAmount={delegatedAmounts[validatorAddress]}
               percent={percents[validatorAddress]}
               tokenDenom={token.symbol}
-              handleChange={handleChange(validatorAddress)('amount')}
+              handleAmountChange={handleChange(validatorAddress)('amount')}
               handleSliderChanged={handleChange(validatorAddress)('slider')}
               handlePercentChanged={handleChange(validatorAddress)('percent')}
             />

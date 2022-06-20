@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import RedelegateValidatorLink from 'pages/RedelegationPage/components/RedelegateStageOne/components/RedelegateValidatorLink';
+import RedelegateValidatorLink from 'pages/RedelegatePage/components/RedelegateStageOne/components/RedelegateValidatorLink';
 import BlockExplorerUtils from 'lib/BlockExplorerUtils';
 import React from 'react';
 import AmountInput from 'components/DelegationInput/components/AmountInput';
@@ -30,7 +30,7 @@ type Props = {
   /**
    * Callback for when the amount input is changed.
    */
-  handleChange: (event: any) => void;
+  handleAmountChange: (event: any) => void;
 
   validatorLabel: string;
 
@@ -50,9 +50,9 @@ const DelegationInput = ({
   chainID,
   delegationAmount,
   tokenDenom,
-  handleChange,
   validatorLabel,
   percent,
+  handleAmountChange,
   handleSliderChanged,
   handlePercentChanged,
 }: Props) => {
@@ -80,7 +80,7 @@ const DelegationInput = ({
         <AmountInput
           amount={delegationAmount}
           denomSymbol={tokenDenom}
-          handleAmountChanged={handleChange}
+          handleAmountChanged={handleAmountChange}
           percent={percent}
           handlePercentChanged={handlePercentChanged}
           handleSliderChanged={handleSliderChanged}

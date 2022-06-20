@@ -7,14 +7,16 @@ import { accountDetailState } from '@recoil/accounts';
 import { useParams } from 'react-router-dom';
 import { validatorsState } from '@recoil/validators';
 import { useTranslation } from 'react-i18next';
-import RedelegateStageOne from 'pages/RedelegationPage/components/RedelegateStageOne';
+import RedelegateStageOne from 'pages/RedelegatePage/components/RedelegateStageOne';
+import useCurrencyValue from 'hooks/useCurrencyValue';
+import _ from 'lodash';
 
 export enum RedelegationStage {
   stageOne,
   stageTwo,
 }
 
-const RedelegationPage = () => {
+const RedelegatePage = () => {
   const { t } = useTranslation('redelegate');
   const navigate = useNavigate();
   const { address, validatorAddress } = useParams();
@@ -27,6 +29,10 @@ const RedelegationPage = () => {
     })
   );
 
+  const { value: currencyValue, currency } = useCurrencyValue(
+    _.get(account, 'prices[0].token.coingeckoId')
+  );
+
   const validators = useRecoilValueLoadable(validatorsState({ chainId: account.chain }));
 
   const fromValidator = React.useMemo(() => {
@@ -37,11 +43,19 @@ const RedelegationPage = () => {
 
   const [stage, setStage] = React.useState(RedelegationStage.stageOne);
 
-  const onConfirmStageOne = React.useCallback(() => {}, []);
+  const [redelegationAmount, setRedelegationAmount] = React.useState(0);
+
+  const onConfirmStageOne = React.useCallback(
+    (value: number) => {
+      console.log(redelegationAmount);
+      setRedelegationAmount(value);
+    },
+    [redelegationAmount]
+  );
 
   return (
     <Layout
-      title={t('title')}
+      title={t('staking:redelegate')}
       backCallback={() => {
         if (stage === RedelegationStage.stageOne) navigate(-1);
         else setStage(RedelegationStage.stageOne);
@@ -52,13 +66,15 @@ const RedelegationPage = () => {
           delegatedAmount={
             account.delegations.find((x) => x.validator === fromValidator.address).balance
           }
-          chainID={account.chain}
           validator={fromValidator}
           onConfirm={onConfirmStageOne}
+          currency={currency}
+          currencyValue={currencyValue}
+          account={account}
         />
       )}
     </Layout>
   );
 };
 
-export default RedelegationPage;
+export default RedelegatePage;

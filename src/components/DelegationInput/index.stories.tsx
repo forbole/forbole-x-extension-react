@@ -26,7 +26,7 @@ const defaultProps: PropType = {
   delegationAmount: 1000,
   tokenDenom: 'DSM',
   percent: 100,
-  handleChange: () => {},
+  handleAmountChange: () => {},
   handleSliderChanged: () => {},
   handlePercentChanged: () => {},
   validatorLabel: i18next.t('staking:delegate'),
