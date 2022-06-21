@@ -2,9 +2,10 @@ import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import _ from 'lodash';
-import { formatCoin, formatCoinV2 } from 'misc/utils';
+import { formatCoin } from 'misc/utils';
 import DelegationInput from 'components/DelegationInput';
 import CoinCurrency from 'components/CoinCurrency';
+import FormatUtils from 'lib/FormatUtils';
 import styles from './styles';
 
 type Props = {
@@ -13,15 +14,25 @@ type Props = {
    */
   validator: Validator;
 
-  /**
-   * The staking account
-   */
-  account: Account;
+  formattedCoin: any;
+
+  chainID: string;
 
   /**
    * The amount that has been delegated to the validator
    */
   delegatedAmount: Coin;
+
+  /**
+   * The amount to redelegate. This is set by the user.
+   */
+  amountToRedelegate: number;
+
+  /**
+   * Set the amountToRedelegate value, which should be a useState value
+   * from the parent container.
+   */
+  setAmountToRedelegate: (value: number) => void;
 
   /**
    * Callback for when the user confirms the inputs during this stage
@@ -38,27 +49,24 @@ type Props = {
  * Users select the amount of currency to redelegate.
  */
 const RedelegateStageOne = ({
-  account,
+  chainID,
   currency,
   currencyValue,
   validator,
   delegatedAmount,
   onConfirm,
+  amountToRedelegate,
+  setAmountToRedelegate,
+  formattedCoin,
 }: Props) => {
-  const chainID = account.chain;
-
-  const formattedCoin = React.useMemo(() => {
-    return formatCoinV2(chainID, delegatedAmount);
-  }, [delegatedAmount]);
-
   const { t } = useTranslation('staking');
-
-  const [amountToRedelegate, setAmountToRedelegate] = React.useState(formattedCoin.amount);
 
   /**
    * Percent in decimal format 1 = 100%, 0.1 = 10%, etc
    */
-  const [percent, setPercent] = React.useState<any>(100);
+  const [percent, setPercent] = React.useState<any>(
+    FormatUtils.decimalToPercent(amountToRedelegate / Number(delegatedAmount.amount))
+  );
 
   const handleChange = React.useCallback(
     (inputType: 'amount' | 'percent' | 'slider') =>

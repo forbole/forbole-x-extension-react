@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import RedelegateStageOne from 'pages/RedelegatePage/components/RedelegateStageOne';
 import useCurrencyValue from 'hooks/useCurrencyValue';
 import _ from 'lodash';
+import { formatCoinV2 } from 'misc/utils';
 
 export enum RedelegationStage {
   stageOne,
@@ -20,6 +21,8 @@ const RedelegatePage = () => {
   const { t } = useTranslation('redelegate');
   const navigate = useNavigate();
   const { address, validatorAddress } = useParams();
+
+  const [stage, setStage] = React.useState<any>(RedelegationStage.stageOne);
 
   const wallet = useRecoilValue(currentWalletState);
   const account = useRecoilValue(
@@ -41,38 +44,46 @@ const RedelegatePage = () => {
     return validators.contents.find((v) => v.address === validatorAddress);
   }, [validators.state]);
 
-  const [stage, setStage] = React.useState(RedelegationStage.stageOne);
-
-  const [redelegationAmount, setRedelegationAmount] = React.useState(0);
-
-  const onConfirmStageOne = React.useCallback(
-    (value: number) => {
-      console.log(redelegationAmount);
-      setRedelegationAmount(value);
-    },
-    [redelegationAmount]
+  const delegatedAmount = React.useMemo(
+    () => account.delegations.find((x) => x.validator === fromValidator.address).balance,
+    [account, fromValidator]
   );
 
+  const formattedCoin = React.useMemo(() => {
+    return formatCoinV2(account.chain, delegatedAmount);
+  }, [delegatedAmount]);
+
+  const [amountToRedelegate, setAmountToRedelegate] = React.useState(formattedCoin.amount);
+
+  const onConfirmStageOne = React.useCallback(() => {
+    setStage(RedelegationStage.stageTwo);
+  }, [amountToRedelegate, stage]);
+
+  const backCallback = () => {
+    if (stage === RedelegationStage.stageOne) {
+      navigate(-1);
+    }
+    if (stage === RedelegationStage.stageTwo) {
+      setStage(RedelegationStage.stageOne);
+    }
+  };
+
   return (
-    <Layout
-      title={t('staking:redelegate')}
-      backCallback={() => {
-        if (stage === RedelegationStage.stageOne) navigate(-1);
-        else setStage(RedelegationStage.stageOne);
-      }}
-    >
+    <Layout title={t('staking:redelegate')} backCallback={backCallback}>
       {stage === RedelegationStage.stageOne && (
         <RedelegateStageOne
-          delegatedAmount={
-            account.delegations.find((x) => x.validator === fromValidator.address).balance
-          }
+          delegatedAmount={delegatedAmount}
+          amountToRedelegate={amountToRedelegate}
+          setAmountToRedelegate={setAmountToRedelegate}
           validator={fromValidator}
           onConfirm={onConfirmStageOne}
           currency={currency}
           currencyValue={currencyValue}
-          account={account}
+          formattedCoin={formattedCoin}
+          chainID={account.chain}
         />
       )}
+      {stage === RedelegationStage.stageTwo && <div>Hello world</div>}
     </Layout>
   );
 };

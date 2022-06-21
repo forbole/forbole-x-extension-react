@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, IconButton, Slider, TextField, Typography } from '@mui/material';
 import IconCross from 'components/svg/IconCross';
 import IconEditGas from 'components/svg/IconEditGas';
-import StringUtils from 'lib/StringUtils';
+import FormatUtils from 'lib/FormatUtils';
 import styles from './styles';
 
 type Props = {
@@ -83,7 +83,7 @@ const GasEstimation = ({
             variant="standard"
             value={gasFee.gas}
             onChange={(event) => {
-              onGasChanged(StringUtils.RemoveNonNumbers(event.target.value));
+              onGasChanged(FormatUtils.removeNonNumbers(event.target.value));
             }}
           />
 
