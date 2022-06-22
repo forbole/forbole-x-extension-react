@@ -6,7 +6,7 @@ import { formatCoin } from 'misc/utils';
 import DelegationInput from 'components/DelegationInput';
 import CoinCurrency from 'components/CoinCurrency';
 import FormatUtils from 'lib/FormatUtils';
-import styles from './styles';
+import styles from '../styles';
 
 type Props = {
   /**

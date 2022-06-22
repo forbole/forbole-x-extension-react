@@ -11,6 +11,8 @@ import RedelegateStageOne from 'pages/RedelegatePage/components/RedelegateStageO
 import useCurrencyValue from 'hooks/useCurrencyValue';
 import _ from 'lodash';
 import { formatCoinV2 } from 'misc/utils';
+import RedelegateStageTwo from 'pages/RedelegatePage/components/RedelegateStageTwo';
+import FormatUtils from 'lib/FormatUtils';
 
 export enum RedelegationStage {
   stageOne,
@@ -55,9 +57,13 @@ const RedelegatePage = () => {
 
   const [amountToRedelegate, setAmountToRedelegate] = React.useState(formattedCoin.amount);
 
-  const onConfirmStageOne = React.useCallback(() => {
+  const handleConfirmStageOne = React.useCallback(() => {
     setStage(RedelegationStage.stageTwo);
   }, [amountToRedelegate, stage]);
+
+  const handleConfirmStageTwo = React.useCallback(() => {
+    console.log('stage 2');
+  }, []);
 
   const backCallback = () => {
     if (stage === RedelegationStage.stageOne) {
@@ -76,14 +82,27 @@ const RedelegatePage = () => {
           amountToRedelegate={amountToRedelegate}
           setAmountToRedelegate={setAmountToRedelegate}
           validator={fromValidator}
-          onConfirm={onConfirmStageOne}
+          onConfirm={handleConfirmStageOne}
           currency={currency}
           currencyValue={currencyValue}
           formattedCoin={formattedCoin}
           chainID={account.chain}
         />
       )}
-      {stage === RedelegationStage.stageTwo && <div>Hello world</div>}
+      {stage === RedelegationStage.stageTwo && (
+        <RedelegateStageTwo
+          validators={validators.contents}
+          account={account}
+          maxDelegation={FormatUtils.convertNumberToCoin(
+            amountToRedelegate,
+            formattedCoin.token.denom
+          )}
+          onChange={() => {}}
+          onConfirm={handleConfirmStageTwo}
+          currency={currency}
+          currencyValue={currencyValue}
+        />
+      )}
     </Layout>
   );
 };
