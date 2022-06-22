@@ -9,6 +9,7 @@ import TxSuccess from 'pages/TxResult/TxSuccess';
 import TxReject from 'pages/TxResult/TxReject';
 import Support from 'pages/support';
 import UndelegatePage from 'pages/UndelegatePage';
+import RedelegatePage from 'pages/RedelegatePage';
 import Account from '../pages/Account';
 import AddressBook from '../pages/address-book';
 import Setting from '../pages/Settings';
@@ -39,12 +40,11 @@ const routes = [
     key: 'TX-REJECT',
     component: <TxReject />,
   },
-  // Complete in another branch
-  // {
-  //   path: '/redelegation/:address/:validatorAddress',
-  //   key: 'REDELEGATION',
-  //   component: <RedelegationPage />,
-  // },
+  {
+    path: '/redelegate/:address/:validatorAddress',
+    key: 'REDELEGATE',
+    component: <RedelegatePage />,
+  },
   {
     path: '/undelegate/:address/:validatorAddress',
     key: 'UNDELEGATE',

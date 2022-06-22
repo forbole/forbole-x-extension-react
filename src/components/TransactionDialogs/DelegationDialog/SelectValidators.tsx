@@ -213,13 +213,6 @@ const SelectValidators = ({
             <Box mt={2}>
               <Typography gutterBottom>{t('memo')}</Typography>
               <MemoInput
-                fullWidth
-                multiline
-                rows={3}
-                placeholder={t('description optional')}
-                InputProps={{
-                  disableUnderline: true,
-                }}
                 value={memo}
                 setValue={setMemo}
                 consent={consent}

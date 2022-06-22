@@ -27,7 +27,14 @@ module.exports = {
       'misc': path.resolve(__dirname, '..', 'src/misc'),
       'pages': path.resolve(__dirname, '..', 'src/pages'),
       'routes': path.resolve(__dirname, '..', 'src/routes'),
+      '@recoil': path.resolve(__dirname, '..', 'src/recoil')
     };
+
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      stream: false,
+      chrome: false
+    }
 
     return config;
   },

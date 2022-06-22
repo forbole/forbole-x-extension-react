@@ -6,7 +6,7 @@ const styles = {
     display: 'flex',
     flex: 1,
     justifyContent: 'space-between',
-    marginTop: 4,
+    mt: 4,
   },
   labelText: {
     marginBottom: 1,

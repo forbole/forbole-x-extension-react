@@ -17,6 +17,7 @@ import chains from 'misc/chains';
 import TxDataView from 'pages/ConfirmTx/components/TxDataView';
 import useSignerInfo from 'hooks/useSignerInfo';
 import useGasEstimation from 'hooks/useGasEstimation';
+import RedelegateValidatorList from 'pages/ConfirmTx/components/RedelegateValidatorList';
 import styles from './styles';
 
 /**
@@ -30,15 +31,13 @@ const ConfirmTx = () => {
   const { t } = useTranslation('confirmTx');
   const navigate = useNavigate();
 
-  const [txData, setTxData] = useRecoilState(transactionState);
-
-  console.log(txData);
+  const [txState, setTxState] = useRecoilState(transactionState);
 
   const {
     address,
     chainID,
     transactionData: { memo, msgs },
-  } = txData;
+  } = txState;
 
   const { loading: signerInfoLoading, signerInfo } = useSignerInfo(address);
 
@@ -79,6 +78,15 @@ const ConfirmTx = () => {
           details: <ConfirmTxValidatorList msgs={msgs} />,
         };
 
+      case '/cosmos.staking.v1beta1.MsgBeginRedelegate':
+        return {
+          icon: <IconDelegateTx />,
+          title: t('redelegate.redelegateAmount', {
+            amount: formatCoin(chainID, MsgUtils.calculateTotalTokens(msgs)),
+          }),
+          details: <RedelegateValidatorList msgs={msgs} />,
+        };
+
       default:
         return {
           icon: null,
@@ -91,10 +99,10 @@ const ConfirmTx = () => {
 
   const handleConfirm = React.useCallback(() => {
     // note: this call is async, need to think of a better way to handle this
-    setTxData({
-      ...txData,
+    setTxState({
+      ...txState,
       transactionData: {
-        ...txData.transactionData,
+        ...txState.transactionData,
         ...signerInfo,
         fee: computedFee,
       },
@@ -124,12 +132,15 @@ const ConfirmTx = () => {
 
         <Divider sx={styles.divider} />
 
-        <ConfirmTxRow
-          label={t('amount')}
-          content={formatCoin(chainID, MsgUtils.calculateTotalTokens(msgs))}
-        />
-
-        <Divider sx={styles.divider} />
+        {txType !== '/cosmos.staking.v1beta1.MsgBeginRedelegate' && (
+          <>
+            <ConfirmTxRow
+              label={t('amount')}
+              content={formatCoin(chainID, MsgUtils.calculateTotalTokens(msgs))}
+            />
+            <Divider sx={styles.divider} />
+          </>
+        )}
 
         <ConfirmTxRow label={t('note')} content={memo || t('NA')} />
 

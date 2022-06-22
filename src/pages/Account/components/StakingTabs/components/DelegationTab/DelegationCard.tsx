@@ -39,7 +39,7 @@ const DelegationCard = ({
       {
         label: t('staking.delegation.redelegate'),
         onClick: () => {
-          navigate(`/redelegation/${address}/${validator.address}`);
+          navigate(`/redelegate/${address}/${validator.address}`);
         },
       },
       {

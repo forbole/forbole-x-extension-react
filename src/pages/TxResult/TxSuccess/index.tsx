@@ -22,28 +22,37 @@ const TxSuccess = () => {
   useHooks();
 
   const { t } = useTranslation('txResult');
-  const txData = useRecoilValue(transactionState);
+  const txState = useRecoilValue(transactionState);
+  console.log(txState);
 
   const i18nContent = React.useMemo(() => {
-    const txType = _.get(txData, 'transactionData.msgs[0].typeUrl');
+    const txType = _.get(txState, 'transactionData.msgs[0].typeUrl');
     if (txType === '/cosmos.staking.v1beta1.MsgDelegate')
       return t('successDelegation', {
         amount: formatCoin(
-          txData.chainID,
-          MsgUtils.calculateTotalTokens(txData.transactionData.msgs)
+          txState.chainID,
+          MsgUtils.calculateTotalTokens(txState.transactionData.msgs)
         ),
       });
     if (txType === '/cosmos.staking.v1beta1.MsgUndelegate') {
       return t('successUndelegation', {
         amount: formatCoin(
-          txData.chainID,
-          MsgUtils.calculateTotalTokens(txData.transactionData.msgs)
+          txState.chainID,
+          MsgUtils.calculateTotalTokens(txState.transactionData.msgs)
+        ),
+      });
+    }
+    if (txType === '/cosmos.staking.v1beta1.MsgBeginRedelegate') {
+      return t('successRedelegation', {
+        amount: formatCoin(
+          txState.chainID,
+          MsgUtils.calculateTotalTokens(txState.transactionData.msgs)
         ),
       });
     }
 
     return '';
-  }, [txData]);
+  }, [txState]);
 
   return (
     <Layout

@@ -71,7 +71,7 @@ const Layout: React.FC<Props> = ({
         }}
       />
     );
-  }, [hideLeftElement, backPath]);
+  }, [hideLeftElement, backPath, backCallback]);
 
   return (
     <>

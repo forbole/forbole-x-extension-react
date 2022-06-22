@@ -16,5 +16,10 @@
   "undelegate": {
     "undelegateAmount": "Undelegate {{amount}}",
     "undelegateFrom": "Undelegate from"
+  },
+  "redelegate": {
+    "redelegateAmount": "Redelegate {{amount}}",
+    "redelegateFrom": "Redelegate from",
+    "redelegateTo": "Redelegate to"
   }
 }
