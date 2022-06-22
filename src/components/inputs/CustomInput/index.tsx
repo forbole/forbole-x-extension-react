@@ -1,21 +1,21 @@
-import React from 'react'
-import { Box, TextField, Typography } from '@mui/material'
+import React from 'react';
+import { Box, TextField, Typography } from '@mui/material';
 
 type Props = {
-  label: string
+  label: string;
 
-  defaultValue?: string
+  defaultValue?: string;
 
-  placeholder?: string
+  placeholder?: string;
 
-  register: any
+  register: any;
 
-  options?: any
+  options?: any;
 
-  name: string
+  name: string;
 
-  multiline?: boolean
-}
+  multiline?: boolean;
+};
 
 const CustomInput = ({
   label,
@@ -40,7 +40,7 @@ const CustomInput = ({
       <Typography variant="subtitle1">{label}</Typography>
       <TextField
         sx={(theme) => ({
-          padding: '4px',
+          padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
           borderRadius: '4px',
           backgroundColor: theme.palette.background.paper,
         })}
@@ -57,7 +57,7 @@ const CustomInput = ({
         {...rest}
       />
     </Box>
-  )
-}
+  );
+};
 
-export default CustomInput
+export default CustomInput;

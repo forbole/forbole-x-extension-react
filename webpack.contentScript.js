@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = {
   entry: {
-    contentScript: './src/contentScript/index.tsx',
+    contentScript: './src/contentScript/index.ts',
     scriptToInject: './src/contentScript/scriptToInject.ts',
   },
   module: {

@@ -1,0 +1,55 @@
+{
+  "transactions": {
+    "tabs": {
+      "all": "All Activities ({{count}})",
+      "transfer": "Transfer ({{count}})",
+      "staking": "Staking ({{count}})",
+      "distribution": "Distribution ({{count}})",
+      "governance": "Governance ({{count}})",
+      "slashing": "Slashing ({{count}})"
+    },
+    "rows": {
+      "toUser": "To <linkA>{{user}}</linkA>",
+      "fromUser": "From <linkA>{{user}}</linkA>",
+      "undelegate": "Undelegate {{amount}}",
+      "send": "Send {{amount}}",
+      "voteProposal": "Vote proposal #{{proposalNum}} with {{choice}}",
+      "redelegate": "Redelegate {{amount}}",
+      "fromToUser": "From <linkA>{{userA}}</linkA> to <linkB>{{userB}}</linkB>",
+      "setWithdrawAddr": "Set withdraw address",
+      "toAddr": "To <linkA>{{addr}}</linkB>",
+      "VOTE_OPTION_YES": "Yes",
+      "VOTE_OPTION_NO": "No",
+      "userJailed": "{{user}} jailed",
+      "userUnjailed": "<linkA>{{validator}}</linkA> unjailed",
+      "unjailed": "Unjailed",
+      "withdrawAmount": "Withdraw {{amount}}",
+      "delegateAmount": "Delegate {{amount}}",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "xDaysAgo": "{{days}} days ago",
+      "aWeekAgo": "A week ago",
+      "multisend": "Multisend",
+      "sendAmtToAddr": "<linkA>{{addr}}</linkA> sent {{amount}} to the following recipients:",
+      "addrAmtReceived": "<linkA>{{addr}}</linkA> received {{amount}}"
+    }
+  },
+  "staking": {
+    "title": "Staking",
+    "tabs": {
+      "delegation": "Delegation",
+      "redelegation": "Redelegation",
+      "unbonding": "Unbonding"
+    },
+    "delegation": {
+      "commission": "Commission",
+      "delegated": "Delegated",
+      "rewards": "Rewards",
+      "manage": "Manage",
+      "delegate": "Delegate",
+      "redelegate": "Redelegate",
+      "undelegate": "Undelegate",
+      "withdrawRewards": "Withdraw Rewards"
+    }
+  }
+}

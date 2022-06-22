@@ -1,21 +1,55 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
-import Account from '../pages/account'
-import AddressBook from '../pages/address-book'
-import Setting from '../pages/Settings'
-import Wallet from '../pages/wallet'
-import lightTheme from '../config/theme/lightTheme'
-import { themeState } from '../recoil/general'
-import darkTheme from '../config/theme/darkTheme'
-
-interface Props {}
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Feedback from 'pages/Feedback';
+import FollowUs from 'pages/FollowUs';
+import About from 'pages/About';
+import ConfirmTx from 'pages/ConfirmTx';
+import ConfirmTxUnlockWallet from 'pages/ConfirmTxUnlockWallet';
+import TxSuccess from 'pages/TxResult/TxSuccess';
+import TxReject from 'pages/TxResult/TxReject';
+import Support from 'pages/support';
+import UndelegatePage from 'pages/UndelegatePage';
+import Account from '../pages/Account';
+import AddressBook from '../pages/address-book';
+import Setting from '../pages/Settings';
+import Wallet from '../pages/wallet';
 
 const routes = [
   { path: '/', key: 'ROOT', exact: true, component: <Wallet /> },
   { path: '/setting', key: 'SETTING', exact: true, component: <Setting /> },
+  { path: '/support', key: 'SUPPORT', exact: true, component: <Support /> },
   { path: '/address-book', key: 'ADDRESS-BOOK', exact: true, component: <AddressBook /> },
   { path: '/account/:address', key: 'ACCOUNT', component: <Account /> },
+  { path: '/feedback', key: 'FEEDBACK', component: <Feedback /> },
+  { path: '/follow-us', key: 'FOLLOW-US', component: <FollowUs /> },
+  { path: '/about', key: 'ABOUT', component: <About /> },
+  { path: '/confirm-tx', key: 'CONFIRM-TX', component: <ConfirmTx /> },
+  {
+    path: '/confirm-tx-unlock-wallet',
+    key: 'CONFIRM-TX-UNLOCK-WALLET',
+    component: <ConfirmTxUnlockWallet />,
+  },
+  {
+    path: '/tx-success',
+    key: 'TX-SUCCESS',
+    component: <TxSuccess />,
+  },
+  {
+    path: '/tx-reject/:error',
+    key: 'TX-REJECT',
+    component: <TxReject />,
+  },
+  // Complete in another branch
+  // {
+  //   path: '/redelegation/:address/:validatorAddress',
+  //   key: 'REDELEGATION',
+  //   component: <RedelegationPage />,
+  // },
+  {
+    path: '/undelegate/:address/:validatorAddress',
+    key: 'UNDELEGATE',
+    component: <UndelegatePage />,
+  },
   //   {
   //     path: "/app",
   //     key: "APP",
@@ -35,16 +69,16 @@ const routes = [
   //       },
   //     ],
   //   },
-]
+];
 
-const AppRoutes = (props: Props) => {
+const AppRoutes = () => {
   return (
     <Routes>
       {routes.map((route) => (
         <Route key={route.key} element={route.component} path={route.path} />
       ))}
     </Routes>
-  )
-}
+  );
+};
 
-export default AppRoutes
+export default AppRoutes;

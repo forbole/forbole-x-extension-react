@@ -1,10 +1,9 @@
 import React from 'react'
+import { useRecoilState } from 'recoil'
 import { ReactComponent as DarkModeIcon } from '../../assets/images/icons/icon_dark_mode.svg'
 import { ReactComponent as LightModeIcon } from '../../assets/images/icons/icon_light_mode.svg'
 // @ts-ignore
-import nightwind from 'nightwind/helper'
 import { themeState, useSetTheme } from '../../recoil/general'
-import { useRecoilState } from 'recoil'
 
 const ThemeModeButton = () => {
   const setTheme = useSetTheme()
@@ -12,6 +11,7 @@ const ThemeModeButton = () => {
   const [theme] = useRecoilState(themeState)
 
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {theme === 'dark' ? (
         <DarkModeIcon

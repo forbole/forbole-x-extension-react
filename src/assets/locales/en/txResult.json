@@ -1,0 +1,7 @@
+{
+  "headerSuccess": "Success",
+  "headerReject": "Failed",
+  "rejectGeneric": "Your transaction has been rejected",
+  "successDelegation": "Successfully delegated {{amount}}",
+  "successUndelegation": "{{amount}} was successfully undelegated"
+}

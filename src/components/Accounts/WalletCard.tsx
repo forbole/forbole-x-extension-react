@@ -6,14 +6,19 @@ import { Loadable } from 'recoil'
 import chains from '../../misc/chains'
 import toast from 'react-hot-toast'
 import SendDialog from '../../components/TransactionDialogs/SendDialog'
+import DelegationDialog from '../../components/TransactionDialogs/DelegationDialog'
+import QRCodeDialog from '../Common/QRCodeDialog'
 
 type Props = {
   account: Loadable<AccountDetail>
+  validators?: Loadable<Validator[]>
 }
 
-const WalletCard = ({ account }: Props) => {
+const WalletCard = ({ account, validators }: Props) => {
   const [isCopySuccess, setIsCopySuccess] = React.useState(false)
   const [sendDialogOpen, setSendDialogOpen] = React.useState(false)
+  const [delegationDialogOpen, setDelegationDialogOpen] = React.useState(false)
+  const [qrDialogOpen, setQRDialogOpen] = React.useState(false)
 
   const copyText = React.useCallback(
     (e) => {
@@ -38,13 +43,16 @@ const WalletCard = ({ account }: Props) => {
             <div className="flex items-center space-x-1">
               <span className="text-font-200 text-xs leading-none">{account.contents.address}</span>
               <IconCopy onClick={copyText} className="cursor-pointer" />
-              <IconQrcode className="cursor-pointer" />
+              <IconQrcode onClick={() => setQRDialogOpen(true)} className="cursor-pointer" />
             </div>
           </div>
           <IconMore className="cursor-pointer" />
         </div>
         <div className="flex justify-between space-x-4">
-          <button className="nightwind-prevent text-white bg-primary-100 w-64 py-[9px] rounded-md">
+          <button
+            className="nightwind-prevent text-white bg-primary-100 w-64 py-[9px] rounded-md"
+            onClick={() => setDelegationDialogOpen(true)}
+          >
             Delegate
           </button>
           <button
@@ -58,10 +66,21 @@ const WalletCard = ({ account }: Props) => {
           </button>
         </div>
       </div>
+      <QRCodeDialog
+        open={qrDialogOpen}
+        onClose={() => setQRDialogOpen(false)}
+        address={account.contents.address}
+      />
       <SendDialog
         open={sendDialogOpen}
         onClose={() => setSendDialogOpen(false)}
         account={account.contents}
+      />
+      <DelegationDialog
+        open={delegationDialogOpen}
+        onClose={() => setDelegationDialogOpen(false)}
+        account={account.contents}
+        validators={validators}
       />
     </>
   )
