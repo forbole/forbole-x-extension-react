@@ -428,5 +428,5 @@ interface Cryptocurrency {
   gasAdjustment: number
   gasFee: { amount: number; denom: string }
   defaultGas: { [typeUrl: string]: number }
-  djunoUrl: string
+  djunoUrl?: string
 }

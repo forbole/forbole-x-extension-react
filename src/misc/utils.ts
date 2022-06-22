@@ -71,3 +71,7 @@ export const formatPercentage = (percent: number): string =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(percent || 0)
+
+export const isAddressValid = (prefix: string, address: string): boolean => {
+  return new RegExp(`^${prefix}([0-9a-zA-Z]){39}$`).test(address)
+}
