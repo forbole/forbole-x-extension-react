@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
 import Layout from 'components/Layout/layout';
 import { currentWalletState } from '@recoil/wallets';
@@ -13,6 +13,8 @@ import _ from 'lodash';
 import { formatCoinV2 } from 'misc/utils';
 import RedelegateStageTwo from 'pages/RedelegatePage/components/RedelegateStageTwo';
 import FormatUtils from 'lib/FormatUtils';
+import MsgUtils from 'lib/MsgUtils';
+import { transactionState } from '@recoil/transaction';
 
 export enum RedelegationStage {
   stageOne,
@@ -23,6 +25,8 @@ const RedelegatePage = () => {
   const { t } = useTranslation('redelegate');
   const navigate = useNavigate();
   const { address, validatorAddress } = useParams();
+
+  const setTxState = useSetRecoilState(transactionState);
 
   const [stage, setStage] = React.useState<any>(RedelegationStage.stageOne);
 
@@ -61,9 +65,41 @@ const RedelegatePage = () => {
     setStage(RedelegationStage.stageTwo);
   }, [amountToRedelegate, stage]);
 
-  const handleConfirmStageTwo = React.useCallback(() => {
-    console.log('stage 2');
-  }, []);
+  const handleConfirmStageTwo = React.useCallback(
+    ({
+      finalRedelegationAmount,
+      selectedValidatorAddress,
+      memo,
+    }: {
+      finalRedelegationAmount: number;
+      selectedValidatorAddress: string;
+      memo: string;
+    }) => {
+      const msgs = MsgUtils.createRedelegateMessage({
+        delegatorAddress: account.address,
+        redelegations: [
+          {
+            fromValidator: fromValidator.address,
+            toValidator: selectedValidatorAddress,
+            amount: finalRedelegationAmount,
+          },
+        ],
+        stakingDenom: formattedCoin.token.denom,
+      });
+
+      setTxState({
+        address: account.address,
+        chainID: account.chain,
+        transactionData: {
+          msgs,
+          memo,
+        },
+      });
+
+      navigate('/confirm-tx');
+    },
+    []
+  );
 
   const backCallback = () => {
     if (stage === RedelegationStage.stageOne) {
@@ -97,7 +133,6 @@ const RedelegatePage = () => {
             amountToRedelegate,
             formattedCoin.token.denom
           )}
-          onChange={() => {}}
           onConfirm={handleConfirmStageTwo}
           currency={currency}
           currencyValue={currencyValue}

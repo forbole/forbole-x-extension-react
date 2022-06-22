@@ -17,9 +17,15 @@ type Props = {
 
   maxDelegation: Coin;
 
-  onChange: any;
-
-  onConfirm: any;
+  onConfirm: ({
+    finalRedelegationAmount,
+    selectedValidatorAddress,
+    memo,
+  }: {
+    finalRedelegationAmount: number;
+    selectedValidatorAddress: string;
+    memo: string;
+  }) => void;
 
   currency: string;
 
@@ -32,7 +38,6 @@ const RedelegateStageTwo = ({
   validators,
   account,
   maxDelegation,
-  onChange,
   onConfirm,
 }: Props) => {
   const { t } = useTranslation();
@@ -72,10 +77,6 @@ const RedelegateStageTwo = ({
     },
     [redelegateAmount, percent]
   );
-
-  const handleConfirm = React.useCallback(() => {
-    console.log(redelegateValidator);
-  }, []);
 
   return (
     <Box sx={styles.container}>
@@ -147,7 +148,13 @@ const RedelegateStageTwo = ({
           sx={styles.nextButton}
           variant="contained"
           type="button"
-          onClick={handleConfirm}
+          onClick={() => {
+            onConfirm({
+              finalRedelegationAmount: redelegateAmount,
+              selectedValidatorAddress: redelegateValidator,
+              memo,
+            });
+          }}
         >
           <Typography>{t('common:next')}</Typography>
         </Button>

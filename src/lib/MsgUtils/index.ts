@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import chains from 'misc/chains';
+import ChainUtils from 'lib/ChainUtils';
 
 /**
  * Get the tx type from an array of messages.
@@ -52,9 +53,7 @@ const createDelegateTxMsg = ({
   }[];
   denom: string;
 }): TransactionMsgDelegate[] => {
-  const exponent = Object.values(chains)
-    .find((chain) => chain.stakingDenom === denom)
-    .tokens.find((token) => token.denom === denom).digit;
+  const exponent = ChainUtils.getExponentByStakingDenom(denom);
 
   return delegations.map((d) => ({
     typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
@@ -80,9 +79,7 @@ const createUndelegateMessage = ({
 }): TransactionMsgUndelegate[] => {
   const { amount, denom } = undelegateAmount;
 
-  const exponent = Object.values(chains)
-    .find((chain) => chain.stakingDenom === denom)
-    .tokens.find((token) => token.denom === denom).digit;
+  const exponent = ChainUtils.getExponentByStakingDenom(denom);
 
   return [
     {
@@ -99,6 +96,35 @@ const createUndelegateMessage = ({
   ];
 };
 
+const createRedelegateMessage = ({
+  delegatorAddress,
+  redelegations,
+  stakingDenom,
+}: {
+  delegatorAddress: string;
+  stakingDenom: string;
+  redelegations: {
+    fromValidator: string;
+    toValidator: string;
+    amount: number;
+  }[];
+}): TransactionMsgRedelegate[] => {
+  const exponent = ChainUtils.getExponentByStakingDenom(stakingDenom);
+
+  return redelegations.map((x) => ({
+    typeUrl: '/cosmos.staking.v1beta1.MsgBeginRedelegate',
+    value: {
+      delegatorAddress,
+      validatorSrcAddress: x.fromValidator,
+      validatorDstAddress: x.toValidator,
+      amount: {
+        amount: String(x.amount * 10 ** exponent),
+        denom: stakingDenom,
+      },
+    },
+  }));
+};
+
 const MsgUtils = {
   getTxTypeFromMsgArr,
   calculateTotalTokens,
@@ -107,6 +133,7 @@ const MsgUtils = {
   // tx msg creation
   createDelegateTxMsg,
   createUndelegateMessage,
+  createRedelegateMessage,
 };
 
 export default MsgUtils;

@@ -69,9 +69,6 @@ const SelectValidatorList = ({ validators, onChange }: Props) => {
               // eslint-disable-next-line react/jsx-no-duplicate-props
               InputProps={{
                 ...InputProps,
-                sx: {
-                  pr: 1,
-                },
                 disableUnderline: true,
                 startAdornment: selectedValidator ? (
                   <Box padding={0}>
