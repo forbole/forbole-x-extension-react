@@ -3,5 +3,6 @@
   "headerReject": "Failed",
   "rejectGeneric": "Your transaction has been rejected",
   "successDelegation": "Successfully delegated {{amount}}",
-  "successUndelegation": "{{amount}} was successfully undelegated"
+  "successUndelegation": "{{amount}} was successfully undelegated",
+  "successRedelegation": "{{amount}} was successfully redelegated"
 }
