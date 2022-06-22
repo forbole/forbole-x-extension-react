@@ -12,6 +12,10 @@ type Props = {
   msgs: TransactionMsg[];
 };
 
+/**
+ * A component that renders the source validator and destination validator
+ * for the confirmTx page
+ */
 const RedelegateValidatorList = ({ msgs }: Props) => {
   const { t } = useTranslation('confirmTx');
 
