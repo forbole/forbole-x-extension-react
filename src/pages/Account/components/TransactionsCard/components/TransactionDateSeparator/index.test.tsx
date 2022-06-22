@@ -36,8 +36,11 @@ describe('components/TransactionDateSeparator', () => {
   });
 
   it('renders (date in MM dd yyyy format)', () => {
+    jest.useFakeTimers().setSystemTime(new Date('2022-01-01'));
     const t = render(<TransactionDateSeparator daysFromPresent={1000} />);
 
     expect(t).toMatchSnapshot();
+
+    jest.useRealTimers();
   });
 });
