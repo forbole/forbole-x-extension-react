@@ -6,7 +6,7 @@ import { currencyState } from '@recoil/settings';
  * Hook that retrieves the currency value for a given token.
  *
  * @param coinGeckoID The coinGeckoID of the coin
- * @param currency Optional currency code to override default which gets the currency value
+ * @param currencyOverride Optional currency code to override default which gets the currency value
  * from recoil
  */
 const useCurrencyValue = (coinGeckoID: string, currencyOverride?: string) => {

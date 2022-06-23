@@ -1,14 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import Layout from 'components/Layout/layout';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
-import MultiFunctionStaking from 'components/MultiFunctionStaking';
 import CoinCurrency from 'components/CoinCurrency';
-import _ from 'lodash';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { currencyState } from '@recoil/settings';
-import { formatCoinV2 } from 'misc/utils';
+import { validatorsState } from '@recoil/validators';
+import DelegationInput from 'components/DelegationInput';
 import useHooks from './useHooks';
 import styles from './styles';
 
@@ -17,18 +16,21 @@ const UndelegatePage = () => {
   const {
     account,
     currencyValue,
-    delegatedAmount,
     memo,
     setMemo,
     validatorAddress,
     undelegateAmount,
-    setUndelegateAmount,
     onConfirm,
+    percent,
+    formattedCoin,
+    handleChange,
   } = useHooks();
 
   const navigate = useNavigate();
   const currency = useRecoilValue(currencyState);
-  const formattedCoin = formatCoinV2(account.chain, delegatedAmount);
+  const validators = useRecoilValueLoadable(validatorsState({ chainId: account.chain }));
+
+  const { formatted, token } = formattedCoin;
 
   return (
     <Layout
@@ -38,13 +40,33 @@ const UndelegatePage = () => {
       }}
     >
       <Box px={2}>
-        <MultiFunctionStaking
-          type="undelegate"
-          totalDelegation={delegatedAmount}
-          account={account}
-          preSelectedValidators={[validatorAddress]}
-          onChange={setUndelegateAmount}
-        />
+        <Box sx={styles.container}>
+          <Typography variant="body1" sx={styles.titleBold}>
+            <Trans
+              i18nKey="staking:totalDelegationAmount"
+              values={{
+                amount: formatted,
+              }}
+              components={{
+                bold: <Typography sx={{ fontWeight: '500' }} variant="body1" />,
+              }}
+            />
+          </Typography>
+          <Box sx={styles.validatorList}>
+            <DelegationInput
+              key={validatorAddress}
+              validatorLabel={t('undelegateFrom')}
+              validator={validators.contents.find((x) => x.address === validatorAddress)}
+              chainID={account.chain}
+              delegationAmount={undelegateAmount}
+              percent={percent}
+              tokenDenom={token.symbol}
+              handleAmountChange={handleChange('amount')}
+              handleSliderChanged={handleChange('slider')}
+              handlePercentChanged={handleChange('percent')}
+            />
+          </Box>
+        </Box>
 
         <Box>
           <Typography sx={styles.memoLabel}>{t('note')}</Typography>
@@ -73,7 +95,7 @@ const UndelegatePage = () => {
           <CircularProgress />
         ) : (
           <CoinCurrency
-            amount={undelegateAmount[validatorAddress] || 0}
+            amount={undelegateAmount || 0}
             symbol={formattedCoin.token.symbol}
             currencyValue={currencyValue}
             currency={currency}
@@ -81,10 +103,7 @@ const UndelegatePage = () => {
         )}
 
         <Button
-          disabled={
-            !undelegateAmount[validatorAddress] ||
-            _.get(undelegateAmount, `[${validatorAddress}]`) > formattedCoin.amount
-          }
+          disabled={undelegateAmount <= 0 || undelegateAmount > formattedCoin.amount}
           sx={styles.nextButton}
           variant="contained"
           type="button"

@@ -9,6 +9,8 @@ import { currencyState } from '@recoil/settings';
 import MsgUtils from 'lib/MsgUtils';
 import { transactionState } from '@recoil/transaction';
 import { useNavigate } from 'react-router';
+import { formatCoinV2 } from 'misc/utils';
+import FormatUtils from 'lib/FormatUtils';
 
 /**
  * Hooks for the UndelegatePage
@@ -16,12 +18,6 @@ import { useNavigate } from 'react-router';
 const useHooks = () => {
   const { address, validatorAddress } = useParams();
   const navigate = useNavigate();
-
-  const [memo, setMemo] = React.useState<string>('');
-  const [undelegateAmount, setUndelegateAmount] = React.useState<{ [index: string]: number }>({});
-
-  const setTxState = useSetRecoilState(transactionState);
-
   const currency = useRecoilValue(currencyState);
   const wallet = useRecoilValue(currentWalletState);
   const account = useRecoilValue(
@@ -31,21 +27,29 @@ const useHooks = () => {
     })
   );
 
+  const delegatedAmount = React.useMemo(() => {
+    return account.delegations.find((x) => x.validator === validatorAddress).balance;
+  }, [account, validatorAddress]);
+
+  const formattedCoin = formatCoinV2(account.chain, delegatedAmount);
+
+  const [memo, setMemo] = React.useState<string>('');
+  const [undelegateAmount, setUndelegateAmount] = React.useState<number>(formattedCoin.amount);
+  const [percent, setPercent] = React.useState<any>(100);
+
+  const setTxState = useSetRecoilState(transactionState);
+
   const { value: currencyValue } = useCurrencyValue(
     _.get(account, 'prices[0].token.coingeckoId'),
     currency
   );
-
-  const delegatedAmount = React.useMemo(() => {
-    return account.delegations.find((x) => x.validator === validatorAddress).balance;
-  }, [account, validatorAddress]);
 
   const onConfirm = React.useCallback(() => {
     const undelegateMsg = MsgUtils.createUndelegateMessage({
       delegatorAddress: account.address,
       validatorAddress,
       undelegateAmount: {
-        amount: String(undelegateAmount[validatorAddress]),
+        amount: String(undelegateAmount),
         denom: _.get(account, 'prices[0].token.denom'),
       },
     });
@@ -62,16 +66,39 @@ const useHooks = () => {
     navigate('/confirm-tx');
   }, [memo, undelegateAmount]);
 
+  const handleChange = React.useCallback(
+    (inputType: 'amount' | 'percent' | 'slider') => (event: any, value?: any) => {
+      const targetValue = event.target.value;
+
+      const { amount } = formattedCoin;
+
+      if (inputType === 'amount') {
+        setUndelegateAmount(targetValue);
+        setPercent(FormatUtils.decimalToPercent(targetValue / amount));
+      }
+      if (inputType === 'percent') {
+        setUndelegateAmount(amount * (Number(targetValue) / 100));
+        setPercent(Math.min(100, Number(targetValue)));
+      }
+      if (inputType === 'slider') {
+        setPercent(FormatUtils.decimalToPercent(Number(value) * 100));
+        setUndelegateAmount(amount * Number(value));
+      }
+    },
+    [delegatedAmount, percent]
+  );
+
   return {
     account,
     currencyValue,
-    delegatedAmount,
     memo,
     setMemo,
     validatorAddress,
     undelegateAmount,
-    setUndelegateAmount,
     onConfirm,
+    percent,
+    formattedCoin,
+    handleChange,
   };
 };
 
