@@ -23,7 +23,7 @@ const RemoveAddressDialog: React.FC<RemoveAddressDialogProps> = ({
   open,
   onClose,
 }) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('addressBook');
 
   const { deleteFavAddresses } = useFavAddressesMutations();
 

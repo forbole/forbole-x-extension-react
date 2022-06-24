@@ -1,0 +1,18 @@
+{
+  "note": "Note",
+  "you have not added any address": "You have not added any address",
+  "add address": "Add address",
+  "edit address": "Edit Address",
+  "delete address": "Delete Address",
+  "delete address warning": "Are you sure you would like to delete this address ?",
+  "moniker warning": "Moniker can not be empty",
+  "invalid address": "Invalid {{crypto}} address",
+  "moniker": "Moniker",
+  "optional": "Optional",
+  "address type": "Address Type",
+  "insert address": "Insert address",
+  "address": "Address",
+  "delete": "Delete",
+  "save": "Save",
+  "cancel": "Cancel"
+}

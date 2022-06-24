@@ -75,7 +75,7 @@ const AddAddressDialog: React.FC<AddAddressDialogProps> = ({ open, onClose }) =>
     }
   }, [open]);
 
-  const { t } = useTranslation();
+  const { t } = useTranslation('addressBook');
 
   return (
     <Dialog fullWidth open={open} onClose={onClose} fullScreen>

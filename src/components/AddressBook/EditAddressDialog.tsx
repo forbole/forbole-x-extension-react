@@ -25,7 +25,7 @@ interface EditAddressDialogProps {
 }
 
 const EditAddressDialog: React.FC<EditAddressDialogProps> = ({ currentAddress, open, onClose }) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('addressBook');
 
   const { updateFavAddresses } = useFavAddressesMutations();
   const [monikerError, setMonikerError] = React.useState('');

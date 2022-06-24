@@ -51,7 +51,7 @@ const AddressBook = () => {
 
   const onClose = useCallback(() => setAnchor(undefined), [setAnchor]);
 
-  const { t } = useTranslation();
+  const { t } = useTranslation('addressBook');
 
   return (
     <>
