@@ -1,27 +1,27 @@
-import Layout from '../components/Layout/layout'
-import { currentWalletIdState, currentWalletState, walletsState } from '../recoil/wallets'
-import { useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil'
-import Dropdown from '../components/Element/dropdown'
-import { ReactComponent as WalletIcon } from '../assets/images/icons/icon_wallet_manage.svg'
-import { ReactComponent as ArrowDownIcon } from '../assets/images/icons/icon_arrow_down.svg'
-import CreateWalletDialog from '../components/Wallets/CreateWalletDialog'
-import { useState, useEffect } from 'react'
-import DeleteWalletDialog from '../components/Wallets/DeleteWalletDialog'
-import UpdateWalletNameDialog from '../components/Wallets/UpdateWalletNameDialog'
-import UpdateWalletPasswordDialog from '../components/Wallets/UpdateWalletPasswordDialog'
-import ViewRecoveryPhraseDialog from '../components/Wallets/ViewRecoveryPhraseDialog'
-import AccountList from '../components/Accounts/AccountList'
+import React, { useState } from 'react';
+import { useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import Layout from '../components/Layout/layout';
+import { currentWalletIdState, currentWalletState, walletsState } from '../recoil/wallets';
+import Dropdown from '../components/Element/dropdown';
+import { ReactComponent as WalletIcon } from '../assets/images/icons/icon_wallet_manage.svg';
+import { ReactComponent as ArrowDownIcon } from '../assets/images/icons/icon_arrow_down.svg';
+import CreateWalletDialog from '../components/Wallets/CreateWalletDialog';
+import DeleteWalletDialog from '../components/Wallets/DeleteWalletDialog';
+import UpdateWalletNameDialog from '../components/Wallets/UpdateWalletNameDialog';
+import UpdateWalletPasswordDialog from '../components/Wallets/UpdateWalletPasswordDialog';
+import ViewRecoveryPhraseDialog from '../components/Wallets/ViewRecoveryPhraseDialog';
+import AccountList from '../components/Accounts/AccountList';
 
 const Wallet = () => {
-  const wallet = useRecoilValueLoadable(currentWalletState)
-  const wallets = useRecoilValue(walletsState)
-  const setCurrentWalletId = useSetRecoilState(currentWalletIdState)
+  const wallet = useRecoilValueLoadable(currentWalletState);
+  const wallets = useRecoilValue(walletsState);
+  const setCurrentWalletId = useSetRecoilState(currentWalletIdState);
 
-  const [isCreateWalletDialogOpen, setIsCreateWalletDialogOpen] = useState(false)
-  const [isDeleteWalletDialogOpen, setIsDeleteWalletDialogOpen] = useState(false)
-  const [isViewRecoveryPhraseDialogOpen, setIsViewRecoveryPhraseDialogOpen] = useState(false)
-  const [isUpdateWalletNameDialogOpen, setIsUpdateWalletNameDialogOpen] = useState(false)
-  const [isUpdateWalletPasswordDialogOpen, setIsUpdateWalletPasswordDialogOpen] = useState(false)
+  const [isCreateWalletDialogOpen, setIsCreateWalletDialogOpen] = useState(false);
+  const [isDeleteWalletDialogOpen, setIsDeleteWalletDialogOpen] = useState(false);
+  const [isViewRecoveryPhraseDialogOpen, setIsViewRecoveryPhraseDialogOpen] = useState(false);
+  const [isUpdateWalletNameDialogOpen, setIsUpdateWalletNameDialogOpen] = useState(false);
+  const [isUpdateWalletPasswordDialogOpen, setIsUpdateWalletPasswordDialogOpen] = useState(false);
 
   return (
     <Layout
@@ -89,7 +89,7 @@ const Wallet = () => {
         wallet={wallet.contents}
       />
     </Layout>
-  )
-}
+  );
+};
 
-export default Wallet
+export default Wallet;

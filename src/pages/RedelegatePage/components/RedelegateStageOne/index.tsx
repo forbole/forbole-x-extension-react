@@ -2,7 +2,6 @@ import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import _ from 'lodash';
-import { formatCoin } from 'misc/utils';
 import DelegationInput from 'components/DelegationInput';
 import CoinCurrency from 'components/CoinCurrency';
 import FormatUtils from 'lib/FormatUtils';
@@ -14,14 +13,15 @@ type Props = {
    */
   validator: Validator;
 
-  formattedCoin: any;
-
-  chainID: string;
-
   /**
-   * The amount that has been delegated to the validator
+   * Formatted version of the current delegation amount.
    */
-  delegatedAmount: Coin;
+  formattedCurrentDelegatedAmount: {
+    formatted: string;
+    token: Token;
+    amount: number;
+    chainID: string;
+  };
 
   /**
    * The amount to redelegate. This is set by the user.
@@ -37,7 +37,7 @@ type Props = {
   /**
    * Callback for when the user confirms the inputs during this stage
    */
-  onConfirm: (redelegationAmount: number) => void;
+  onConfirm: () => void;
 
   currency: string;
 
@@ -49,15 +49,13 @@ type Props = {
  * Users select the amount of currency to redelegate.
  */
 const RedelegateStageOne = ({
-  chainID,
   currency,
   currencyValue,
   validator,
-  delegatedAmount,
   onConfirm,
   amountToRedelegate,
   setAmountToRedelegate,
-  formattedCoin,
+  formattedCurrentDelegatedAmount,
 }: Props) => {
   const { t } = useTranslation('staking');
 
@@ -65,7 +63,9 @@ const RedelegateStageOne = ({
    * Percent in decimal format 1 = 100%, 0.1 = 10%, etc
    */
   const [percent, setPercent] = React.useState<any>(
-    FormatUtils.decimalToPercent(amountToRedelegate / Number(delegatedAmount.amount))
+    FormatUtils.decimalToPercent(
+      amountToRedelegate / Number(formattedCurrentDelegatedAmount.amount)
+    )
   );
 
   const handleChange = React.useCallback(
@@ -76,25 +76,21 @@ const RedelegateStageOne = ({
       ) => {
         const _value = _.get(event, 'target.value');
         if (inputType === 'amount') {
-          setPercent(((_value / formattedCoin.amount) * 100).toFixed(2));
+          setPercent(((_value / formattedCurrentDelegatedAmount.amount) * 100).toFixed(2));
           setAmountToRedelegate(_value);
         }
         if (inputType === 'percent') {
           const _percent = _value;
-          setAmountToRedelegate(formattedCoin.amount * (Number(_percent) / 100));
+          setAmountToRedelegate(formattedCurrentDelegatedAmount.amount * (Number(_percent) / 100));
           setPercent(_percent);
         }
         if (inputType === 'slider') {
           setPercent((Number(value) * 100).toFixed(2));
-          setAmountToRedelegate(formattedCoin.amount * Number(value));
+          setAmountToRedelegate(formattedCurrentDelegatedAmount.amount * Number(value));
         }
       },
     [amountToRedelegate, percent]
   );
-
-  const handleConfirm = React.useCallback(() => {
-    onConfirm(amountToRedelegate);
-  }, [amountToRedelegate]);
 
   return (
     <Box sx={styles.container}>
@@ -102,7 +98,7 @@ const RedelegateStageOne = ({
         <Trans
           i18nKey="staking:totalDelegationAmount"
           values={{
-            amount: formatCoin(chainID, delegatedAmount),
+            amount: formattedCurrentDelegatedAmount.formatted,
           }}
           components={{
             bold: <Typography sx={{ fontWeight: '500' }} variant="body1" />,
@@ -113,9 +109,9 @@ const RedelegateStageOne = ({
       <DelegationInput
         validatorLabel={t('staking:redelegate')}
         validator={validator}
-        chainID={chainID}
+        chainID={formattedCurrentDelegatedAmount.chainID}
         delegationAmount={amountToRedelegate}
-        tokenDenom={formattedCoin.token.symbol}
+        tokenDenom={formattedCurrentDelegatedAmount.token.symbol}
         percent={percent}
         handleAmountChange={handleChange('amount')}
         handlePercentChanged={handleChange('percent')}
@@ -128,18 +124,20 @@ const RedelegateStageOne = ({
         ) : (
           <CoinCurrency
             amount={amountToRedelegate || 0}
-            symbol={formattedCoin.token.symbol}
+            symbol={formattedCurrentDelegatedAmount.token.symbol}
             currencyValue={currencyValue}
             currency={currency}
           />
         )}
 
         <Button
-          disabled={amountToRedelegate === 0 || amountToRedelegate > formattedCoin.amount}
+          disabled={
+            amountToRedelegate === 0 || amountToRedelegate > formattedCurrentDelegatedAmount.amount
+          }
           sx={styles.nextButton}
           variant="contained"
           type="button"
-          onClick={handleConfirm}
+          onClick={onConfirm}
         >
           <Typography>{t('common:next')}</Typography>
         </Button>

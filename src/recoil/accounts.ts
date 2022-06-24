@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { atom, selectorFamily, noWait, useSetRecoilState } from 'recoil';
 import lodashGet from 'lodash/get';
+import { currencyState } from '@recoil/settings';
 import { fetchAccountBalance, fetchAccount } from '../services/fetches/accounts';
 import chains from '../misc/chains';
 import { passwordState } from './general';
@@ -36,15 +37,15 @@ export const accountState = selectorFamily<
 
 export const accountDetailState = selectorFamily<
   AccountDetail,
-  { walletId: string; address: string }
+  { walletId: string; address: string; currency: string }
 >({
   key: 'accountDetail',
   get:
-    ({ walletId, address }) =>
+    ({ walletId, address, currency }) =>
     async ({ get }) => {
       const account = get(accountState({ walletId, address }));
       const { balances, prices, delegations, unbondings, redelegations } =
-        await fetchAccountBalance(account.chain, account.address);
+        await fetchAccountBalance(account.chain, account.address, currency);
       const authAccount = await fetchAccount(account.chain, account.address);
       const vestings = [];
       const vestingPeriods = lodashGet(authAccount, 'account.vesting_periods', []);
@@ -84,8 +85,9 @@ export const walletAccountsState = selectorFamily<AccountDetail[], string>({
     (walletId) =>
     ({ get }) => {
       const accounts = get(accountsState).filter((a) => a.walletId === walletId);
+      const currency = get(currencyState);
       const loadable = accounts.map((a) =>
-        get(noWait(accountDetailState({ walletId: a.walletId, address: a.address })))
+        get(noWait(accountDetailState({ walletId: a.walletId, address: a.address, currency })))
       );
       return accounts.map((a, i) =>
         loadable[i].state === 'hasValue'

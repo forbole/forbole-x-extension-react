@@ -52,12 +52,22 @@ export const formatCoin = (
  * An advanced version of formatCoin that returns the formatted human readable string,
  * token symbol information, and raw amount (as a number) in an object
  */
-export const formatCoinV2 = (chainId: string, coin: Coin, compact?: boolean) => {
+export const formatCoinV2 = (
+  chainId: string,
+  coin: Coin,
+  compact?: boolean
+): {
+  formatted: string;
+  token: Token;
+  amount: number;
+  chainID: string;
+} => {
   const chain = chains[chainId];
   const token = chain.tokens.find((t) => t.denom === coin.denom) || {
     denom: coin.denom,
     symbol: coin.denom,
     digit: 1,
+    coingeckoId: '',
   };
   return {
     formatted: `${new Intl.NumberFormat('en', {
@@ -73,6 +83,7 @@ export const formatCoinV2 = (chainId: string, coin: Coin, compact?: boolean) => 
     amount: Big(coin.amount)
       .div(10 ** token.digit)
       .toNumber(),
+    chainID: chainId,
   };
 };
 
@@ -88,12 +99,12 @@ export const formatCoins = (
     : formatCoin(chainId, { amount: '0', denom: chain.stakingDenom }, compact);
 };
 
-export const formatCurrency = (amount: number, compact?: boolean): string =>
+export const formatCurrency = (amount: number, currency: string, compact?: boolean): string =>
   `${new Intl.NumberFormat('en', {
     style: 'currency',
-    currency: 'USD',
+    currency,
     notation: compact ? 'compact' : undefined,
-  }).format(amount || 0)} USD`;
+  }).format(amount || 0)} ${currency}`;
 
 export const formatPercentage = (percent: number): string =>
   new Intl.NumberFormat('en', {

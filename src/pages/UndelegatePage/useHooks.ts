@@ -20,10 +20,12 @@ const useHooks = () => {
   const navigate = useNavigate();
   const currency = useRecoilValue(currencyState);
   const wallet = useRecoilValue(currentWalletState);
+  const currencyS = useRecoilValue(currencyState);
   const account = useRecoilValue(
     accountDetailState({
       walletId: wallet.id,
       address,
+      currency: currencyS,
     })
   );
 

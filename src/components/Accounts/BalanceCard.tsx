@@ -1,28 +1,30 @@
-import React, { useMemo, useState } from 'react'
-import { PieChart, Pie, Cell } from 'recharts'
-import { Loadable } from 'recoil'
-import { ReactComponent as ArrowRightIcon } from '../../assets/images/icons/arrow_right.svg'
-import get from 'lodash/get'
-import { formatCoins, formatCurrency, sumCoinsValues } from '../../misc/utils'
-import VestingDialog from './VestingDialog'
+import React, { useMemo, useState } from 'react';
+import { PieChart, Pie, Cell } from 'recharts';
+import { Loadable, useRecoilValue } from 'recoil';
+import get from 'lodash/get';
+import { currencyState } from '@recoil/settings';
+import { ReactComponent as ArrowRightIcon } from '../../assets/images/icons/arrow_right.svg';
+import { formatCoins, formatCurrency, sumCoinsValues } from '../../misc/utils';
+import VestingDialog from './VestingDialog';
 
 type Props = {
-  account?: Loadable<AccountDetail>
-}
+  account?: Loadable<AccountDetail>;
+};
 
 const BalanceCard = ({ account }: Props) => {
-  const [isVestingDialogOpen, setIsVestingDialogOpen] = useState(false)
+  const currency = useRecoilValue(currencyState);
+  const [isVestingDialogOpen, setIsVestingDialogOpen] = useState(false);
   const colors = [
     { name: 'available', color: '#007FFF' },
     { name: 'delegated', color: '#6ED588' },
     { name: 'unbonding', color: '#F4B65A' },
     { name: 'rewards', color: '#DB39F5' },
     { name: 'commissions', color: '#FF7448' },
-  ]
+  ];
 
   const data = useMemo(() => {
     if (account.state !== 'hasValue') {
-      return []
+      return [];
     }
 
     return Object.keys(account?.contents?.balances)
@@ -33,9 +35,9 @@ const BalanceCard = ({ account }: Props) => {
       )
       .map((k, i) => ({
         name: k,
-        value: parseInt(get(account.contents, `balances.${k}.0.amount`, 0)),
-      }))
-  }, [account])
+        value: parseInt(get(account.contents, `balances.${k}.0.amount`, 0), 10),
+      }));
+  }, [account]);
 
   return (
     <>
@@ -44,6 +46,7 @@ const BalanceCard = ({ account }: Props) => {
           <h3>Balance</h3>
           {!!get(account, 'contents.vestings', []).length && (
             <button
+              type="button"
               onClick={() => setIsVestingDialogOpen(true)}
               className="flex items-center text-icon-light dark:text-icon-dark space-x-2 hover:opacity-80"
             >
@@ -57,7 +60,7 @@ const BalanceCard = ({ account }: Props) => {
             <Pie data={data} innerRadius={60} outerRadius={60} paddingAngle={12} dataKey="value">
               {data.map((entry, index) => (
                 <Cell
-                  key={`cell-${index}`}
+                  key={`cell-${entry.name}`}
                   stroke={colors.find((c) => c.name === entry.name).color}
                   strokeLinejoin="round"
                   strokeWidth={10}
@@ -66,11 +69,11 @@ const BalanceCard = ({ account }: Props) => {
             </Pie>
           </PieChart>
           <div className="w-full space-y-1">
-            {data.map((e, index) => (
-              <div className="flex w-full justify-between items-center" key={index}>
+            {data.map((e) => (
+              <div className="flex w-full justify-between items-center" key={e.name}>
                 <div className="flex items-center space-x-2">
                   <div
-                    className={`rounded-sm h-3 w-3`}
+                    className="rounded-sm h-3 w-3"
                     style={{ backgroundColor: colors.find((c) => c.name === e.name).color }}
                   />
                   <p>{e.name}</p>
@@ -95,14 +98,15 @@ const BalanceCard = ({ account }: Props) => {
           <div className="flex justify-between">
             {account.state === 'hasValue' && (
               <p>
-                {formatCurrency(account.contents?.prices[0].price)} /{' '}
+                {formatCurrency(account.contents?.prices[0].price, currency)} /{' '}
                 {account.contents?.prices[0].token.symbol}
               </p>
             )}
             <p>
               {account.state === 'hasValue' &&
                 formatCurrency(
-                  sumCoinsValues(account.contents.balances.total, account.contents.prices)
+                  sumCoinsValues(account.contents.balances.total, account.contents.prices),
+                  currency
                 )}
             </p>
           </div>
@@ -117,7 +121,7 @@ const BalanceCard = ({ account }: Props) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default BalanceCard
+export default BalanceCard;

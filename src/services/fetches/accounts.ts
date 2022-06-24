@@ -20,12 +20,14 @@ export const fetchAccount = async (chainId: string, address: string) => {
   }
 };
 
-export const fetchAccountBalance = async (chainId: string, address: string) => {
+export const fetchAccountBalance = async (chainId: string, address: string, currency?: string) => {
   try {
     const chain = chains[chainId];
     const [prices, available, delegations, rewards, unbonding, redelegations] = await Promise.all([
       fetchCoingecko(
-        `/simple/price?ids=${chain.tokens.map((t) => t.coingeckoId).join(',')}&vs_currencies=usd`
+        `/simple/price?ids=${chain.tokens.map((t) => t.coingeckoId).join(',')}&vs_currencies=${
+          currency || 'usd'
+        }`
       ),
       fetchLcd(chainId, `/cosmos/bank/v1beta1/balances/${address}`),
       fetchLcd(chainId, `/cosmos/staking/v1beta1/delegations/${address}`),
@@ -64,7 +66,7 @@ export const fetchAccountBalance = async (chainId: string, address: string) => {
       },
       prices: chain.tokens.map((token) => ({
         token,
-        price: get(prices, [token.coingeckoId, 'usd'], 0),
+        price: get(prices, [token.coingeckoId, currency.toLowerCase() || 'usd'], 0),
       })),
       delegations: get(delegations, 'delegation_responses', []).map((d) => ({
         balance: d.balance,

@@ -1,14 +1,19 @@
-import chains from '../../misc/chains'
-import { formatCoins, formatCurrency, sumCoinsValues } from '../../misc/utils'
-import IconButton from '../Element/iconButton'
-import { ReactComponent as MoreIcon } from '../../assets/images/icons/icon_more.svg'
+import React from 'react';
+import { useRecoilValue } from 'recoil';
+import { currencyState } from '@recoil/settings';
+import chains from '../../misc/chains';
+import { formatCoins, formatCurrency, sumCoinsValues } from '../../misc/utils';
+import IconButton from '../Element/iconButton';
+import { ReactComponent as MoreIcon } from '../../assets/images/icons/icon_more.svg';
 
 interface Props {
-  account: AccountDetail
-  onEditClick(): void
+  account: AccountDetail;
+  onEditClick(): void;
 }
 
 const AccountStatCard = ({ account, onEditClick }: Props) => {
+  const currency = useRecoilValue(currencyState);
+
   return (
     <div className="relative bg-popup-100 p-6 rounded-md">
       <div className="w-full flex space-x-3 mb-3">
@@ -21,7 +26,7 @@ const AccountStatCard = ({ account, onEditClick }: Props) => {
       <div className="divide-y divide-divider-100">
         <div className="mb-3">
           <h3>{formatCoins(account.chain, account.balances.total)}</h3>
-          <p>{formatCurrency(sumCoinsValues(account.balances.total, account.prices))}</p>
+          <p>{formatCurrency(sumCoinsValues(account.balances.total, account.prices), currency)}</p>
         </div>
         <div className="flex space-x-10 pt-3">
           <div>
@@ -38,13 +43,13 @@ const AccountStatCard = ({ account, onEditClick }: Props) => {
         <IconButton
           icon={<MoreIcon />}
           onClick={(e) => {
-            e.preventDefault()
-            onEditClick()
+            e.preventDefault();
+            onEditClick();
           }}
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AccountStatCard
+export default AccountStatCard;
