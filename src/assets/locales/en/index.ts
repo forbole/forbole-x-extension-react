@@ -10,6 +10,7 @@ import enterWalletPW from './enterWalletPW.json';
 import txResult from './txResult.json';
 import support from './support.json';
 import staking from './staking.json';
+import addressBook from './addressBook.json';
 
 const en = {
   common,
@@ -24,6 +25,7 @@ const en = {
   txResult,
   support,
   staking,
+  addressBook,
 };
 
 export default en;

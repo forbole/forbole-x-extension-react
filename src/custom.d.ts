@@ -411,24 +411,24 @@ interface Transaction {
 }
 
 interface Cryptocurrency {
-  name: string;
-  prefix?: string;
-  ecosystem: 'cosmos';
-  chainId: string;
-  chainName: string;
-  image: string;
-  coinType: number;
-  graphqlHttpUrl: string;
-  graphqlWsUrl: string;
-  blockExplorerBaseUrl: string;
-  lcdApiUrl: string;
-  rpcApiUrl: string;
-  ledgerAppName: string;
-  ibcChains: IBCChain[];
-  gasAdjustment: number;
-  gasFee: { amount: number; denom: string };
-  defaultGas: { [typeUrl: string]: number };
-  djunoUrl: string;
+  name: string
+  prefix?: string
+  ecosystem: 'cosmos'
+  chainId: string
+  chainName: string
+  image: string
+  coinType: number
+  graphqlHttpUrl: string
+  graphqlWsUrl: string
+  blockExplorerBaseUrl: string
+  lcdApiUrl: string
+  rpcApiUrl: string
+  ledgerAppName: string
+  ibcChains: IBCChain[]
+  gasAdjustment: number
+  gasFee: { amount: number; denom: string }
+  defaultGas: { [typeUrl: string]: number }
+  djunoUrl?: string
 }
 
 interface TokenPrice {
